@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply overflow-hidden font-sans antialiased bg-black-400 no-scrollbar;
+    }
+}
+
+@layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #121212;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 6px;
+        border-radius: 6px;
+        background: #535353;
+    }
+
+    ::-webkit-scrollbar-thumb:window-inactive {
+        background: #535353;
+    }
+
+    .items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .items-grid-small {
+        grid-template-columns: repeat(auto-fill, minmax(167px, 1fr));
+        grid-template-rows: repeat(auto-fill, minmax(170px, 1fr));
+    }
+}
