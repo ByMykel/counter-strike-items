@@ -13,6 +13,7 @@
     "@vueuse/components": "^10.3.0",
     "@vueuse/core": "^10.3.0",
     "axios": "^1.4.0",
+    "pinia": "^2.1.6",
     "vue": "^3.3.4"
   },
   "devDependencies": {

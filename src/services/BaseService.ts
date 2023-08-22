@@ -7,6 +7,14 @@ export default class BaseService {
         this.baseUrl = baseUrl;
     }
 
+    async getItems(query: string) {
+        const url = `${this.baseUrl}/items?q=${encodeURIComponent(query)}`;
+
+        const response = await axios.get(url);
+
+        return response.data;
+    }
+
     async getById(id: string) {
         const url = `${this.baseUrl}/items?id=${id}`;
 

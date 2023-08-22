@@ -57,13 +57,14 @@ import { vElementVisibility } from "@vueuse/components";
 
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 
-
 import { useScroll } from '@vueuse/core'
 import ItemsSkeleton from "./components/ItemsSkeleton.vue"
 import SearchBar from "./components/SearchBar.vue"
 import ItemCard from "./components/ItemCard.vue"
 
 import Cs2Service from "./services/Cs2Service"
+
+import { usePricesStore } from "./stores/prices"
 
 const ItemsService = new Cs2Service();
 
@@ -93,6 +94,10 @@ const selectedItemId = ref("")
 const selectedItem = ref<Item | null>(null)
 
 const isVisible = ref(false);
+
+const { fetchPrices } = usePricesStore();
+
+fetchPrices();
 
 const debouncedFn = useDebounceFn(() => {
   fetchItems();
@@ -150,7 +155,7 @@ async function fetchItems() {
   loading.value = true
 
   try {
-    const data = await ItemsService.search(query.value)
+    const data = await ItemsService.getItems(query.value)
     items.value = data;
 
   } catch (error) {
