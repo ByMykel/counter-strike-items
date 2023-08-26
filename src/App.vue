@@ -11,24 +11,54 @@
       </div>
     </div>
     <div v-if="selectedItemId"
-      class="h-screen border-l-2 overflow-x-scroll border-black-300 w-80 xl:w-[30rem] hidden md:block relative text-white overflow-hidden">
+      class="h-screen border-l-2 border-black-300 w-80 xl:w-[30rem] hidden md:flex flex-col relative">
 
-      <div class="flex items-center w-full h-[69px] border-b-2 md:justify-between border-black-300 px-4 sticky top-0 bg-black-400 text-black-100">
-        <p>{{ selectedItem?.name }}</p>
+      <div
+        class="flex items-center w-full h-[69px] border-b-2 border-black-300 px-4 sticky top-0 bg-black-400 text-black-100">
         <button @click="deleteItem()">
-          <XMarkIcon class="w-6 h-6 text-black-100" />
+          <XMarkIcon class="w-6 h-6 text-white" />
         </button>
+        <p v-show="showItemName" class="ml-4 truncate text-black-100">{{ selectedItem?.name }}</p>
       </div>
 
-      <div v-if="selectedItem" class="h-full px-4 pt-4 overflow-x-scroll">
+      <div v-if="selectedItem" class="h-[calc(100vh-69px)] px-4 py-4 overflow-x-hidden">
+
+        <div class="mb-4 space-y-3">
+          <a v-for="(note, index) of selectedItem.special_notes" :key="`special-note-${index}`" :href="note.source" target="_blank">
+            <div class="p-3 text-sm text-yellow-800 bg-yellow-300 rounded-md">
+              {{ note.text }}
+
+            </div>
+          </a>
+        </div>
+
         <div>
-          <img class="object-contain w-full h-[16rem] px-12 py-6 rounded-md bg-black-300/80 bg-[url('/img/graph-paper.svg')]"
+          <img
+            class="object-contain w-full h-[16rem] px-12 py-6 rounded-md bg-black-300/80 bg-[url('/img/graph-paper.svg')]"
             :src="selectedItem.image" :alt="selectedItem.name" />
         </div>
 
         <div class="py-3">
-          <!-- <p class="col-span-8 text-white">{{ selectedItem.name }}</p> -->
+          <p v-element-visibility="onNameVisibility" class="col-span-8 text-white">{{ selectedItem.name }}</p>
           <p class="py-2 text-sm text-black-100">{{ selectedItem.description }}</p>
+        </div>
+
+        <div v-if="selectedItem.id.includes('crate-')" class="overflow-hidden divide-y rounded-md divide-black-200">
+          <div class="p-3 bg-black-300 ">
+            <p v-for="item of selectedItem.contains" :key="item" class="text-sm text-black-100">{{ item.name }}</p>
+          </div>
+          <div v-if="selectedItem.contains_rare.length" class="p-3 bg-black-300 ">
+            <div v-if="!showRareItems" class="text-center cursor-pointer text-black-100" @click="showRareItems = true">
+              Show {{ selectedItem.contains_rare.length }} Rare Special Items
+            </div>
+            <div v-else>
+              <p v-for="item of selectedItem.contains_rare" :key="item" class="text-sm text-yellow-400">{{ item.name }}
+              </p>
+              <div class="mt-3 text-center cursor-pointer text-black-100" @click="showRareItems = false">
+                Hide Rare Special Items
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -90,6 +120,8 @@ const items = ref<{
   total: number;
 } | null>(null);
 const loading = ref(true);
+const showItemName = ref(false);
+const showRareItems = ref(false);
 const selectedItemId = ref("")
 const selectedItem = ref<Item | null>(null)
 
@@ -151,6 +183,11 @@ function onElementVisibility(state: boolean) {
   }
 }
 
+
+function onNameVisibility(state: boolean) {
+  showItemName.value = !state;
+}
+
 async function fetchItems() {
   loading.value = true
 
@@ -191,6 +228,15 @@ async function selectItem(id: string) {
 
   try {
     const data = await ItemsService.getById(id)
+
+    if (data.skin_id) {
+      const skin = await ItemsService.getById(data.skin_id)
+      selectedItem.value = {
+        ...data,
+        ...skin
+      }
+      return
+    }
 
     selectedItem.value = data
   } catch (error) {
