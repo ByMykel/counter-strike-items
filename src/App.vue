@@ -24,7 +24,8 @@
       <div v-if="selectedItem" class="h-[calc(100vh-69px)] px-4 py-4 overflow-x-hidden">
 
         <div class="mb-4 space-y-3">
-          <a v-for="(note, index) of selectedItem.special_notes" :key="`special-note-${index}`" :href="note.source" target="_blank">
+          <a v-for="(note, index) of selectedItem.special_notes" :key="`special-note-${index}`" :href="note.source"
+            target="_blank">
             <div class="p-3 text-sm text-yellow-800 bg-yellow-300 rounded-md">
               {{ note.text }}
 
@@ -43,19 +44,51 @@
           <p class="py-2 text-sm text-black-100">{{ selectedItem.description }}</p>
         </div>
 
-        <div v-if="selectedItem.id.includes('crate-')" class="overflow-hidden divide-y rounded-md divide-black-200">
-          <div class="p-3 bg-black-300 ">
-            <p v-for="item of selectedItem.contains" :key="item" class="text-sm text-black-100">{{ item.name }}</p>
-          </div>
-          <div v-if="selectedItem.contains_rare.length" class="p-3 bg-black-300 ">
-            <div v-if="!showRareItems" class="text-center cursor-pointer text-black-100" @click="showRareItems = true">
-              Show {{ selectedItem.contains_rare.length }} Rare Special Items
+        <div v-if="selectedItem.id.includes('crate-') && selectedItem?.contains?.length"
+          class="overflow-hidden divide-y rounded-md">
+          <div class="divide-y bg-black-300 divide-black-200/10">
+            <div v-for="item of selectedItem.contains" :key="item.id" class="flex gap-4 p-3">
+              <img class="object-contain w-16" :src="item.image" :alt="item.name">
+              <div>
+                <p class="text-sm font-bold text-black-100">{{ item.name }}</p>
+                <p class="text-sm text-black-100">{{ item.rarity }}</p>
+              </div>
             </div>
-            <div v-else>
-              <p v-for="item of selectedItem.contains_rare" :key="item" class="text-sm text-yellow-400">{{ item.name }}
-              </p>
-              <div class="mt-3 text-center cursor-pointer text-black-100" @click="showRareItems = false">
-                Hide Rare Special Items
+          </div>
+        </div>
+
+        <div v-if="selectedItem.id.includes('crate-') && selectedItem?.contains_rare?.length"
+          class="mt-5 overflow-hidden divide-y rounded-md divide-black-200/10">
+          <div v-if="!showRareItems"
+            class="py-2 text-center cursor-pointer text-black-100 bg-black-300 hover:bg-black-300/70"
+            @click="showRareItems = true">
+            Show {{ selectedItem.contains_rare.length }} Rare Special Items
+          </div>
+          <div v-if="showRareItems"
+            class="py-2 text-center cursor-pointer text-black-100 bg-black-300 hover:bg-black-300/70"
+            @click="showRareItems = false">
+            Hide Rare Special Items
+          </div>
+          <div v-if="showRareItems" class="divide-y bg-black-300 divide-black-200/10">
+            <div v-for="item of selectedItem.contains_rare" :key="item.id" class="flex gap-4 p-3">
+              <img class="object-contain w-16" :src="item.image" :alt="item.name">
+              <div>
+                <p class="text-sm font-bold text-yellow-400">{{ item.name }}{{ item?.phase ? ` (${item?.phase})` : '' }}
+                </p>
+                <p class="text-sm text-black-100">{{ item.rarity }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="selectedItem.id.includes('skin-') && selectedItem?.crates?.length"
+          class="overflow-hidden divide-y rounded-md">
+          <div class="divide-y bg-black-300 divide-black-200/10">
+            <div v-for="item of selectedItem.crates" :key="item.id" class="flex gap-4 p-3">
+              <img class="object-contain w-16" :src="item.image" :alt="item.name">
+              <div>
+                <p class="text-sm font-bold text-black-100">{{ item.name }}</p>
+                <p class="text-sm text-black-100">{{ item.rarity }}</p>
               </div>
             </div>
           </div>
@@ -225,6 +258,7 @@ async function loadMore() {
 async function selectItem(id: string) {
   deleteItem()
   selectedItemId.value = id
+  showRareItems.value = false
 
   try {
     const data = await ItemsService.getById(id)
