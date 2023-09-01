@@ -44,7 +44,8 @@
           <p class="py-2 text-sm text-black-100">{{ selectedItem.description }}</p>
         </div>
 
-        <div v-if="selectedItem.id.includes('crate-') && selectedItem?.contains?.length"
+        <div
+          v-if="(selectedItem.id.includes('crate-') || selectedItem.id.includes('collection-')) && selectedItem?.contains?.length"
           class="overflow-hidden divide-y rounded-md">
           <div class="divide-y bg-black-300 divide-black-200/10">
             <div v-for="item of selectedItem.contains" :key="item.id" class="flex gap-4 p-3">
@@ -75,6 +76,19 @@
               <div>
                 <p class="text-sm font-bold text-yellow-400">{{ item.name }}{{ item?.phase ? ` (${item?.phase})` : '' }}
                 </p>
+                <p class="text-sm text-black-100">{{ item.rarity }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="selectedItem.id.includes('skin-') && selectedItem?.collections?.length"
+          class="mb-5 overflow-hidden divide-y rounded-md">
+          <div class="divide-y bg-black-300 divide-black-200/10">
+            <div v-for="item of selectedItem.collections" :key="item.id" class="flex gap-4 p-3">
+              <img class="object-contain w-16" :src="item.image" :alt="item.name">
+              <div>
+                <p class="text-sm font-bold text-black-100">{{ item.name }}</p>
                 <p class="text-sm text-black-100">{{ item.rarity }}</p>
               </div>
             </div>
