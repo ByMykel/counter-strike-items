@@ -12,7 +12,7 @@
             <div class="absolute z-10 flex gap-1 top-2 right-2">
                 <div v-for="label in labels" :key="label.attribute"
                     class="bg-black-200 rounded-md text-xs text-white px-1 py-0.5">
-                    {{ item[label.attribute] }}
+                    {{ item[label.attribute].name }}
                 </div>
             </div>
             <img class="object-contain w-full h-full px-12 py-4 rounded-md bg-black-300/80 bg-[url('/img/graph-paper.svg')]"
