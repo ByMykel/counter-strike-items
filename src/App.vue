@@ -95,7 +95,7 @@
           </div>
         </div>
 
-        <div v-if="selectedItem.id.includes('skin-') && selectedItem?.crates?.length"
+        <div v-if="(selectedItem.id.includes('skin-') || selectedItem.id.includes('sticker-')) && selectedItem?.crates?.length"
           class="overflow-hidden divide-y rounded-md">
           <div class="divide-y bg-black-300 divide-black-200/10">
             <div v-for="item of selectedItem.crates" :key="item.id" class="flex gap-4 p-3">
