@@ -13,7 +13,7 @@
             </div>
             <input class="w-full h-full py-4 pl-12 text-white rounded-md bg-black-300 focus:outline-none sm:text-sm" :class="{
                 'focus:ring-2 focus:ring-blue-500 focus:border-blue-500': !scrolledDown
-            }" type="text" v-model="query" @input="$emit('input', query)" />
+            }" type="text" placeholder="Search..." v-model="query" @input="$emit('input', query)" />
         </div>
     </div>
 </template>
