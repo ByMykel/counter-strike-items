@@ -1,0 +1,1 @@
+import{h as r,i as s}from"./index-4b1d27f4.js";const a=(t,e)=>{const o=t.__vccOpts||t;for(const[c,n]of e)o[c]=n;return o},i={},_={class:"text-white"};function f(t,e){return r(),s("div",_,"StorageUnitsView wip")}const p=a(i,[["render",f]]);export{p as default};
