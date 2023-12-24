@@ -1,0 +1,1 @@
+import{o as s,c as n}from"./index-2f4ba0eb.js";const _=(t,e)=>{const o=t.__vccOpts||t;for(const[c,r]of e)o[c]=r;return o},a={},i={class:"h-dvh p-4 text-white"};function f(t,e){return s(),n("div",i,"work in progress")}const d=_(a,[["render",f]]);export{d as default};
