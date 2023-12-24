@@ -15,7 +15,7 @@
                     {{ item[label.attribute].name ?? item[label.attribute] }}
                 </div>
             </div>
-            <img class="object-contain w-full h-full px-12 py-4 rounded-md bg-black-300/80 bg-[url('/img/graph-paper.svg')]"
+            <img class="object-contain w-full h-full px-8 md:px-12 py-4 rounded-md bg-black-300/80 bg-[url('/img/graph-paper.svg')]"
                 :src="item.image" :alt="item.name" />
         </div>
         <div>
