@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row h-screen">
+  <div class="flex flex-row h-dvh">
     <div class="flex-shrink-0 border-r-2 w-14 lg:w-64 bg-black-400 border-black-300">
       <div class="flex flex-col h-full gap-10 px-1 py-4 lg:px-5">
         <h1 class="justify-center hidden my-2 text-lg italic text-white lg:flex">

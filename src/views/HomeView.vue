@@ -3,7 +3,7 @@
     <div class="relative flex-1 w-full">
       <SearchBar :query="query" :scrolled-down="y > 40" :total="items?.total" @input="inputChanged" />
       <div ref="el"
-        class="grid w-full h-screen gap-3 p-4 px-5 pb-32 mx-auto overflow-y-scroll items-grid-small md:items-grid">
+        class="grid w-full gap-3 p-4 px-5 pb-32 mx-auto overflow-y-scroll h-dvh items-grid-small md:items-grid">
         <ItemCard v-for="item in items?.data" :key="item.id" :item="item" :selected-item-id="selectedItemId"
           @selected="selectItem" />
         <ItemsSkeleton v-if="loading" />
@@ -11,7 +11,7 @@
       </div>
     </div>
     <div v-if="selectedItemId"
-      class="h-screen border-l-2 border-black-300 md:w-80 xl:w-[30rem] flex flex-col absolute inset-0 md:relative z-50 bg-black-400">
+      class="h-dvh border-l-2 border-black-300 md:w-80 xl:w-[30rem] flex flex-col absolute inset-0 md:relative z-50 bg-black-400">
       <div
         class="flex items-center w-full h-[69px] border-b-2 border-black-300 px-4 sticky top-0 text-black-100">
         <button @click="deleteItem()">
