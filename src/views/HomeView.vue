@@ -51,7 +51,7 @@
               <img class="object-contain w-16" :src="item.image" :alt="item.name">
               <div>
                 <p class="text-sm font-bold text-black-100">{{ item.name }}</p>
-                <p class="text-sm text-black-100">{{ item.rarity }}</p>
+                <p class="text-sm" :style="{ color: item.rarity?.color }">{{ item.rarity?.name }}</p>
               </div>
             </div>
           </div>
@@ -75,7 +75,7 @@
               <div>
                 <p class="text-sm font-bold text-yellow-400">{{ item.name }}{{ item?.phase ? ` (${item?.phase})` : '' }}
                 </p>
-                <p class="text-sm text-black-100">{{ item.rarity }}</p>
+                <p class="text-sm" :style="{ color: item.rarity?.color }">{{ item.rarity?.name }}</p>
               </div>
             </div>
           </div>
@@ -88,7 +88,7 @@
               <img class="object-contain w-16" :src="item.image" :alt="item.name">
               <div>
                 <p class="text-sm font-bold text-black-100">{{ item.name }}</p>
-                <p class="text-sm text-black-100">{{ item.rarity }}</p>
+                <p class="text-sm" :style="{ color: item.rarity?.color }">{{ item.rarity?.name }}</p>
               </div>
             </div>
           </div>
@@ -101,7 +101,7 @@
               <img class="object-contain w-16" :src="item.image" :alt="item.name">
               <div>
                 <p class="text-sm font-bold text-black-100">{{ item.name }}</p>
-                <p class="text-sm text-black-100">{{ item.rarity }}</p>
+                <p class="text-sm" :style="{ color: item.rarity?.color }">{{ item.rarity?.name }}</p>
               </div>
             </div>
           </div>
