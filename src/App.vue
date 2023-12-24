@@ -9,11 +9,13 @@
           <ul role="list" class="flex flex-col">
             <li>
               <ul role="list" class="flex flex-col gap-1">
-                <li v-for="route of routes" :key="route.name">
-                  <RouterLink :to="route.path" class="flex gap-4 p-2 rounded-md hover:bg-black-500">
-                    <component :is="route.icon" class="w-8 h-8 text-white lg:w-6 lg:h-6" />
-                    <span class="hidden text-white lg:flex">
-                      {{ route.name }}
+                <li v-for="routeItem of routes" :key="routeItem.name">
+                  <RouterLink :to="routeItem.path"
+                    class="flex gap-4 p-2 rounded-md text-black-100 hover:bg-black-500 hover:text-white"
+                    :class="{ 'bg-black-500 text-white': routeItem.path === route.path }">
+                    <component :is="routeItem.icon" class="w-8 h-8 lg:w-6 lg:h-6" />
+                    <span class="hidden lg:flex">
+                      {{ routeItem.name }}
                     </span>
                   </RouterLink>
                 </li>
@@ -38,10 +40,12 @@
 </template>
 
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import { HomeIcon } from "@heroicons/vue/24/outline";
 import { ArchiveBoxIcon } from "@heroicons/vue/24/outline";
 import { Cog6ToothIcon } from "@heroicons/vue/24/outline";
+
+const route = useRoute()
 
 const routes = [
   { name: 'Home', path: '/', icon: HomeIcon },
