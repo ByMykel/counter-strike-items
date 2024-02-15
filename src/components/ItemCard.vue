@@ -11,7 +11,8 @@
             </div>
 
             <img
-                class="object-contain w-full h-full px-8 md:px-12 py-4 rounded-md bg-black-300/80 bg-[url('/img/graph-paper.svg')]"
+                class="object-contain w-full h-full py-4 rounded-md bg-black-300/80 bg-[url('/img/graph-paper.svg')]"
+                :class="{ 'pb-0': id.includes('agent-') }"
                 :src="image"
                 :alt="name"
             >
