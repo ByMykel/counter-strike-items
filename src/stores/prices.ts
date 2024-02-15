@@ -1,18 +1,18 @@
 import { ref } from "vue"
-import { defineStore } from "pinia";
+import { defineStore } from "pinia"
 
-import PriceService from "../services/PriceService";
+import PriceService from "../services/PriceService"
 
 export const usePricesStore = defineStore("prices", () => {
-    const priceService = new PriceService();
+    const priceService = new PriceService()
 
-    const prices = ref<any>({});
-    
+    const prices = ref<any>({})
+
     async function fetchPrices() {
         try {
             prices.value = await priceService.fetchPrices()
         } catch {
-            console.error('Unable to load prices');
+            console.error("Unable to load prices")
         }
     }
 
@@ -20,5 +20,5 @@ export const usePricesStore = defineStore("prices", () => {
         return prices.value[marketHashName]
     }
 
-    return { prices, fetchPrices, getPrice };
-});
+    return { prices, fetchPrices, getPrice }
+})
