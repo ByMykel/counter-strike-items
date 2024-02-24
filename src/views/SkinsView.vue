@@ -1,7 +1,7 @@
 <template>
     <ItemsList
         :items="skinsListStore.items"
-        :items-count="skinsListStore.items.length"
+        :items-count="skinsListStore.itemsCount"
         :loading="skinsListStore.loading"
         :search="skinsListStore.search"
         @set-query="skinsListStore.setSearch($event)"

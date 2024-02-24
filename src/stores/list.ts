@@ -13,6 +13,7 @@ export const createListStore =
             const page = ref<number>(1)
             const allItems = ref<any[]>([])
             const items = ref<any[]>([])
+            const itemsCount = ref<number>(0)
 
             async function fetch() {
                 loading.value = true
@@ -20,6 +21,7 @@ export const createListStore =
                 try {
                     const { items: newItems } = await query(search.value)
                     allItems.value = newItems
+                    itemsCount.value = allItems.value.length
                     items.value = allItems.value.slice(
                         (page.value - 1) * 20,
                         page.value * 20
@@ -52,6 +54,7 @@ export const createListStore =
 
             return {
                 items,
+                itemsCount,
                 search,
                 loading,
 
