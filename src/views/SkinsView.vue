@@ -14,14 +14,14 @@
 import { createListStore } from "../stores/list"
 import { usePricesStore } from "../stores/prices"
 import { useItemDetailStore } from "../stores/ItemDetail"
-import HomeService from "../services/HomeService"
+import SkinService from "../services/SkinService"
 import ItemsList from "../components/ItemsList.vue"
 
 const { fetchPrices } = usePricesStore()
 const itemDetailStore = useItemDetailStore()
 const skinsListStore = createListStore({
-    query: new HomeService().query
-})("home")()
+    query: new SkinService().query
+})("skins")()
 
 skinsListStore.fetch()
 fetchPrices()

@@ -67,13 +67,14 @@ import { HomeIcon } from "@heroicons/vue/24/outline"
 import { Cog6ToothIcon } from "@heroicons/vue/24/outline"
 import ItemDetailPanel from "./components/ItemDetailPanel.vue"
 // import { WrenchScrewdriverIcon } from "@heroicons/vue/24/outline";
+import { HashtagIcon } from "@heroicons/vue/24/outline"
 // import { MusicalNoteIcon } from "@heroicons/vue/24/outline"
 
 const route = useRoute()
 
 const routes = [
-    { name: "All", path: "/", icon: HomeIcon }
-    // { name: 'Skins', path: '/skins', icon: WrenchScrewdriverIcon },
+    { name: "All", path: "/", icon: HomeIcon },
+    { name: "Skins", path: "/skins", icon: HashtagIcon }
     // { name: 'Stickers', path: '/stickers', icon: WrenchScrewdriverIcon },
     // { name: 'Collections', path: '/collections', icon: WrenchScrewdriverIcon },
     // { name: 'Crates', path: '/crates', icon: WrenchScrewdriverIcon },
