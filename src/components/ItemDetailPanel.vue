@@ -1,27 +1,19 @@
 <template>
     <div
-        v-if="itemDetailStore.loading || itemDetailStore.selected"
+        v-if="itemDetailStore.selected"
         class="h-dvh border-l-2 border-black-300 md:w-80 xl:w-[30rem] flex flex-col absolute inset-0 md:relative z-50 bg-black-400"
     >
         <div
             class="flex items-center w-full h-[69px] border-b-2 border-black-300 px-4 sticky top-0 text-black-100"
         >
             <button
-                :disabled="itemDetailStore.loading"
                 class="disabled:cursor-wait"
                 @click="itemDetailStore.deleteItem()"
             >
-                <ChevronLeftIcon
-                    v-if="itemDetailStore.previous.length"
-                    class="w-6 h-6 text-white"
-                />
-                <XMarkIcon
-                    v-else
-                    class="w-6 h-6 text-white"
-                />
+                <XMarkIcon class="w-6 h-6 text-white" />
             </button>
             <p
-                v-show="!itemDetailStore.loading && showItemName"
+                v-show="showItemName"
                 class="ml-4 truncate text-black-100"
             >
                 {{ itemDetailStore.selected?.name }}
@@ -29,7 +21,7 @@
         </div>
 
         <div
-            v-if="!itemDetailStore.loading && itemDetailStore.selected"
+            v-if="itemDetailStore.selected"
             class="h-[calc(100vh-69px)] px-4 py-4 overflow-x-hidden"
         >
             <div
@@ -80,7 +72,7 @@
                         v-for="item of itemDetailStore.selected.contains"
                         :key="item.id"
                         class="flex gap-4 p-3 cursor-pointer"
-                        @click="itemDetailStore.getItemDetails(item.id, true)"
+                        @click="itemDetailStore.getItemDetails(item.id)"
                     >
                         <img
                             class="object-contain w-16"
@@ -130,7 +122,7 @@
                         v-for="item of itemDetailStore.selected.containsRare"
                         :key="item.id"
                         class="flex gap-4 p-3 cursor-pointer"
-                        @click="itemDetailStore.getItemDetails(item.id, true)"
+                        @click="itemDetailStore.getItemDetails(item.id)"
                     >
                         <img
                             class="object-contain w-16"
@@ -167,7 +159,7 @@
                         v-for="item of itemDetailStore.selected.collections"
                         :key="item.id"
                         class="flex gap-4 p-3 cursor-pointer"
-                        @click="itemDetailStore.getItemDetails(item.id, true)"
+                        @click="itemDetailStore.getItemDetails(item.id)"
                     >
                         <img
                             class="object-contain w-16"
@@ -192,7 +184,7 @@
                         v-for="item of itemDetailStore.selected.crates"
                         :key="item.id"
                         class="flex gap-4 p-3 cursor-pointer"
-                        @click="itemDetailStore.getItemDetails(item.id, true)"
+                        @click="itemDetailStore.getItemDetails(item.id)"
                     >
                         <img
                             class="object-contain w-16"
@@ -209,7 +201,7 @@
             </div>
         </div>
 
-        <div
+        <!-- <div
             v-if="itemDetailStore.loading"
             class="flex items-center justify-center h-[70vh]"
         >
@@ -232,7 +224,7 @@
                 </svg>
                 <span class="sr-only">Loading...</span>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -240,7 +232,6 @@
 import { ref } from "vue"
 import { useItemDetailStore } from "../stores/ItemDetail"
 import { XMarkIcon } from "@heroicons/vue/24/outline"
-import { ChevronLeftIcon } from "@heroicons/vue/24/outline"
 import { vElementVisibility } from "@vueuse/components"
 
 const itemDetailStore = useItemDetailStore()

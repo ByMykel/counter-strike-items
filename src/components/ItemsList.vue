@@ -16,6 +16,15 @@
                 :key="item.id"
                 :name="item.name"
                 :image="item.image"
+                :souvenir="item.name.includes('Souvenir')"
+                :stattrak="item.name.includes('StatTrak™')"
+                :rare="
+                    [
+                        'sfui_invpanel_filter_melee',
+                        'sfui_invpanel_filter_gloves'
+                    ].includes(item?.category?.id)
+                "
+                :genuine="item.name.includes('Genuine')"
                 @click="$emit('select', item.id)"
             />
             <ItemsSkeleton v-if="loading" />
@@ -32,7 +41,6 @@
 import { ref } from "vue"
 import { useScroll } from "@vueuse/core"
 import { vElementVisibility } from "@vueuse/components"
-
 import SearchBar from "./SearchBar.vue"
 import ItemCard from "./ItemCard.vue"
 import ItemsSkeleton from "./ItemsSkeleton.vue"

@@ -63,28 +63,27 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from "vue-router"
 import { HomeIcon } from "@heroicons/vue/24/outline"
-// import { ArchiveBoxIcon } from "@heroicons/vue/24/outline";
 import { Cog6ToothIcon } from "@heroicons/vue/24/outline"
-import ItemDetailPanel from "./components/ItemDetailPanel.vue"
-// import { WrenchScrewdriverIcon } from "@heroicons/vue/24/outline";
 import { HashtagIcon } from "@heroicons/vue/24/outline"
-// import { MusicalNoteIcon } from "@heroicons/vue/24/outline"
+import { usePricesStore } from "./stores/prices"
+import ItemDetailPanel from "./components/ItemDetailPanel.vue"
 
 const route = useRoute()
+const { fetchPrices } = usePricesStore()
 
 const routes = [
     { name: "All", path: "/", icon: HomeIcon },
-    { name: "Skins", path: "/skins", icon: HashtagIcon }
-    // { name: 'Stickers', path: '/stickers', icon: WrenchScrewdriverIcon },
-    // { name: 'Collections', path: '/collections', icon: WrenchScrewdriverIcon },
-    // { name: 'Crates', path: '/crates', icon: WrenchScrewdriverIcon },
-    // { name: 'Collectibles', path: '/collectibles', icon: WrenchScrewdriverIcon },
-    // { name: 'Keys', path: '/keys', icon: WrenchScrewdriverIcon },
-    // { name: 'Agents', path: '/agents', icon: WrenchScrewdriverIcon },
-    // { name: 'Patches', path: '/patches', icon: WrenchScrewdriverIcon },
-    // { name: 'Graffiti', path: '/graffiti', icon: WrenchScrewdriverIcon },
-    // { name: "Music kits", path: "/music-kits", icon: MusicalNoteIcon }
-
-    // { name: 'Storage Units', path: '/storage-units', icon: ArchiveBoxIcon }, // WIP
+    { name: "Skins", path: "/skins", icon: HashtagIcon },
+    { name: "Stickers", path: "/stickers", icon: HashtagIcon },
+    { name: "Collections", path: "/collections", icon: HashtagIcon },
+    { name: "Crates", path: "/crates", icon: HashtagIcon },
+    { name: "Collectibles", path: "/collectibles", icon: HashtagIcon },
+    { name: "Agents", path: "/agents", icon: HashtagIcon },
+    { name: "Keys", path: "/keys", icon: HashtagIcon },
+    { name: "Patches", path: "/patches", icon: HashtagIcon },
+    { name: "Graffiti", path: "/graffiti", icon: HashtagIcon },
+    { name: "Music kits", path: "/music-kits", icon: HashtagIcon }
 ]
+
+fetchPrices()
 </script>

@@ -12,11 +12,12 @@
 </template>
 
 <script setup lang="ts">
-interface IProps {
-    numberItems?: number
-}
-
-withDefaults(defineProps<IProps>(), {
-    numberItems: 30
-})
+withDefaults(
+    defineProps<{
+        numberItems?: number
+    }>(),
+    {
+        numberItems: 30
+    }
+)
 </script>

@@ -25,4 +25,10 @@ export default class HomeService {
             )
         }
     }
+
+    async getAllItems() {
+        return axios
+            .get("https://bymykel.github.io/CSGO-API/api/en/all.json")
+            .then((res) => res.data)
+    }
 }
