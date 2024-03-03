@@ -54,7 +54,7 @@
             <div class="py-3">
                 <p
                     v-element-visibility="onNameVisibility"
-                    class="col-span-8 text-white"
+                    class="col-span-8"
                     :class="itemNameColor"
                 >
                     {{ itemDetailStore.selected.name }}
@@ -242,7 +242,7 @@ const description = computed(() => {
 // TODO: Improve this.
 const itemNameColor = computed(() => {
     if (!itemDetailStore.selected) {
-        return ""
+        return "text-white"
     }
 
     if (itemDetailStore.selected.name.includes("Souvenir")) {
@@ -261,6 +261,6 @@ const itemNameColor = computed(() => {
         return "text-[#cf6a32]"
     }
 
-    return ""
+    return "text-white"
 })
 </script>
