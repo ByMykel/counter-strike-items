@@ -9,9 +9,9 @@
                 >
                     <div class="flex items-center">
                         <img
-                            src="https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/patches/case01/patch_howl_png.png"
+                            src="https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/tools/casket_png.png"
                             alt="counter-strike-items logo"
-                            class="mr-2 h-9"
+                            class="mr-2 h-7"
                         >
                         <div>
                             <p
