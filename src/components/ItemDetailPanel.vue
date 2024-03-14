@@ -129,7 +129,7 @@
                             :key="item.id"
                             class="flex gap-4 p-3 cursor-pointer"
                             @click="
-                                itemDetailStore.getItemDetails(`${item.id}_0`)
+                                itemDetailStore.getItemDetails(item.id.includes('skin') ? `${item.id}_0` : item.id)
                             "
                         >
                             <img
@@ -182,7 +182,7 @@
                             :key="item.id"
                             class="flex gap-4 p-3 cursor-pointer"
                             @click="
-                                itemDetailStore.getItemDetails(`${item.id}_0`)
+                                itemDetailStore.getItemDetails(item.id.includes('skin') ? `${item.id}_0` : item.id)
                             "
                         >
                             <img
