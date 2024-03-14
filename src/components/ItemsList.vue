@@ -25,7 +25,7 @@
                     ].includes(item?.category?.id)
                 "
                 :genuine="item.name.includes('Genuine')"
-                @click="$emit('select', item.id)"
+                @show="$emit('select', item.id)"
             />
             <ItemsSkeleton v-if="loading" />
             <div

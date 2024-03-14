@@ -1,7 +1,9 @@
 <template>
     <div class="flex flex-col">
-        <div
+        <button
+            type="button"
             class="relative block h-[12rem] p-1 overflow-hidden border-2 border-transparent rounded-md outline-none cursor-pointer focus:border-[#ff5e65] hover:border-[#ff5e65]"
+            @click="$emit('show')"
         >
             <div
                 v-if="getItemSteamPrice"
@@ -41,7 +43,7 @@
                 :src="image"
                 :alt="name"
             >
-        </div>
+        </button>
         <div>
             <p
                 class="text-sm truncate px-0.5 mt-1.5 text-white"
@@ -68,6 +70,8 @@ const props = defineProps<{
     rare: boolean
     genuine: boolean
 }>()
+
+defineEmits(["show"])
 
 const getItemSteamPrice = computed(() => {
     const prices = getPrice(props.name)

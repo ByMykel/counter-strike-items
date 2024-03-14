@@ -8,20 +8,17 @@
                     class="hidden lg:flex items-center w-full h-[69px] border-b-2 border-black-300 px-4 sticky top-0 text-black-100"
                 >
                     <div class="flex items-center">
-                        <button>
-                            <img
-                                src="https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/patches/case01/patch_howl_png.png"
-                                alt="counter-strike-items logo"
-                                class="mr-2 h-9"
-                            >
-                        </button>
+                        <img
+                            src="https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/patches/case01/patch_howl_png.png"
+                            alt="counter-strike-items logo"
+                            class="mr-2 h-9"
+                        >
                         <div>
-                            <a
-                                href="/"
+                            <p
                                 class="block text-base font-semibold leading-none tracking-wider text-[#ff5e65]"
                             >
                                 counter-strike-items
-                            </a>
+                            </p>
                             <div
                                 class="text-xs text-left text-black-100 leading-none tracking-wide mt-[0.2rem]"
                             >
