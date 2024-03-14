@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-row h-dvh">
-        <div class="shadow-md w-14 shrink-0 bg-black-500 lg:w-64">
+        <div class="border-r-2 w-14 shrink-0 bg-black-400 lg:w-64 border-black-300">
             <div class="flex flex-col h-full gap-10 px-1 py-4 lg:px-5">
                 <nav class="flex-1">
                     <ul
