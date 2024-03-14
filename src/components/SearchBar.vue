@@ -23,12 +23,12 @@
                 v-model="query"
                 class="w-full h-full py-4 pl-12 text-white rounded-md bg-black-300 focus:outline-none sm:text-sm"
                 :class="{
-                    'focus:ring-2 focus:ring-blue-500 focus:border-blue-500':
+                    'focus:ring-2 focus:ring-[#ff5e65] focus:border-[#ff5e65]':
                         !scrolledDown
                 }"
                 type="text"
                 placeholder="Search..."
-                @input="$emit('input', query)"
+                @keyup.enter="$emit('input', query)"
             >
         </div>
     </div>

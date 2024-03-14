@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col">
         <div
-            class="relative block h-[12rem] p-1 overflow-hidden border-2 border-transparent rounded-md outline-none cursor-pointer focus:border-blue-500 hover:border-blue-500"
+            class="relative block h-[12rem] p-1 overflow-hidden border-2 border-transparent rounded-md outline-none cursor-pointer focus:border-[#ff5e65] hover:border-[#ff5e65]"
         >
             <div
                 v-if="getItemSteamPrice"

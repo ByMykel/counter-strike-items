@@ -48,6 +48,9 @@ export const createListStore =
             }
 
             function setSearch(newSearch: string) {
+                items.value = []
+                allItems.value = []
+                itemsCount.value = 0
                 search.value = newSearch
                 fetch()
             }

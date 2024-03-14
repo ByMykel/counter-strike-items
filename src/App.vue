@@ -1,8 +1,47 @@
 <template>
     <div class="flex flex-row h-dvh">
-        <div class="border-r-2 w-14 shrink-0 bg-black-400 lg:w-64 border-black-300">
-            <div class="flex flex-col h-full gap-10 px-1 py-4 lg:px-5">
-                <nav class="flex-1">
+        <div
+            class="border-r-2 w-14 shrink-0 bg-black-400 lg:w-72 border-black-300"
+        >
+            <div class="flex flex-col h-full">
+                <div
+                    class="hidden lg:flex items-center w-full h-[69px] border-b-2 border-black-300 px-4 sticky top-0 text-black-100"
+                >
+                    <div class="flex items-center">
+                        <button>
+                            <img
+                                src="https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/patches/case01/patch_howl_png.png"
+                                alt="counter-strike-items logo"
+                                class="mr-2 h-9"
+                            >
+                        </button>
+                        <div>
+                            <a
+                                href="/"
+                                class="block text-base font-semibold leading-none tracking-wider text-[#ff5e65]"
+                            >
+                                counter-strike-items
+                            </a>
+                            <div
+                                class="text-xs text-left text-black-100 leading-none tracking-wide mt-[0.2rem]"
+                            >
+                                by
+                                <a
+                                    href="https://github.com/ByMykel"
+                                    target="_blank"
+                                    class="transition hover:text-white"
+                                >ByMykel</a>
+                                on
+                                <a
+                                    href="https://github.com/ByMykel/counter-strike-items"
+                                    target="_blank"
+                                    class="transition hover:text-white"
+                                >github</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav class="flex-1 px-1 py-5 lg:px-5">
                     <ul
                         role="list"
                         class="flex flex-col"
@@ -19,11 +58,8 @@
                                 >
                                     <RouterLink
                                         :to="routeItem.path"
-                                        class="flex gap-4 p-2 rounded-md text-black-100 hover:bg-black-400 hover:text-white"
-                                        :class="{
-                                            'bg-black-400 text-white':
-                                                routeItem.path === route.path
-                                        }"
+                                        class="flex gap-4 p-2 rounded-md text-black-100 hover:bg-black-300 hover:text-white"
+                                        active-class="text-white bg-black-300"
                                     >
                                         <component
                                             :is="routeItem.icon"
@@ -38,10 +74,10 @@
                         </li>
                     </ul>
                 </nav>
-                <div class="mt-auto">
+                <div class="px-1 py-5 mt-auto lg:px-5">
                     <button
                         type="button"
-                        class="flex w-full gap-4 p-2 rounded-md hover:bg-black-400"
+                        class="flex w-full gap-4 p-2 rounded-md hover:bg-black-300 hover:text-white"
                     >
                         <Cog6ToothIcon class="text-white size-8 lg:size-6" />
                         <span class="hidden text-white lg:flex">
@@ -61,28 +97,38 @@
 </template>
 
 <script setup lang="ts">
-import { RouterView, useRoute } from "vue-router"
-import { HomeIcon } from "@heroicons/vue/24/outline"
-import { Cog6ToothIcon } from "@heroicons/vue/24/outline"
-import { HashtagIcon } from "@heroicons/vue/24/outline"
+import { RouterView } from "vue-router"
+import {
+    ArchiveBoxIcon,
+    BanknotesIcon,
+    BugAntIcon,
+    Cog6ToothIcon,
+    HomeIcon,
+    KeyIcon,
+    MusicalNoteIcon,
+    PaintBrushIcon,
+    RectangleStackIcon,
+    StarIcon,
+    TrophyIcon,
+    UserGroupIcon
+} from "@heroicons/vue/24/outline"
 import { usePricesStore } from "./stores/prices"
 import ItemDetailPanel from "./components/ItemDetailPanel.vue"
 
-const route = useRoute()
 const { fetchPrices } = usePricesStore()
 
 const routes = [
     { name: "All", path: "/", icon: HomeIcon },
-    { name: "Skins", path: "/skins", icon: HashtagIcon },
-    { name: "Stickers", path: "/stickers", icon: HashtagIcon },
-    { name: "Collections", path: "/collections", icon: HashtagIcon },
-    { name: "Crates", path: "/crates", icon: HashtagIcon },
-    { name: "Collectibles", path: "/collectibles", icon: HashtagIcon },
-    { name: "Agents", path: "/agents", icon: HashtagIcon },
-    { name: "Keys", path: "/keys", icon: HashtagIcon },
-    { name: "Patches", path: "/patches", icon: HashtagIcon },
-    { name: "Graffiti", path: "/graffiti", icon: HashtagIcon },
-    { name: "Music kits", path: "/music-kits", icon: HashtagIcon }
+    { name: "Skins", path: "/skins", icon: BanknotesIcon },
+    { name: "Stickers", path: "/stickers", icon: StarIcon },
+    { name: "Collections", path: "/collections", icon: RectangleStackIcon },
+    { name: "Crates", path: "/crates", icon: ArchiveBoxIcon },
+    { name: "Collectibles", path: "/collectibles", icon: TrophyIcon },
+    { name: "Agents", path: "/agents", icon: UserGroupIcon },
+    { name: "Keys", path: "/keys", icon: KeyIcon },
+    { name: "Patches", path: "/patches", icon: BugAntIcon },
+    { name: "Graffiti", path: "/graffiti", icon: PaintBrushIcon },
+    { name: "Music kits", path: "/music-kits", icon: MusicalNoteIcon }
 ]
 
 fetchPrices()
