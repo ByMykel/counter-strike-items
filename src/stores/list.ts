@@ -18,7 +18,7 @@ type QueryFunction = ({
     filters: { [prop: string]: string[] }
 }) => Promise<{
     items: any[]
-    filters: Filter[]
+    filters?: Filter[]
 }>
 
 export const createListStore =
@@ -50,7 +50,7 @@ export const createListStore =
                         (page.value - 1) * 20,
                         page.value * 20
                     )
-                    filters.value = newFilters
+                    filters.value = newFilters ?? []
                 } catch (error) {
                     console.error(
                         error instanceof Error

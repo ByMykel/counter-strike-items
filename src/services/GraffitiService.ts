@@ -36,7 +36,7 @@ export default class CratesService {
                 name: "Crate",
                 type: "multi-select",
                 options: uniqBy(
-                    items.flatMap((item) => item.crates),
+                    items.flatMap((item) => item?.crates ?? []),
                     "id"
                 )
             }
@@ -49,7 +49,7 @@ export default class CratesService {
                     .includes(search.toLowerCase())
 
                 const matchFilters = Object.keys(filters).every((prop) => {
-                    const itemProp = (item as any)[prop]
+                    const itemProp = (item as any)[prop] ?? []
                     const filterIds = filters[prop]
 
                     if (Array.isArray(itemProp)) {
@@ -63,7 +63,7 @@ export default class CratesService {
                         typeof itemProp === "string" ||
                         typeof itemProp === "boolean"
                     ) {
-                        return filterIds.includes(itemProp)
+                        return filterIds.includes(itemProp.toString())
                     }
 
                     return filterIds.includes(itemProp.id)

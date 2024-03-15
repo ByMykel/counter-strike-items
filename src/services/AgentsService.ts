@@ -66,7 +66,7 @@ export default class StickersService {
                         typeof itemProp === "string" ||
                         typeof itemProp === "boolean"
                     ) {
-                        return filterIds.includes(itemProp)
+                        return filterIds.includes(itemProp.toString())
                     }
 
                     return filterIds.includes(itemProp.id)
