@@ -35,6 +35,7 @@ export const createListStore =
             const filtersValues = ref<{ [prop: string]: string[] }>({})
 
             async function fetch() {
+                reset()
                 loading.value = true
                 page.value = 1
                 try {
@@ -72,9 +73,7 @@ export const createListStore =
             }
 
             function setSearch(newSearch: string) {
-                items.value = []
-                allItems.value = []
-                itemsCount.value = 0
+                reset()
                 search.value = newSearch
                 fetch()
             }
@@ -91,6 +90,12 @@ export const createListStore =
                 } else {
                     filtersValues.value[prop] = value
                 }
+            }
+
+            function reset() {
+                items.value = []
+                allItems.value = []
+                itemsCount.value = 0
             }
 
             return {

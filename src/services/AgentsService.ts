@@ -7,7 +7,7 @@ export default class StickersService {
         filters
     }: {
         search: string
-        filters: { [prop: string]: string[] }
+        filters: { [prop: string]: (string | boolean)[] }
     }) {
         let items: {
             name: string
@@ -52,7 +52,24 @@ export default class StickersService {
                     .includes(search.toLowerCase())
 
                 const matchFilters = Object.keys(filters).every((prop) => {
-                    return filters[prop].includes((item as any)[prop].id)
+                    const itemProp = (item as any)[prop]
+                    const filterIds = filters[prop]
+
+                    if (Array.isArray(itemProp)) {
+                        const itemIds = itemProp.map((item: any) => item.id)
+                        return itemIds.some((id: string) =>
+                            filterIds.includes(id)
+                        )
+                    }
+
+                    if (
+                        typeof itemProp === "string" ||
+                        typeof itemProp === "boolean"
+                    ) {
+                        return filterIds.includes(itemProp)
+                    }
+
+                    return filterIds.includes(itemProp.id)
                 })
 
                 return matchName && matchFilters
