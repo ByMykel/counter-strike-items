@@ -1,6 +1,6 @@
 <template>
     <div
-        class="h-dvh lg:border-l-2 border-black-300 md:w-80 xl:w-[30rem] flex flex-col absolute inset-0 md:relative z-50 bg-black-400"
+        class="h-dvh md:border-l-2 border-black-300 md:w-80 xl:w-[30rem] flex flex-col absolute inset-0 md:relative z-50 bg-black-400"
     >
         <div
             class="flex items-center w-full h-[69px] border-b-2 border-black-300 px-4 sticky top-0 text-black-100"
