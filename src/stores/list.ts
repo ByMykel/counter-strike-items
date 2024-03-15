@@ -1,8 +1,25 @@
 import { ref } from "vue"
 import { defineStore } from "pinia"
 
-// eslint-disable-next-line no-unused-vars
-type QueryFunction = (search: string) => Promise<{ items: any[] }>
+type Filter = {
+    prop: string
+    name: string
+    type: string
+    options: { id: string; name: string }[]
+}
+
+type QueryFunction = ({
+    // eslint-disable-next-line no-unused-vars
+    search,
+    // eslint-disable-next-line no-unused-vars
+    filters
+}: {
+    search: string
+    filters: { [prop: string]: string[] }
+}) => Promise<{
+    items: any[]
+    filters?: Filter[]
+}>
 
 export const createListStore =
     ({ query }: { query: QueryFunction }) =>
@@ -14,18 +31,26 @@ export const createListStore =
             const allItems = ref<any[]>([])
             const items = ref<any[]>([])
             const itemsCount = ref<number>(0)
+            const filters = ref<Filter[]>([])
+            const filtersValues = ref<{ [prop: string]: string[] }>({})
 
             async function fetch() {
+                reset()
                 loading.value = true
                 page.value = 1
                 try {
-                    const { items: newItems } = await query(search.value)
+                    const { items: newItems, filters: newFilters } =
+                        await query({
+                            search: search.value,
+                            filters: filtersValues.value
+                        })
                     allItems.value = newItems
                     itemsCount.value = allItems.value.length
                     items.value = allItems.value.slice(
                         (page.value - 1) * 20,
                         page.value * 20
                     )
+                    filters.value = newFilters ?? []
                 } catch (error) {
                     console.error(
                         error instanceof Error
@@ -48,11 +73,29 @@ export const createListStore =
             }
 
             function setSearch(newSearch: string) {
+                reset()
+                search.value = newSearch
+                fetch()
+            }
+
+            function setFilters({
+                prop,
+                value
+            }: {
+                prop: string
+                value: string[]
+            }) {
+                if (value.length === 0) {
+                    delete filtersValues.value[prop]
+                } else {
+                    filtersValues.value[prop] = value
+                }
+            }
+
+            function reset() {
                 items.value = []
                 allItems.value = []
                 itemsCount.value = 0
-                search.value = newSearch
-                fetch()
             }
 
             return {
@@ -60,9 +103,12 @@ export const createListStore =
                 itemsCount,
                 search,
                 loading,
+                filters,
+                filtersValues,
 
                 fetch,
                 loadMore,
-                setSearch
+                setSearch,
+                setFilters
             }
         })
