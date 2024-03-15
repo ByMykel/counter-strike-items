@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export default class StickersService {
-    async query(search: string) {
+    async query({ search }: { search: string }) {
         let items: { name: string /* more properties */ }[] = await axios
             .get("https://bymykel.github.io/CSGO-API/api/en/keys.json")
             .then((res) => res.data)

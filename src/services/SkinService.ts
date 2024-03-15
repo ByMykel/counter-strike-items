@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export default class SkinService {
-    async query(search: string) {
+    async query({ search }: { search: string }) {
         let items: { name: string /* more properties */ }[] = await axios
             .get(
                 "https://bymykel.github.io/CSGO-API/api/en/skins_not_grouped.json"

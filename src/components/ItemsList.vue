@@ -4,7 +4,9 @@
             :query="search"
             :scrolled-down="y > 40"
             :total="itemsCount"
+            :has-filters="hasFilters"
             @input="$emit('set-query', $event)"
+            @open-filters="$emit('open-filters')"
         />
         <div
             ref="el"
@@ -45,14 +47,20 @@ import SearchBar from "./SearchBar.vue"
 import ItemCard from "./ItemCard.vue"
 import ItemsSkeleton from "./ItemsSkeleton.vue"
 
-defineProps<{
-    items: any[]
-    itemsCount: number
-    loading: boolean
-    search: string
-}>()
+withDefaults(
+    defineProps<{
+        items: any[]
+        itemsCount: number
+        loading: boolean
+        search: string
+        hasFilters?: boolean
+    }>(),
+    {
+        hasFilters: false
+    }
+)
 
-const emit = defineEmits(["set-query", "select", "load-more"])
+const emit = defineEmits(["set-query", "select", "load-more", "open-filters"])
 
 const el = ref<HTMLElement | null>(null)
 const { y } = useScroll(el)
