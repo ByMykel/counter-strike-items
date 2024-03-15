@@ -16,6 +16,7 @@
     "@vueuse/components": "^10.3.0",
     "@vueuse/core": "^10.3.0",
     "axios": "^1.4.0",
+    "lodash.sortby": "^4.7.0",
     "lodash.uniqby": "^4.7.0",
     "pinia": "^2.1.6",
     "vue": "^3.3.4",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
+    "@types/lodash.sortby": "^4.7.9",
     "@types/lodash.uniqby": "^4.7.9",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
