@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, watch } from "vue"
 import { MagnifyingGlassIcon, FunnelIcon } from "@heroicons/vue/24/outline"
 
 const props = defineProps<{
@@ -56,4 +56,11 @@ const props = defineProps<{
 defineEmits(["input", "open-filters"])
 
 const query = ref(props.query || "")
+
+watch(
+    () => props.query,
+    (newValue) => {
+        query.value = newValue
+    }
+)
 </script>

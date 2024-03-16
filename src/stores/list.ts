@@ -1,5 +1,6 @@
-import { ref } from "vue"
-import { defineStore } from "pinia"
+import { onUnmounted, onMounted, ref } from "vue"
+import { defineStore, getActivePinia } from "pinia"
+import { useRoute, useRouter } from "vue-router"
 
 type Filter = {
     prop: string
@@ -25,6 +26,9 @@ export const createListStore =
     ({ query }: { query: QueryFunction }) =>
     (id: string) =>
         defineStore(`list/${id}`, () => {
+            const route = useRoute()
+            const router = useRouter()
+
             const loading = ref<boolean>(false)
             const search = ref<string>("")
             const page = ref<number>(1)
@@ -76,6 +80,7 @@ export const createListStore =
                 reset()
                 search.value = newSearch
                 fetch()
+                saveSearchQueryParam(newSearch)
             }
 
             function setFilters({
@@ -97,6 +102,28 @@ export const createListStore =
                 allItems.value = []
                 itemsCount.value = 0
             }
+
+            function saveSearchQueryParam(search: string) {
+                router.push({ query: search.length ? { q: search } : {} })
+            }
+
+            onMounted(() => {
+                const query =
+                    typeof route.query.q === "string" && route.query.q
+                        ? route.query.q
+                        : search.value
+                setSearch(query)
+            })
+
+            onUnmounted(() => {
+                // TODO: find solution to ` Property '_s' does not exist on type 'Pinia'.ts(2339) `
+                // @ts-ignore
+                getActivePinia()?._s?.forEach((store: any) => {
+                    if (store.$id === `list/${id}`) {
+                        store.$dispose()
+                    }
+                })
+            })
 
             return {
                 items,
