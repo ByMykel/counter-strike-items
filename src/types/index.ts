@@ -30,5 +30,9 @@ export interface ItemDetail {
         text: string
         source: string
     }[]
+    wears: { id: string; name: string }[]
+    skin_stattrak: boolean
+    skin_souvenir: boolean
     image: string
+    market_hash_name: string
 }

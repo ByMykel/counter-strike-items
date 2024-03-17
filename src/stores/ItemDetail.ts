@@ -22,7 +22,11 @@ export const useItemDetailStore = defineStore("item-detail", () => {
             contains: item?.contains ?? [],
             containsRare: item?.contains_rare ?? [],
             specialNotes: item?.special_notes ?? [],
-            image: item.image
+            wears: item?.wears ?? [],
+            image: item.image,
+            skin_stattrak: item.skin_stattrak ?? false,
+            skin_souvenir: item.skin_souvenir ?? false,
+            market_hash_name: item?.market_hash_name ?? ""
         }
     }
 
@@ -33,6 +37,7 @@ export const useItemDetailStore = defineStore("item-detail", () => {
     new HomeService().getAllItems().then((newItems) => (items.value = newItems))
 
     return {
+        items,
         selected,
 
         getItemDetails,

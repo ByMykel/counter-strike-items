@@ -28,7 +28,17 @@ export default class SkinService {
             .get(
                 "https://bymykel.github.io/CSGO-API/api/en/skins_not_grouped.json"
             )
-            .then((res) => res.data)
+            .then((res) =>
+                res.data.map((item: any) => {
+                    return {
+                        ...item,
+                        rare: [
+                            "sfui_invpanel_filter_melee",
+                            "sfui_invpanel_filter_gloves"
+                        ].includes(item.category.id)
+                    }
+                })
+            )
 
         const filterList = [
             {

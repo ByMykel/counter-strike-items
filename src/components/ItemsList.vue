@@ -18,14 +18,9 @@
                 :key="item.id"
                 :name="item.name"
                 :image="item.image"
-                :souvenir="item.name.includes('Souvenir')"
-                :stattrak="item.name.includes('StatTrak™')"
-                :rare="
-                    [
-                        'sfui_invpanel_filter_melee',
-                        'sfui_invpanel_filter_gloves'
-                    ].includes(item?.category?.id)
-                "
+                :souvenir="item?.souvenir ?? false"
+                :stattrak="item?.stattrak ?? false"
+                :rare="item?.rare ?? false"
                 :genuine="item.name.includes('Genuine')"
                 @show="$emit('select', item.id)"
             />

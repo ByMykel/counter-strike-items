@@ -20,5 +20,17 @@ export const usePricesStore = defineStore("prices", () => {
         return prices.value[marketHashName]
     }
 
-    return { prices, fetchPrices, getPrice }
+    function getItemSteamPrice(name: string) {
+        const prices = getPrice(name)
+
+        return (
+            prices?.steam.last_7d ||
+            prices?.steam.last_24h ||
+            prices?.steam.last_30d ||
+            prices?.steam.last_90d ||
+            null
+        )
+    }
+
+    return { prices, fetchPrices, getPrice, getItemSteamPrice }
 })

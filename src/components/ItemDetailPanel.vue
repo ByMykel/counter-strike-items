@@ -69,6 +69,136 @@
             </div>
 
             <div class="flex flex-col gap-5">
+                <a
+                    v-if="itemDetailStore.selected.market_hash_name"
+                    :href="`https://steamcommunity.com/market/listings/730/${itemDetailStore.selected.market_hash_name}`"
+                    class="relative p-3 text-center rounded-md bg-black-300 text-black-100"
+                    target="_blank"
+                >
+                    <div
+                        class="absolute top-0 bottom-0 left-0 flex items-center px-3"
+                    >
+                        <LinkIcon class="w-6 h-6 text-gray-500" />
+                    </div>
+
+                    Steam Community Market
+                </a>
+
+                <template v-if="itemDetailStore.selected.wears.length">
+                    <div
+                        class="overflow-hidden divide-y-4 rounded-md divide-black-200/10"
+                    >
+                        <div class="divide-y bg-black-300 divide-black-200/10">
+                            <button
+                                v-for="(item, index) of itemDetailStore.selected
+                                    .wears"
+                                :key="item.id"
+                                class="flex w-full gap-4 p-3"
+                                :class="{
+                                    'bg-black-200/30':
+                                        generateIdByWear(index) ===
+                                        itemDetailStore.selected.id
+                                }"
+                                @click="
+                                    itemDetailStore.getItemDetails(
+                                        generateIdByWear(index)
+                                    )
+                                "
+                            >
+                                <div
+                                    class="flex items-center justify-between w-full"
+                                >
+                                    <p class="text-sm">
+                                        <span
+                                            class="font-bold text-black-100"
+                                        >{{ item.name }}</span>
+                                    </p>
+
+                                    <p class="text-white">
+                                        {{ getItemSteamPriceByWear(index) }}
+                                    </p>
+                                </div>
+                            </button>
+                        </div>
+                        <div
+                            v-if="itemDetailStore.selected.skin_stattrak"
+                            class="divide-y bg-black-300 divide-black-200/10"
+                        >
+                            <button
+                                v-for="(item, index) of itemDetailStore.selected
+                                    .wears"
+                                :key="item.id"
+                                class="flex w-full gap-4 p-3"
+                                :class="{
+                                    'bg-black-200/30':
+                                        generateIdByWear(index, 'st') ===
+                                        itemDetailStore.selected.id
+                                }"
+                                @click="
+                                    itemDetailStore.getItemDetails(
+                                        generateIdByWear(index, 'st')
+                                    )
+                                "
+                            >
+                                <div
+                                    class="flex items-center justify-between w-full"
+                                >
+                                    <p class="text-sm">
+                                        <span class="text-[#cf6a32] mr-2">StatTrak™</span>
+                                        <span
+                                            class="font-bold text-black-100"
+                                        >{{ item.name }}</span>
+                                    </p>
+
+                                    <p class="text-white">
+                                        {{
+                                            getItemSteamPriceByWear(index, "st")
+                                        }}
+                                    </p>
+                                </div>
+                            </button>
+                        </div>
+                        <div
+                            v-if="itemDetailStore.selected.skin_souvenir"
+                            class="divide-y bg-black-300 divide-black-200/10"
+                        >
+                            <button
+                                v-for="(item, index) of itemDetailStore.selected
+                                    .wears"
+                                :key="item.id"
+                                class="flex w-full gap-4 p-3"
+                                :class="{
+                                    'bg-black-200/30':
+                                        generateIdByWear(index, 'so') ===
+                                        itemDetailStore.selected.id
+                                }"
+                                @click="
+                                    itemDetailStore.getItemDetails(
+                                        generateIdByWear(index, 'so')
+                                    )
+                                "
+                            >
+                                <div
+                                    class="flex items-center justify-between w-full"
+                                >
+                                    <p class="text-sm">
+                                        <span class="text-[#ffd700] mr-2">Souvenir</span>
+                                        <span
+                                            class="font-bold text-black-100"
+                                        >{{ item.name }}</span>
+                                    </p>
+
+                                    <p class="text-white">
+                                        {{
+                                            getItemSteamPriceByWear(index, "so")
+                                        }}
+                                    </p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </template>
+
                 <div
                     v-if="itemDetailStore.selected.collections.length"
                     class="overflow-hidden divide-y rounded-md"
@@ -226,10 +356,12 @@
 <script setup lang="ts">
 import { ref, computed } from "vue"
 import { useItemDetailStore } from "../stores/ItemDetail"
-import { XMarkIcon } from "@heroicons/vue/24/outline"
+import { XMarkIcon, LinkIcon } from "@heroicons/vue/24/outline"
 import { vElementVisibility } from "@vueuse/components"
+import { usePricesStore } from "../stores/prices"
 
 const itemDetailStore = useItemDetailStore()
+const { getItemSteamPrice } = usePricesStore()
 
 const showItemName = ref(false)
 const showRareItems = ref(false)
@@ -271,4 +403,43 @@ const itemNameColor = computed(() => {
 
     return "text-white"
 })
+
+function generateIdByWear(index: number, type: string = "") {
+    const id = itemDetailStore.selected?.id.split("_")[0]
+    if (!type) {
+        return `${id}_${index}`
+    }
+
+    if (type === "so") {
+        return `${id}_${index}_so`
+    }
+
+    if (type === "st") {
+        return `${id}_${index}_st`
+    }
+
+    return ""
+}
+
+function getItemSteamPriceByWear(index: number, type: string = "") {
+    const id = itemDetailStore.selected?.id.split("_")[0]
+    let price = ""
+
+    if (!type) {
+        const name = itemDetailStore.items[`${id}_${index}`].name
+        price = getItemSteamPrice(name)
+    }
+
+    if (type === "so") {
+        const name = itemDetailStore.items[`${id}_${index}_so`].name
+        price = getItemSteamPrice(name)
+    }
+
+    if (type === "st") {
+        const name = itemDetailStore.items[`${id}_${index}_st`].name
+        price = getItemSteamPrice(name)
+    }
+
+    return price ? `$ ${price}` : ""
+}
 </script>

@@ -6,10 +6,10 @@
             @click="$emit('show')"
         >
             <div
-                v-if="getItemSteamPrice"
+                v-if="getItemSteamPrice(name)"
                 class="absolute z-10 flex gap-1 text-sm font-semibold text-white top-2 left-2"
             >
-                $ {{ getItemSteamPrice }}
+                $ {{ getItemSteamPrice(name) }}
             </div>
 
             <div
@@ -56,12 +56,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue"
 import { usePricesStore } from "../stores/prices"
 
-const { getPrice } = usePricesStore()
+const { getItemSteamPrice } = usePricesStore()
 
-const props = defineProps<{
+defineProps<{
     id: string
     name: string
     image: string
@@ -72,15 +71,4 @@ const props = defineProps<{
 }>()
 
 defineEmits(["show"])
-
-const getItemSteamPrice = computed(() => {
-    const prices = getPrice(props.name)
-    return (
-        prices?.steam.last_7d ||
-        prices?.steam.last_24h ||
-        prices?.steam.last_30d ||
-        prices?.steam.last_90d ||
-        null
-    )
-})
 </script>
