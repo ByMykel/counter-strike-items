@@ -44,6 +44,7 @@
                     <div
                         v-if="show[filter.prop]"
                         class="p-4"
+                        :class="{ 'border-b-2 border-black-300': show }"
                     >
                         <FiltersPanelControl
                             :prop="filter.prop"
