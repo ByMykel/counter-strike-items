@@ -19,7 +19,7 @@ export default defineConfig({
                 short_name: "cs-items",
                 description:
                     "Browse all CS2 and CS:GO skins, knives, gloves, cases, collections, stickers, music kits, and more.",
-                theme_color: "#FF5E65",
+                theme_color: "#090909",
                 icons: [
                     {
                         src: "pwa-192x192.png",
