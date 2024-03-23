@@ -1,6 +1,6 @@
 <template>
     <div
-        class="sticky top-0 left-0 right-0 z-50 px-5 pt-3 pb-2 duration-300"
+        class="sticky top-0 left-0 right-0 px-5 pt-3 pb-2 duration-300"
         :class="[scrolledDown ? 'bg-black-300 shadow-lg' : 'bg-transparent']"
     >
         <div class="relative">

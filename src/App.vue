@@ -5,7 +5,7 @@
         >
             <div class="flex flex-col h-full">
                 <div
-                    class="hidden lg:flex items-center w-full h-[69px] border-b-2 border-black-300 px-4 sticky top-0 text-black-100"
+                    class="hidden lg:flex items-center w-full h-[69px] border-b-2 border-black-300 px-4 sticky top-0 text-black-100 shrink-0"
                 >
                     <div class="flex items-center">
                         <img
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-                <nav class="flex-1 px-1 py-5 lg:px-5">
+                <nav class="flex-1 px-1 py-5 lg:overflow-y-auto">
                     <ul
                         role="list"
                         class="flex flex-col"
@@ -51,7 +51,7 @@
                                 <li
                                     v-for="routeItem of routes"
                                     :key="routeItem.name"
-                                    class="group"
+                                    class="relative group"
                                 >
                                     <RouterLink
                                         :to="routeItem.path"
@@ -66,6 +66,12 @@
                                             {{ routeItem.name }}
                                         </span>
                                     </RouterLink>
+
+                                    <div
+                                        class="absolute hidden px-2 py-0.5 text-nowrap z-[1] bg-black-500 rounded-md text-white left-[calc(100%+5px)] top-[50%] shadow transform -translate-y-1/2 group-focus:block group-hover:block lg:group-focus:hidden lg:group-hover:hidden"
+                                    >
+                                        {{ routeItem.name }}
+                                    </div>
                                 </li>
                             </ul>
                         </li>

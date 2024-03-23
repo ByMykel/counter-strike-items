@@ -5,15 +5,22 @@
             class="relative block h-[12rem] p-1 overflow-hidden border-2 border-transparent rounded-md outline-none cursor-pointer focus:border-[#ff5e65] hover:border-[#ff5e65]"
             @click="$emit('show')"
         >
+            <img
+                class="object-contain w-full h-full py-4 rounded-md bg-black-300/80 bg-[url('/img/graph-paper.svg')]"
+                :class="{ 'pb-0': id.includes('agent-') }"
+                :src="image"
+                :alt="name"
+            >
+
             <div
                 v-if="getItemSteamPrice(name)"
-                class="absolute z-10 flex gap-1 text-sm font-semibold text-white top-2 left-2"
+                class="absolute flex gap-1 text-sm font-semibold text-white top-2 left-2"
             >
                 $ {{ getItemSteamPrice(name) }}
             </div>
 
             <div
-                class="absolute z-10 flex gap-1 text-sm font-semibold text-white top-2 right-2"
+                class="absolute flex gap-1 text-sm font-semibold text-white top-2 right-2"
             >
                 <div
                     v-if="souvenir"
@@ -36,13 +43,6 @@
                     title="Rare"
                 />
             </div>
-
-            <img
-                class="object-contain w-full h-full py-4 rounded-md bg-black-300/80 bg-[url('/img/graph-paper.svg')]"
-                :class="{ 'pb-0': id.includes('agent-') }"
-                :src="image"
-                :alt="name"
-            >
         </button>
         <div>
             <p
