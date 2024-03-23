@@ -106,24 +106,6 @@ export default class SkinService {
                     { id: "true", name: "Yes" },
                     { id: "false", name: "No" }
                 ]
-            },
-            {
-                prop: "crates",
-                name: "Crate",
-                type: "multi-select",
-                options: generateOptions(items, {
-                    type: "fromNestedProperty",
-                    property: "crates"
-                })
-            },
-            {
-                prop: "collections",
-                name: "Collection",
-                type: "multi-select",
-                options: generateOptions(items, {
-                    type: "fromNestedProperty",
-                    property: "collections"
-                })
             }
         ]
 
