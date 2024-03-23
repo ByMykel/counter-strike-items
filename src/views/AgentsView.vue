@@ -51,6 +51,4 @@ function setFilters({ prop, value }: { prop: string; value: string[] }) {
     agentsListStore.setFilters({ prop, value })
     agentsListStore.fetch()
 }
-
-agentsListStore.fetch()
 </script>

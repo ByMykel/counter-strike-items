@@ -51,6 +51,4 @@ function setFilters({ prop, value }: { prop: string; value: string[] }) {
     collectionsListStore.setFilters({ prop, value })
     collectionsListStore.fetch()
 }
-
-collectionsListStore.fetch()
 </script>

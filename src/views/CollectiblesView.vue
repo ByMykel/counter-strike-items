@@ -51,6 +51,4 @@ function setFilters({ prop, value }: { prop: string; value: string[] }) {
     collectiblesListStore.setFilters({ prop, value })
     collectiblesListStore.fetch()
 }
-
-collectiblesListStore.fetch()
 </script>

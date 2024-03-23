@@ -51,6 +51,4 @@ function setFilters({ prop, value }: { prop: string; value: string[] }) {
     keysListStore.setFilters({ prop, value })
     keysListStore.fetch()
 }
-
-keysListStore.fetch()
 </script>

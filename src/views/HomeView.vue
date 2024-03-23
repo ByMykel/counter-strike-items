@@ -20,6 +20,4 @@ const itemDetailStore = useItemDetailStore()
 const itemsListStore = createListStore({
     query: new HomeService().query
 })("home")()
-
-itemsListStore.fetch()
 </script>

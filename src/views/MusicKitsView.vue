@@ -51,6 +51,4 @@ function setFilters({ prop, value }: { prop: string; value: string[] }) {
     musicKitsListStore.setFilters({ prop, value })
     musicKitsListStore.fetch()
 }
-
-musicKitsListStore.fetch()
 </script>

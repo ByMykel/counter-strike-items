@@ -51,6 +51,4 @@ function setFilters({ prop, value }: { prop: string; value: string[] }) {
     skinsListStore.setFilters({ prop, value })
     skinsListStore.fetch()
 }
-
-skinsListStore.fetch()
 </script>

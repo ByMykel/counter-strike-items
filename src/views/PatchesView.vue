@@ -51,6 +51,4 @@ function setFilters({ prop, value }: { prop: string; value: string[] }) {
     patchesListStore.setFilters({ prop, value })
     patchesListStore.fetch()
 }
-
-patchesListStore.fetch()
 </script>

@@ -51,6 +51,4 @@ function setFilters({ prop, value }: { prop: string; value: string[] }) {
     graffitiListStore.setFilters({ prop, value })
     graffitiListStore.fetch()
 }
-
-graffitiListStore.fetch()
 </script>

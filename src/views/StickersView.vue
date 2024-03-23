@@ -51,6 +51,4 @@ function setFilters({ prop, value }: { prop: string; value: string[] }) {
     stickersListStore.setFilters({ prop, value })
     stickersListStore.fetch()
 }
-
-stickersListStore.fetch()
 </script>
