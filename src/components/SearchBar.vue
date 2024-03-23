@@ -9,7 +9,7 @@
             </div>
             <div class="absolute right-0 flex items-center h-full gap-2 px-3">
                 <p
-                    v-if="total"
+                    v-if="total > 0"
                     class="px-2 text-sm text-white rounded-md bg-black-200"
                 >
                     total <span class="font-semibold">{{ total }}</span>
@@ -48,7 +48,7 @@ import { MagnifyingGlassIcon, FunnelIcon } from "@heroicons/vue/24/outline"
 
 const props = defineProps<{
     query: string
-    total?: number
+    total: number
     scrolledDown: boolean
     hasFilters: boolean
 }>()
