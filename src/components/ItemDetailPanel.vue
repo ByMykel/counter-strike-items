@@ -45,7 +45,10 @@
 
             <div>
                 <img
-                    class="object-contain w-full h-[16rem] px-12 py-6 rounded-md bg-black-300/80 bg-[url('/img/graph-paper.svg')]"
+                    class="object-scale-down w-full h-[16rem] rounded-md bg-black-300/80 bg-[url('/img/graph-paper.svg')]"
+                    :class="{
+                        'p-2': !itemDetailStore.selected.id.includes('agent-')
+                    }"
                     :src="itemDetailStore.selected.image"
                     :alt="itemDetailStore.selected.name"
                 >
