@@ -1,19 +1,33 @@
 import axios from "axios"
+import { filterItems } from "../utils"
 
 export default class StickersService {
-    async query({ search }: { search: string }) {
-        let items: { name: string /* more properties */ }[] = await axios
+    async query({
+        search,
+        filters
+    }: {
+        search: string
+        filters: { [prop: string]: string[] }
+    }) {
+        let items = await axios
             .get("https://bymykel.github.io/CSGO-API/api/en/music_kits.json")
             .then((res) => res.data)
 
-        if (search) {
-            items = items.filter((item) =>
-                item.name.toLowerCase().includes(search.toLowerCase())
-            )
-        }
+        const filterList = [
+            {
+                prop: "exclusive",
+                name: "Exclusive",
+                type: "multi-select",
+                options: [
+                    { id: "true", name: "Yes" },
+                    { id: "false", name: "No" }
+                ]
+            }
+        ]
 
         return {
-            items
+            items: filterItems(items, search, filters),
+            filters: filterList
         }
     }
 }

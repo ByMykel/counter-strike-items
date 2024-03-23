@@ -36,3 +36,10 @@ export interface ItemDetail {
     image: string
     market_hash_name: string
 }
+
+export type Filter = {
+    prop: string
+    name: string
+    type: string
+    options: { id: string; name: string }[]
+}

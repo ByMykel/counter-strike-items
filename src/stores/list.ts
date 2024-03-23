@@ -1,13 +1,7 @@
 import { onUnmounted, onMounted, ref } from "vue"
 import { defineStore, getActivePinia } from "pinia"
 import { useRoute, useRouter } from "vue-router"
-
-type Filter = {
-    prop: string
-    name: string
-    type: string
-    options: { id: string; name: string }[]
-}
+import { Filter } from "../types"
 
 type QueryFunction = ({
     // eslint-disable-next-line no-unused-vars

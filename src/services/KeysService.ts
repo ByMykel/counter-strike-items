@@ -1,19 +1,33 @@
 import axios from "axios"
+import { filterItems, generateOptions } from "../utils"
 
 export default class StickersService {
-    async query({ search }: { search: string }) {
-        let items: { name: string /* more properties */ }[] = await axios
+    async query({
+        search,
+        filters
+    }: {
+        search: string
+        filters: { [prop: string]: string[] }
+    }) {
+        let items = await axios
             .get("https://bymykel.github.io/CSGO-API/api/en/keys.json")
             .then((res) => res.data)
 
-        if (search) {
-            items = items.filter((item) =>
-                item.name.toLowerCase().includes(search.toLowerCase())
-            )
-        }
+        const filterList = [
+            {
+                prop: "crates",
+                name: "Crate",
+                type: "multi-select",
+                options: generateOptions(items, {
+                    type: "fromNestedProperty",
+                    property: "crates"
+                })
+            }
+        ]
 
         return {
-            items
+            items: filterItems(items, search, filters),
+            filters: filterList
         }
     }
 }
