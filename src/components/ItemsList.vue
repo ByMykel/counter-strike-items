@@ -4,6 +4,7 @@
             :query="search"
             :scrolled-down="y > 40"
             :total="itemsCount"
+            :loading="loading"
             :has-filters="hasFilters"
             @input="$emit('set-query', $event)"
             @open-filters="$emit('open-filters')"

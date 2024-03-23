@@ -9,7 +9,7 @@
             </div>
             <div class="absolute right-0 flex items-center h-full gap-2 px-3">
                 <p
-                    v-if="total > 0"
+                    v-if="!loading"
                     class="px-2 text-sm text-white rounded-md bg-black-200"
                 >
                     total <span class="font-semibold">{{ total }}</span>
@@ -51,6 +51,7 @@ const props = defineProps<{
     total: number
     scrolledDown: boolean
     hasFilters: boolean
+    loading: boolean
 }>()
 
 defineEmits(["input", "open-filters"])
