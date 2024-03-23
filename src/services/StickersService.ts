@@ -12,6 +12,7 @@ export default class StickersService {
         let items: {
             name: string
             type: string
+            effect: string
             tournament_event: string
             tournament_team: string
             tournament_player: string
@@ -53,6 +54,21 @@ export default class StickersService {
                         items
                             .filter((item) => item.type != null)
                             .map((item) => item.type)
+                    )
+                ].map((id) => ({
+                    id: id,
+                    name: id
+                }))
+            },
+            {
+                prop: "effect",
+                name: "Effect",
+                type: "multi-select",
+                options: [
+                    ...new Set(
+                        items
+                            .filter((item) => item.effect != null)
+                            .map((item) => item.effect)
                     )
                 ].map((id) => ({
                     id: id,

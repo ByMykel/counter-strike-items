@@ -55,12 +55,12 @@
                                 >
                                     <RouterLink
                                         :to="routeItem.path"
-                                        class="flex gap-4 p-2 rounded-md text-black-100 hover:bg-black-300 hover:text-white"
+                                        class="flex justify-center gap-4 p-2 rounded-md lg:justify-start text-black-100 hover:bg-black-300 hover:text-white"
                                         active-class="text-white bg-black-300"
                                     >
                                         <component
                                             :is="routeItem.icon"
-                                            class="size-8 lg:size-6"
+                                            class="size-6"
                                         />
                                         <span class="hidden lg:flex">
                                             {{ routeItem.name }}
@@ -76,7 +76,7 @@
                         type="button"
                         class="flex w-full gap-4 p-2 rounded-md hover:bg-black-300 hover:text-white"
                     >
-                        <Cog6ToothIcon class="text-white size-8 lg:size-6" />
+                        <Cog6ToothIcon class="text-white size-6" />
                         <span class="hidden text-white lg:flex">
                             Settings
                         </span>
