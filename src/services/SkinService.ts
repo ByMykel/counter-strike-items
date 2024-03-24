@@ -11,7 +11,7 @@ export default class SkinService {
     }) {
         let items = await axios
             .get(
-                "https://bymykel.github.io/CSGO-API/api/en/skins_not_grouped.json"
+                "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins_not_grouped.json"
             )
             .then((res) =>
                 res.data.map((item: any) => {

@@ -10,7 +10,7 @@ export default class CollectionsService {
         filters: { [prop: string]: string[] }
     }) {
         let items = await axios
-            .get("https://bymykel.github.io/CSGO-API/api/en/collections.json")
+            .get("https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collections.json")
             .then((res) => res.data)
 
         const filterList = [

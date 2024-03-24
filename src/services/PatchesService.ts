@@ -10,7 +10,7 @@ export default class StickersService {
         filters: { [prop: string]: string[] }
     }) {
         let items = await axios
-            .get("https://bymykel.github.io/CSGO-API/api/en/patches.json")
+            .get("https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/patches.json")
             .then((res) => res.data)
 
         const filterList = [
