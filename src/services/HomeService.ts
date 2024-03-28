@@ -4,7 +4,9 @@ import { shuffleArrayWithSeed } from "../utils/index"
 export default class HomeService {
     async query({ search }: { search: string }) {
         let items: { name: string /* more properties */ }[] = await axios
-            .get("https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json")
+            .get(
+                "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json"
+            )
             .then((res) => Object.values(res.data))
 
         if (search) {
@@ -28,11 +30,15 @@ export default class HomeService {
 
     async getAllItems() {
         let items = await axios
-            .get("https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json")
+            .get(
+                "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json"
+            )
             .then((res) => res.data)
 
         let skins = await axios
-            .get("https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json")
+            .get(
+                "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json"
+            )
             .then((res) => res.data)
 
         skins.forEach((item: any) => {

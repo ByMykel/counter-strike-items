@@ -6,7 +6,7 @@
             @click="$emit('show')"
         >
             <img
-                class="object-contain w-full h-full py-4 rounded-md bg-black-300/80 bg-[url('/img/graph-paper.svg')]"
+                class="object-contain w-full pointer-events-none h-full py-4 rounded-md bg-black-300/80 bg-[url('/img/graph-paper.svg')]"
                 :class="{ 'pb-0': id.includes('agent-') }"
                 :src="image"
                 :alt="name"

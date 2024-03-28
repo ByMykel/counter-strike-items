@@ -10,7 +10,9 @@ export default class CratesService {
         filters: { [prop: string]: string[] }
     }) {
         let items = await axios
-            .get("https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/graffiti.json")
+            .get(
+                "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/graffiti.json"
+            )
             .then((res) => res.data)
 
         const filterList = [
