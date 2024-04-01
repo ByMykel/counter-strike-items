@@ -14,7 +14,7 @@ export default class PriceService {
     async fetchItemPrice(
         marketHashName: string
     ): Promise<{ time: number; value: number; volume: number }[]> {
-        const endpoint = `https://raw.githubusercontent.com/ByMykel/counter-strike-price-tracker/main/static/${sha1(marketHashName)}.json`
+        const endpoint = `https://raw.githubusercontent.com/ByMykel/counter-strike-price-tracker/main/static/pricehistory/${sha1(marketHashName)}.json`
 
         try {
             const response = await axios.get(endpoint)
