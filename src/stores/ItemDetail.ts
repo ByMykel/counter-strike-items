@@ -3,6 +3,7 @@ import { defineStore } from "pinia"
 
 import { ItemDetail } from "../types/index"
 import HomeService from "../services/HomeService"
+import PriceService from "../services/PriceService"
 
 export const useItemDetailStore = defineStore("item-detail", () => {
     const items = ref<{ [key: string]: any }>({})
@@ -26,7 +27,15 @@ export const useItemDetailStore = defineStore("item-detail", () => {
             image: item.image,
             skin_stattrak: item.skin_stattrak ?? false,
             skin_souvenir: item.skin_souvenir ?? false,
-            market_hash_name: item?.market_hash_name ?? ""
+            market_hash_name: item?.market_hash_name ?? "",
+            price_history: []
+        }
+
+        if (selected.value.market_hash_name) {
+            const prices = await new PriceService().fetchItemPrice(
+                selected.value.market_hash_name
+            )
+            selected.value.price_history = prices
         }
     }
 

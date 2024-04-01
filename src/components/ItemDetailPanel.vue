@@ -43,9 +43,31 @@
                 </a>
             </div>
 
-            <div>
+            <div
+                class="relative bg-black-300/80 bg-[url('/img/graph-paper.svg')] rounded-md group"
+            >
+                <div
+                    class="absolute opacity-0 top-0 right-0 h-[16rem] left-0 group-hover:opacity-100 duration-200 transition-all rounded-md"
+                >
+                    <apexchart
+                        v-if="
+                            (itemDetailStore.selected?.price_history?.length ??
+                                0) > 0
+                        "
+                        type="line"
+                        height="256"
+                        :options="chartOptions"
+                        :series="series"
+                    />
+                    <div
+                        v-else
+                        class="flex items-center justify-center h-full text-white"
+                    >
+                        No history price data found
+                    </div>
+                </div>
                 <img
-                    class="object-scale-down w-full h-[16rem] rounded-md bg-black-300/80 bg-[url('/img/graph-paper.svg')]"
+                    class="object-scale-down w-full h-[16rem] duration-200 transition-all relative z-[1] group-hover:pointer-events-none group-hover:opacity-0"
                     :class="{
                         'p-2': !itemDetailStore.selected.id.includes('agent-')
                     }"
@@ -369,9 +391,98 @@ const { getItemSteamPrice } = usePricesStore()
 const showItemName = ref(false)
 const showRareItems = ref(false)
 
-function onNameVisibility(state: boolean) {
-    showItemName.value = !state
-}
+// TODO: improve all this charts
+const series = computed(() => [
+    {
+        type: "area",
+        name: "Volume",
+        data: itemDetailStore.selected?.price_history?.map(
+            (item) => item.volume
+        )
+    },
+    {
+        type: "line",
+        name: "Price",
+        data: itemDetailStore.selected?.price_history?.map((item) => item.value)
+    }
+])
+
+const chartOptions = computed(() => ({
+    chart: {
+        type: "line",
+        fontFamily: "inherit",
+        sparkline: {
+            enabled: true
+        },
+        animations: {
+            enabled: false
+        }
+    },
+    dataLabels: {
+        enabled: false
+    },
+    fill: {
+        opacity: [0.1, 1],
+        type: ["solid", "solid"]
+    },
+    stroke: {
+        show: true,
+        curve: "smooth",
+        lineCap: "round",
+        width: 1
+    },
+    grid: {
+        padding: {
+            top: 10
+        }
+    },
+    series: series,
+    xaxis: {
+        labels: {
+            padding: 0
+        },
+        tooltip: {
+            enabled: false
+        },
+        axisBorder: {
+            show: false
+        }
+    },
+    yaxis: [
+        {
+            title: {
+                text: "Volume"
+            },
+            labels: {
+                padding: 0,
+                formatter: function (value: number) {
+                    return value
+                }
+            }
+        },
+        {
+            title: {
+                text: "Price"
+            },
+            labels: {
+                padding: 0,
+                formatter: function (value: number) {
+                    return value + " $"
+                }
+            }
+        }
+    ],
+    colors: ["#fb7185", "#818cf8"],
+    labels: itemDetailStore.selected?.price_history?.map((item) =>
+        new Date(item.time).toDateString()
+    ),
+    legend: {
+        show: false
+    },
+    point: {
+        show: false
+    }
+}))
 
 const description = computed(() => {
     if (!itemDetailStore.selected?.description) {
@@ -406,6 +517,10 @@ const itemNameColor = computed(() => {
 
     return "text-white"
 })
+
+function onNameVisibility(state: boolean) {
+    showItemName.value = !state
+}
 
 function generateIdByWear(index: number, type: string = "") {
     const id = itemDetailStore.selected?.id.split("_")[0]

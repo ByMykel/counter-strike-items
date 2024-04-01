@@ -35,6 +35,7 @@ export interface ItemDetail {
     skin_souvenir: boolean
     image: string
     market_hash_name: string
+    price_history: { time: number; value: number; volume: number }[]
 }
 
 export type Filter = {
