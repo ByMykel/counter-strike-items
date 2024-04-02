@@ -16,7 +16,7 @@
                 v-if="getItemSteamPrice(name)"
                 class="absolute flex gap-1 text-sm font-semibold text-white top-2 left-2"
             >
-                $ {{ getItemSteamPrice(name) }}
+                € {{ getItemSteamPrice(name) }}
             </div>
 
             <div

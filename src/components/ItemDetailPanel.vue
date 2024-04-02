@@ -558,6 +558,6 @@ function getItemSteamPriceByWear(index: number, type: string = "") {
         price = getItemSteamPrice(name)
     }
 
-    return price ? `$ ${price}` : ""
+    return price ? `€ ${price}` : ""
 }
 </script>
