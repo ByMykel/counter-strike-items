@@ -24,11 +24,13 @@ export const usePricesStore = defineStore("prices", () => {
         const prices = getPrice(name)
 
         return (
-            prices?.steam.last_7d ||
-            prices?.steam.last_24h ||
-            prices?.steam.last_30d ||
-            prices?.steam.last_90d ||
-            null
+            (
+                prices?.steam.last_7d ||
+                prices?.steam.last_24h ||
+                prices?.steam.last_30d ||
+                prices?.steam.last_90d ||
+                null
+            )?.toFixed(2) ?? null
         )
     }
 

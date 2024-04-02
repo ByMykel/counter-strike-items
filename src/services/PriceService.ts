@@ -1,8 +1,10 @@
 import axios from "axios"
 import sha1 from "sha1"
 
-const PROXY = "https://corsproxy.io/?"
-const BASE_URL = PROXY + "https://prices.csgotrader.app/latest/prices_v6.json"
+// const PROXY = "https://corsproxy.io/?"
+// const BASE_URL = PROXY + "https://prices.csgotrader.app/latest/prices_v6.json"
+const BASE_URL =
+    "https://raw.githubusercontent.com/ByMykel/counter-strike-price-tracker/main/static/prices/latest.json"
 
 export default class PriceService {
     async fetchPrices() {
