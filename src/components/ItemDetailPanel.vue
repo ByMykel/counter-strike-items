@@ -467,7 +467,7 @@ const chartOptions = computed(() => ({
             labels: {
                 padding: 0,
                 formatter: function (value: number) {
-                    return value + " $"
+                    return value + " €"
                 }
             }
         }
