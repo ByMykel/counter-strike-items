@@ -77,7 +77,7 @@
                         </li>
                     </ul>
                 </nav>
-                <div class="px-1 py-5 mt-auto lg:px-5">
+                <!-- <div class="px-1 py-5 mt-auto lg:px-5">
                     <button
                         type="button"
                         class="flex w-full gap-4 p-2 rounded-md hover:bg-black-300 hover:text-white"
@@ -87,7 +87,7 @@
                             Settings
                         </span>
                     </button>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="w-full grow">
@@ -105,7 +105,7 @@ import {
     ArchiveBoxIcon,
     BanknotesIcon,
     BugAntIcon,
-    Cog6ToothIcon,
+    // Cog6ToothIcon,
     HomeIcon,
     KeyIcon,
     MusicalNoteIcon,
