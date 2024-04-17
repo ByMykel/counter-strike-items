@@ -16,6 +16,7 @@
             :filters="collectiblesListStore.filters"
             :filters-values="collectiblesListStore.filtersValues"
             @set-filters="setFilters"
+            @remove-filters="removeFilters"
             @close="showFilters = false"
         />
     </div>
@@ -49,6 +50,11 @@ function selectItem(id: string) {
 
 function setFilters({ prop, value }: { prop: string; value: string[] }) {
     collectiblesListStore.setFilters({ prop, value })
+    collectiblesListStore.fetch()
+}
+
+function removeFilters() {
+    collectiblesListStore.removeFilters()
     collectiblesListStore.fetch()
 }
 </script>

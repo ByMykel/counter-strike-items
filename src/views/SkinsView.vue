@@ -16,6 +16,7 @@
             :filters="skinsListStore.filters"
             :filters-values="skinsListStore.filtersValues"
             @set-filters="setFilters"
+            @remove-filters="removeFilters"
             @close="showFilters = false"
         />
     </div>
@@ -49,6 +50,11 @@ function selectItem(id: string) {
 
 function setFilters({ prop, value }: { prop: string; value: string[] }) {
     skinsListStore.setFilters({ prop, value })
+    skinsListStore.fetch()
+}
+
+function removeFilters() {
+    skinsListStore.removeFilters()
     skinsListStore.fetch()
 }
 </script>

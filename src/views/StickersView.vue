@@ -16,6 +16,7 @@
             :filters="stickersListStore.filters"
             :filters-values="stickersListStore.filtersValues"
             @set-filters="setFilters"
+            @remove-filters="removeFilters"
             @close="showFilters = false"
         />
     </div>
@@ -49,6 +50,11 @@ function selectItem(id: string) {
 
 function setFilters({ prop, value }: { prop: string; value: string[] }) {
     stickersListStore.setFilters({ prop, value })
+    stickersListStore.fetch()
+}
+
+function removeFilters() {
+    stickersListStore.removeFilters()
     stickersListStore.fetch()
 }
 </script>

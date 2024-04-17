@@ -91,6 +91,10 @@ export const createListStore =
                 }
             }
 
+            function removeFilters() {
+                filtersValues.value = {}
+            }
+
             function reset() {
                 items.value = []
                 allItems.value = []
@@ -130,6 +134,7 @@ export const createListStore =
                 fetch,
                 loadMore,
                 setSearch,
-                setFilters
+                setFilters,
+                removeFilters
             }
         })

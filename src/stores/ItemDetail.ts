@@ -13,6 +13,21 @@ export const useItemDetailStore = defineStore("item-detail", () => {
         if (!Object.keys(items.value).length) return
 
         const item = items.value[id]
+        let variants: {
+            id: string
+            name: string
+            image: string
+        }[] = []
+
+        if (id.includes("graffiti") && id.split("_")?.length > 1) {
+            variants = Object.entries(items.value)
+                .filter(([key]) => key.startsWith(id.split("_")[0]))
+                .map(([, value]) => ({
+                    id: value.id,
+                    name: value.name,
+                    image: value.image
+                }))
+        }
 
         selected.value = {
             id: item.id,
@@ -28,7 +43,8 @@ export const useItemDetailStore = defineStore("item-detail", () => {
             skin_stattrak: item.skin_stattrak ?? false,
             skin_souvenir: item.skin_souvenir ?? false,
             market_hash_name: item?.market_hash_name ?? "",
-            price_history: []
+            price_history: [],
+            variants
         }
 
         if (selected.value.market_hash_name) {

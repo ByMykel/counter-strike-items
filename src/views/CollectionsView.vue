@@ -16,6 +16,7 @@
             :filters="collectionsListStore.filters"
             :filters-values="collectionsListStore.filtersValues"
             @set-filters="setFilters"
+            @remove-filters="removeFilters"
             @close="showFilters = false"
         />
     </div>
@@ -49,6 +50,11 @@ function selectItem(id: string) {
 
 function setFilters({ prop, value }: { prop: string; value: string[] }) {
     collectionsListStore.setFilters({ prop, value })
+    collectionsListStore.fetch()
+}
+
+function removeFilters() {
+    collectionsListStore.removeFilters()
     collectionsListStore.fetch()
 }
 </script>

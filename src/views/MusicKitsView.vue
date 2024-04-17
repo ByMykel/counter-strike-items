@@ -16,6 +16,7 @@
             :filters="musicKitsListStore.filters"
             :filters-values="musicKitsListStore.filtersValues"
             @set-filters="setFilters"
+            @remove-filters="removeFilters"
             @close="showFilters = false"
         />
     </div>
@@ -49,6 +50,11 @@ function selectItem(id: string) {
 
 function setFilters({ prop, value }: { prop: string; value: string[] }) {
     musicKitsListStore.setFilters({ prop, value })
+    musicKitsListStore.fetch()
+}
+
+function removeFilters() {
+    musicKitsListStore.removeFilters()
     musicKitsListStore.fetch()
 }
 </script>

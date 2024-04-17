@@ -36,6 +36,11 @@ export interface ItemDetail {
     image: string
     market_hash_name: string
     price_history: { time: number; value: number; volume: number }[]
+    variants: {
+        id: string
+        name: string
+        image: string
+    }[]
 }
 
 export type Filter = {

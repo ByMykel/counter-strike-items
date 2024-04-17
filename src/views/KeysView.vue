@@ -16,6 +16,7 @@
             :filters="keysListStore.filters"
             :filters-values="keysListStore.filtersValues"
             @set-filters="setFilters"
+            @remove-filters="removeFilters"
             @close="showFilters = false"
         />
     </div>
@@ -49,6 +50,11 @@ function selectItem(id: string) {
 
 function setFilters({ prop, value }: { prop: string; value: string[] }) {
     keysListStore.setFilters({ prop, value })
+    keysListStore.fetch()
+}
+
+function removeFilters() {
+    keysListStore.removeFilters()
     keysListStore.fetch()
 }
 </script>

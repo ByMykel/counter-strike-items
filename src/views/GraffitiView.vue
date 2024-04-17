@@ -16,6 +16,7 @@
             :filters="graffitiListStore.filters"
             :filters-values="graffitiListStore.filtersValues"
             @set-filters="setFilters"
+            @remove-filters="removeFilters"
             @close="showFilters = false"
         />
     </div>
@@ -49,6 +50,11 @@ function selectItem(id: string) {
 
 function setFilters({ prop, value }: { prop: string; value: string[] }) {
     graffitiListStore.setFilters({ prop, value })
+    graffitiListStore.fetch()
+}
+
+function removeFilters() {
+    graffitiListStore.removeFilters()
     graffitiListStore.fetch()
 }
 </script>

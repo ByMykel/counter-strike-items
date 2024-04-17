@@ -109,6 +109,28 @@
                     Steam Community Market
                 </a>
 
+                <div
+                    v-if="
+                        getPrice(itemDetailStore.selected.market_hash_name)
+                            ?.steam &&
+                            !itemDetailStore.selected.id.includes('skin')
+                    "
+                    class="text-center divide-y rounded-md bg-black-300 text-black-100 divide-black-200/10"
+                >
+                    <div
+                        v-for="price of itemPrices"
+                        :key="price.name"
+                        class="grid grid-cols-2 p-3"
+                    >
+                        <div class="font-semibold text-left text-black-100">
+                            {{ price.name }}
+                        </div>
+                        <div class="text-right text-white">
+                            {{ price.price }}
+                        </div>
+                    </div>
+                </div>
+
                 <template v-if="itemDetailStore.selected.wears.length">
                     <div
                         class="overflow-hidden divide-y-4 rounded-md divide-black-200/10"
@@ -373,6 +395,34 @@
                         </div>
                     </div>
                 </div>
+
+                <div
+                    v-if="itemDetailStore.selected.variants.length"
+                    class="overflow-hidden divide-y rounded-md"
+                >
+                    <div class="divide-y bg-black-300 divide-black-200/10">
+                        <div
+                            v-for="item of itemDetailStore.selected.variants"
+                            :key="item.id"
+                            class="flex items-center gap-4 p-1 cursor-pointer"
+                            :class="{
+                                'bg-black-200/30':
+                                    item.id === itemDetailStore.selected.id
+                            }"
+                            @click="itemDetailStore.getItemDetails(item.id)"
+                        >
+                            <img
+                                class="object-contain w-16"
+                                :src="item.image"
+                                :alt="item.name"
+                            >
+
+                            <p class="text-sm font-bold text-black-100">
+                                {{ item.name }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -386,7 +436,7 @@ import { vElementVisibility } from "@vueuse/components"
 import { usePricesStore } from "../stores/prices"
 
 const itemDetailStore = useItemDetailStore()
-const { getItemSteamPrice } = usePricesStore()
+const { getPrice, getItemSteamPrice } = usePricesStore()
 
 const showItemName = ref(false)
 const showRareItems = ref(false)
@@ -516,6 +566,35 @@ const itemNameColor = computed(() => {
     }
 
     return "text-white"
+})
+
+const itemPrices = computed(() => {
+    if (!itemDetailStore.selected) return []
+
+    const steamPrice = getPrice(
+        itemDetailStore.selected.market_hash_name
+    )?.steam
+
+    if (!steamPrice) return []
+
+    return [
+        steamPrice.last_24h && {
+            name: "Last 24h",
+            price: `€ ${steamPrice.last_24h.toFixed(2)}`
+        },
+        steamPrice.last_7d && {
+            name: "Last 7 days",
+            price: `€ ${steamPrice.last_7d.toFixed(2)}`
+        },
+        steamPrice.last_30d && {
+            name: "Last 30 days",
+            price: `€ ${steamPrice.last_30d.toFixed(2)}`
+        },
+        steamPrice.last_90d && {
+            name: "Last 90 days",
+            price: `€ ${steamPrice.last_90d.toFixed(2)}`
+        }
+    ].filter(Boolean)
 })
 
 function onNameVisibility(state: boolean) {

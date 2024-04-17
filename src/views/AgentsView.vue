@@ -16,6 +16,7 @@
             :filters="agentsListStore.filters"
             :filters-values="agentsListStore.filtersValues"
             @set-filters="setFilters"
+            @remove-filters="removeFilters"
             @close="showFilters = false"
         />
     </div>
@@ -49,6 +50,11 @@ function selectItem(id: string) {
 
 function setFilters({ prop, value }: { prop: string; value: string[] }) {
     agentsListStore.setFilters({ prop, value })
+    agentsListStore.fetch()
+}
+
+function removeFilters() {
+    agentsListStore.removeFilters()
     agentsListStore.fetch()
 }
 </script>

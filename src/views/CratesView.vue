@@ -16,6 +16,7 @@
             :filters="cratesListStore.filters"
             :filters-values="cratesListStore.filtersValues"
             @set-filters="setFilters"
+            @remove-filters="removeFilters"
             @close="showFilters = false"
         />
     </div>
@@ -49,6 +50,11 @@ function selectItem(id: string) {
 
 function setFilters({ prop, value }: { prop: string; value: string[] }) {
     cratesListStore.setFilters({ prop, value })
+    cratesListStore.fetch()
+}
+
+function removeFilters() {
+    cratesListStore.removeFilters()
     cratesListStore.fetch()
 }
 </script>

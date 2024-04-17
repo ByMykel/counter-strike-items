@@ -16,6 +16,7 @@
             :filters="patchesListStore.filters"
             :filters-values="patchesListStore.filtersValues"
             @set-filters="setFilters"
+            @remove-filters="removeFilters"
             @close="showFilters = false"
         />
     </div>
@@ -49,6 +50,11 @@ function selectItem(id: string) {
 
 function setFilters({ prop, value }: { prop: string; value: string[] }) {
     patchesListStore.setFilters({ prop, value })
+    patchesListStore.fetch()
+}
+
+function removeFilters() {
+    patchesListStore.removeFilters()
     patchesListStore.fetch()
 }
 </script>

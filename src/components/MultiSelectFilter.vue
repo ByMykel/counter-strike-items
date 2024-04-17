@@ -1,8 +1,40 @@
 <template>
     <div>
+        <input
+            v-model="search"
+            class="w-full h-full py-3 text-white rounded-md outline-none bg-black-300 border-2 border-black-300 focus:outline-none mb-4 sm:text-sm focus:ring-2 focus:ring-[#ff5e65] focus:border-transparent"
+            type="text"
+            placeholder="Search to filter..."
+        >
+
+        <template v-if="filteredSelectedOptions.length">
+            <button
+                type="button"
+                class="w-full py-1 mb-2 text-red-800 rounded-md bg-red-900/20 hover:bg-red-900/30"
+                @click="removeSelected()"
+            >
+                Remove all selected
+            </button>
+
+            <label
+                v-for="option in filteredSelectedOptions"
+                :key="option.id"
+                class="flex items-center gap-2 p-2 text-gray-300 rounded-md cursor-pointer hover:bg-black-300"
+            >
+                <input
+                    type="checkbox"
+                    class="w-4 h-4 text-[#ff5e65] border-gray-300 rounded focus:ring-[#ff5e65]"
+                    :value="option.id"
+                    :checked="isSelected(option.id)"
+                    @change="toggleOption(option.id)"
+                >
+                {{ option.name }}
+            </label>
+            <div class="my-2 border-t-2 border-dashed border-black-300" />
+        </template>
         <label
-            v-for="(option, index) in options"
-            :key="index"
+            v-for="option in filteredOptions"
+            :key="option.id"
             class="flex items-center gap-2 p-2 text-gray-300 rounded-md cursor-pointer hover:bg-black-300"
         >
             <input
@@ -18,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, computed } from "vue"
 
 const props = defineProps<{
     options: { id: string; name: string }[]
@@ -27,19 +59,48 @@ const props = defineProps<{
 
 const emit = defineEmits(["update:values"])
 
-const selectedOptions = ref<string[]>(props.values)
+const search = ref("")
+
+const filteredOptions = computed(() => {
+    return props.options.filter((option) => {
+        if (props.values.includes(option.id)) {
+            return false
+        }
+
+        return option.name
+            .toLocaleLowerCase()
+            .includes(search.value.toLocaleLowerCase())
+    })
+})
+
+const filteredSelectedOptions = computed(() => {
+    return props.options.filter((option) => {
+        if (!props.values.includes(option.id)) {
+            return false
+        }
+
+        return option.name
+            .toLocaleLowerCase()
+            .includes(search.value.toLocaleLowerCase())
+    })
+})
 
 const toggleOption = (id: string) => {
-    const index = selectedOptions.value.indexOf(id)
+    const selectedOptions = props.values
+    const index = selectedOptions.indexOf(id)
     if (index === -1) {
-        selectedOptions.value.push(id)
+        selectedOptions.push(id)
     } else {
-        selectedOptions.value.splice(index, 1)
+        selectedOptions.splice(index, 1)
     }
-    emit("update:values", selectedOptions.value)
+    emit("update:values", selectedOptions)
 }
 
 const isSelected = (id: string) => {
-    return selectedOptions.value.includes(id)
+    return props.values.includes(id)
+}
+
+function removeSelected() {
+    emit("update:values", [])
 }
 </script>

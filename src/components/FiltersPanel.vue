@@ -17,6 +17,14 @@
         </div>
 
         <div class="h-[calc(100vh-69px)] py-4 pt-0 overflow-x-hidden">
+            <button
+                v-if="Object.keys(filtersValues).length > 0"
+                type="button"
+                class="w-full py-2 mb-2 font-semibold text-red-800 border-y-2 border-red-800/20 bg-red-900/20 hover:bg-red-900/30"
+                @click="$emit('remove-filters')"
+            >
+                Remove all selected
+            </button>
             <div>
                 <div
                     v-for="filter in filters"
@@ -76,7 +84,7 @@ defineProps<{
     filtersValues: { [prop: string]: string[] }
 }>()
 
-defineEmits(["close", "set-filters"])
+defineEmits(["close", "set-filters", "remove-filters"])
 
 const show = ref<{ [prop: string]: boolean }>({})
 </script>
