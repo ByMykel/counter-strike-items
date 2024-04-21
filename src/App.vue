@@ -77,23 +77,18 @@
                         </li>
                     </ul>
                 </nav>
-                <!-- <div class="px-1 py-5 mt-auto lg:px-5">
-                    <button
-                        type="button"
-                        class="flex w-full gap-4 p-2 rounded-md hover:bg-black-300 hover:text-white"
-                    >
-                        <Cog6ToothIcon class="text-white size-6" />
-                        <span class="hidden text-white lg:flex">
-                            Settings
-                        </span>
-                    </button>
-                </div> -->
             </div>
         </div>
         <div class="w-full grow">
             <div class="flex flex-row">
                 <RouterView />
-                <ItemDetailPanel />
+                <ItemDetailPanel
+                    v-if="itemDetailStore.selected"
+                    :selected="itemDetailStore.selected"
+                    :items="itemDetailStore.items"
+                    @get-item-details="itemDetailStore.getItemDetails($event)"
+                    @delete-item="itemDetailStore.deleteItem()"
+                />
             </div>
         </div>
     </div>
@@ -105,7 +100,6 @@ import {
     ArchiveBoxIcon,
     BanknotesIcon,
     BugAntIcon,
-    // Cog6ToothIcon,
     HomeIcon,
     KeyIcon,
     MusicalNoteIcon,
@@ -116,9 +110,11 @@ import {
     UserGroupIcon
 } from "@heroicons/vue/24/outline"
 import { usePricesStore } from "./stores/prices"
+import { useItemDetailStore } from "./stores/ItemDetail"
 import ItemDetailPanel from "./components/ItemDetailPanel.vue"
 
 const { fetchPrices } = usePricesStore()
+const itemDetailStore = useItemDetailStore()
 
 const routes = [
     { name: "All", path: "/", icon: HomeIcon },
