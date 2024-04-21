@@ -47,9 +47,11 @@
                     :price-history="selected.price_history"
                 />
                 <img
-                    class="object-scale-down w-full h-[16rem] duration-200 transition-all relative z-[1] group-hover:pointer-events-none group-hover:opacity-0"
+                    class="object-scale-down w-full h-[16rem] duration-200 transition-all relative z-[1]"
                     :class="{
-                        'p-2': !selected.id.includes('agent-')
+                        'p-2': !selected.id.includes('agent-'),
+                        'group-hover:pointer-events-none group-hover:opacity-0':
+                            selected.market_hash_name
                     }"
                     :src="selected.image"
                     :alt="selected.name"
