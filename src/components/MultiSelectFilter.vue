@@ -30,7 +30,10 @@
                 >
                 {{ option.name }}
             </label>
-            <div class="my-2 border-t-2 border-dashed border-black-300" />
+            <div
+                v-if="filteredSelectedOptions.length && filteredOptions.length"
+                class="my-2 border-t-2 border-dashed border-black-300"
+            />
         </template>
         <label
             v-for="option in filteredOptions"

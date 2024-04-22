@@ -6,14 +6,11 @@
             class="flex items-center w-full h-[69px] border-b-2 border-black-300 px-4 sticky top-0 text-black-100"
         >
             <button
-                class="disabled:cursor-wait"
+                class="ml-auto disabled:cursor-wait"
                 @click="$emit('close')"
             >
                 <XMarkIcon class="w-6 h-6 text-white" />
             </button>
-            <p class="ml-4 truncate text-black-100">
-                Filters
-            </p>
         </div>
 
         <div class="h-[calc(100vh-69px)] py-4 pt-0 overflow-x-hidden">
