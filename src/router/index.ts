@@ -57,6 +57,11 @@ const router = createRouter({
             path: "/music-kits",
             name: "music-kits",
             component: () => import("../views/MusicKitsView.vue")
+        },
+        {
+            path: "/keychains",
+            name: "keychains",
+            component: () => import("../views/KeychainsView.vue")
         }
     ]
 })

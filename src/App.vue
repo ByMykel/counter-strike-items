@@ -107,7 +107,8 @@ import {
     RectangleStackIcon,
     StarIcon,
     TrophyIcon,
-    UserGroupIcon
+    UserGroupIcon,
+    TagIcon
 } from "@heroicons/vue/24/outline"
 import { usePricesStore } from "./stores/prices"
 import { useItemDetailStore } from "./stores/ItemDetail"
@@ -127,7 +128,8 @@ const routes = [
     { name: "Keys", path: "/keys", icon: KeyIcon },
     { name: "Patches", path: "/patches", icon: BugAntIcon },
     { name: "Graffiti", path: "/graffiti", icon: PaintBrushIcon },
-    { name: "Music kits", path: "/music-kits", icon: MusicalNoteIcon }
+    { name: "Music kits", path: "/music-kits", icon: MusicalNoteIcon },
+    { name: "Keychains", path: "/keychains", icon: TagIcon }
 ]
 
 fetchPrices()

@@ -151,8 +151,8 @@ export function generateOptions(
                 .filter((item: any) => item[config.property])
                 .map((item: any) => {
                     const value = item[config.property]
-                    if (String(value.id) === 'null') {
-                        return { id: null, name: 'None' }
+                    if (String(value.id) === "null") {
+                        return { id: null, name: "None" }
                     }
                     return { id: String(value.id), name: String(value.name) }
                 })
