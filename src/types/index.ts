@@ -41,6 +41,7 @@ export interface ItemDetail {
         name: string
         image: string
     }[]
+    style?: { id: string; name: string; url: string }
 }
 
 export type Filter = {

@@ -44,7 +44,8 @@ export const useItemDetailStore = defineStore("item-detail", () => {
             skin_souvenir: item.skin_souvenir ?? false,
             market_hash_name: item?.market_hash_name ?? "",
             price_history: [],
-            variants
+            variants,
+            style: item?.style ?? null
         }
 
         if (selected.value.market_hash_name) {

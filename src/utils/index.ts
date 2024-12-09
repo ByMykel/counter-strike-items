@@ -84,7 +84,7 @@ export function filterItems(
                 // Direct match for string, boolean, or object with an 'id'
                 return filterValues.includes(
                     typeof itemProp === "object"
-                        ? itemProp.id
+                        ? itemProp.id?.toString()
                         : itemProp.toString()
                 )
             })

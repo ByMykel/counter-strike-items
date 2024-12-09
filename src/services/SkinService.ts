@@ -45,6 +45,15 @@ export default class SkinService {
                 })
             },
             {
+                prop: "style",
+                name: "Finish Style",
+                type: "multi-select",
+                options: generateOptions(items, {
+                    type: "fromNestedSingleProperty",
+                    property: "style"
+                })
+            },
+            {
                 prop: "team",
                 name: "Team",
                 type: "multi-select",

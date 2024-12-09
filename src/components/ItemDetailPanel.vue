@@ -58,7 +58,7 @@
                 >
             </div>
 
-            <div class="py-3">
+            <div class="py-3 space-y-2">
                 <p
                     v-element-visibility="onNameVisibility"
                     class="col-span-8 text-white"
@@ -68,10 +68,19 @@
 
                 <!-- eslint-disable vue/no-v-html -->
                 <p
-                    class="py-2 text-sm text-black-100"
+                    class="text-sm text-black-100"
                     v-html="selected.description"
                 />
                 <!--eslint-enable-->
+
+                <a
+                    v-if="selected.style"
+                    :href="selected.style.url"
+                    class="flex ites-center text-black-100 w-full underline"
+                    target="_blank"
+                >
+                    Finish Style: {{ selected.style.name }}
+                </a>
             </div>
 
             <div class="flex flex-col gap-5">
