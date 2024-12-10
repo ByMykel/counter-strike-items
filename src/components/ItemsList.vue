@@ -23,6 +23,7 @@
                 :stattrak="item?.stattrak ?? false"
                 :rare="item?.rare ?? false"
                 :genuine="item.name.includes('Genuine')"
+                :market-hash-name="item.market_hash_name"
                 @show="$emit('select', item.id)"
             />
             <ItemsSkeleton v-if="loading" />

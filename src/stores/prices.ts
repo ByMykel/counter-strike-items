@@ -20,8 +20,8 @@ export const usePricesStore = defineStore("prices", () => {
         return prices.value[marketHashName]
     }
 
-    function getItemSteamPrice(name: string) {
-        const prices = getPrice(name)
+    function getItemSteamPrice(marketHashName: string) {
+        const prices = getPrice(marketHashName)
 
         return (
             (

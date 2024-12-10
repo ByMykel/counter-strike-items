@@ -13,10 +13,10 @@
             >
 
             <div
-                v-if="getItemSteamPrice(name)"
+                v-if="marketHashName && getItemSteamPrice(marketHashName)"
                 class="absolute flex gap-1 text-sm font-semibold text-white top-2 left-2"
             >
-                € {{ getItemSteamPrice(name) }}
+                € {{ getItemSteamPrice(marketHashName) }}
             </div>
 
             <div
@@ -68,6 +68,7 @@ defineProps<{
     stattrak: boolean
     rare: boolean
     genuine: boolean
+    marketHashName?: string
 }>()
 
 defineEmits(["show"])
