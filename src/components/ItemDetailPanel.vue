@@ -319,25 +319,26 @@ const showItemName = ref(false)
 
 const itemPrices = computed(() => {
     const steamPrice = getPrice(props.selected.market_hash_name)?.steam
+    const currency = getCurrentCurrency()
 
     if (!steamPrice) return []
 
     return [
         steamPrice.last_24h && {
             name: t("common_last_24h"),
-            price: `€ ${steamPrice.last_24h.toFixed(2)}`
+            price: getItemSteamPriceInCurrency(steamPrice.last_24h, currency)
         },
         steamPrice.last_7d && {
             name: t("common_last_7d"),
-            price: `€ ${steamPrice.last_7d.toFixed(2)}`
+            price: getItemSteamPriceInCurrency(steamPrice.last_7d, currency)
         },
         steamPrice.last_30d && {
             name: t("common_last_30d"),
-            price: `€ ${steamPrice.last_30d.toFixed(2)}`
+            price: getItemSteamPriceInCurrency(steamPrice.last_30d, currency)
         },
         steamPrice.last_90d && {
             name: t("common_last_90d"),
-            price: `€ ${steamPrice.last_90d.toFixed(2)}`
+            price: getItemSteamPriceInCurrency(steamPrice.last_90d, currency)
         }
     ].filter(Boolean)
 })
@@ -364,6 +365,7 @@ function generateIdByWear(index: number, type: string = "") {
 }
 
 function getItemSteamPriceByWear(index: number, type: string = "") {
+    debugger
     const id = props.selected.id.split("_")[0]
     let price = null
 
