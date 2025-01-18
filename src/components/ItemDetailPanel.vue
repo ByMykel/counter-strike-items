@@ -326,19 +326,31 @@ const itemPrices = computed(() => {
     return [
         steamPrice.last_24h && {
             name: t("common_last_24h"),
-            price: getItemSteamPriceInCurrency(steamPrice.last_24h, currency)
+            price: getItemSteamPriceInCurrency(
+                parseFloat(steamPrice.last_24h),
+                currency
+            )
         },
         steamPrice.last_7d && {
             name: t("common_last_7d"),
-            price: getItemSteamPriceInCurrency(steamPrice.last_7d, currency)
+            price: getItemSteamPriceInCurrency(
+                parseFloat(steamPrice.last_7d),
+                currency
+            )
         },
         steamPrice.last_30d && {
             name: t("common_last_30d"),
-            price: getItemSteamPriceInCurrency(steamPrice.last_30d, currency)
+            price: getItemSteamPriceInCurrency(
+                parseFloat(steamPrice.last_30d),
+                currency
+            )
         },
         steamPrice.last_90d && {
             name: t("common_last_90d"),
-            price: getItemSteamPriceInCurrency(steamPrice.last_90d, currency)
+            price: getItemSteamPriceInCurrency(
+                parseFloat(steamPrice.last_90d),
+                currency
+            )
         }
     ].filter(Boolean)
 })
@@ -365,7 +377,6 @@ function generateIdByWear(index: number, type: string = "") {
 }
 
 function getItemSteamPriceByWear(index: number, type: string = "") {
-    debugger
     const id = props.selected.id.split("_")[0]
     let price = null
 
@@ -385,7 +396,10 @@ function getItemSteamPriceByWear(index: number, type: string = "") {
     }
 
     if (price) {
-        return getItemSteamPriceInCurrency(price, getCurrentCurrency())
+        return getItemSteamPriceInCurrency(
+            parseFloat(price),
+            getCurrentCurrency()
+        )
     } else {
         return ""
     }
