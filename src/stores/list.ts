@@ -119,6 +119,7 @@ export const createListStore =
                 getActivePinia()?._s?.forEach((store: any) => {
                     if (store.$id === `list/${id}`) {
                         store.$dispose()
+                        setSearch("")
                     }
                 })
             })

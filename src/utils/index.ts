@@ -1,3 +1,4 @@
+import Fuse from "fuse.js"
 import uniqBy from "lodash.uniqby"
 
 function hashString(str: string) {
@@ -46,29 +47,31 @@ export function shuffleArrayWithSeed(array: any[], str = "") {
  * @returns {Array} The filtered array of items.
  */
 export function filterItems(
-    items: any,
+    items: any[],
     search = "",
     filters: { [prop: string]: string[] } = {}
 ) {
     // Specify which item properties the search should apply to
     const searchProperties = ["name" /* other properties */]
 
-    if (search || Object.keys(filters).length > 0) {
-        return items.filter((item: any) => {
-            // Enhanced search: checks if any of the specified properties contain the search query
-            const matchSearch = searchProperties.some((property) => {
-                const propValue = item[property]
-                return (
-                    propValue &&
-                    propValue
-                        .toString()
-                        .toLowerCase()
-                        .includes(search.toLowerCase())
-                )
-            })
+    let filteredItems = items
+    if (search) {
+        const fuse = new Fuse(items, {
+            keys: searchProperties,
+            threshold: 0.4,
+            includeScore: false,
+            shouldSort: true,
+            findAllMatches: true,
+            useExtendedSearch: true
+        })
 
-            // Filter matching: checks if item properties match all provided filters
-            const matchFilters = Object.keys(filters).every((prop) => {
+        const searchResults = fuse.search(search)
+        filteredItems = searchResults.map((result) => result.item)
+    }
+
+    if (Object.keys(filters).length > 0) {
+        filteredItems = filteredItems.filter((item) => {
+            return Object.keys(filters).every((prop) => {
                 const itemProp = item[prop]
                 const filterValues = filters[prop]
 
@@ -88,12 +91,10 @@ export function filterItems(
                         : itemProp.toString()
                 )
             })
-
-            return matchSearch && matchFilters
         })
     }
 
-    return items
+    return filteredItems
 }
 
 /**

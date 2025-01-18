@@ -1,5 +1,5 @@
 import axios from "axios"
-import { shuffleArrayWithSeed } from "../utils/index"
+import { filterItems, shuffleArrayWithSeed } from "../utils/index"
 
 export default class HomeService {
     async query({ search }: { search: string }) {
@@ -10,12 +10,8 @@ export default class HomeService {
             .then((res) => Object.values(res.data))
 
         if (search) {
-            items = items.filter((item) =>
-                item.name.toLowerCase().includes(search.toLowerCase())
-            )
-
             return {
-                items
+                items: filterItems(items, search)
             }
         }
 
