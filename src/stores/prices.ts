@@ -46,7 +46,7 @@ export const usePricesStore = defineStore("prices", () => {
         }
 
         if (currency === "EUR") {
-            return `${currencySigns["EUR"]} ${priceInEuros}`
+            return `${currencySigns["EUR"]} ${parseFloat(priceInEuros.toFixed(2))}`
         }
 
         const price = convertCurrency(priceInEuros, "EUR", currency)
