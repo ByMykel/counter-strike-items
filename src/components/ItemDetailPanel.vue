@@ -396,10 +396,7 @@ function getItemSteamPriceByWear(index: number, type: string = "") {
     }
 
     if (price) {
-        return getItemSteamPriceInCurrency(
-            parseFloat(price),
-            getCurrentCurrency()
-        )
+        return getItemSteamPriceInCurrency(price, getCurrentCurrency())
     } else {
         return ""
     }
