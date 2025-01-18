@@ -15,7 +15,7 @@
     "@heroicons/vue": "^2.0.18",
     "@vueuse/components": "^10.3.0",
     "@vueuse/core": "^10.3.0",
-    "apexcharts": "^3.48.0",
+    "apexcharts": "^4.3.0",
     "axios": "^1.7.9",
     "lodash.sortby": "^4.7.0",
     "lodash.uniqby": "^4.7.0",
