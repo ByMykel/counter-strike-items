@@ -113,23 +113,29 @@ import {
 import { usePricesStore } from "./stores/prices"
 import { useItemDetailStore } from "./stores/ItemDetail"
 import ItemDetailPanel from "./components/ItemDetailPanel.vue"
+import { useI18n } from "petite-vue-i18n"
 
 const { fetchPrices } = usePricesStore()
 const itemDetailStore = useItemDetailStore()
+const { t } = useI18n()
 
 const routes = [
-    { name: "All", path: "/", icon: HomeIcon },
-    { name: "Skins", path: "/skins", icon: BanknotesIcon },
-    { name: "Stickers", path: "/stickers", icon: StarIcon },
-    { name: "Collections", path: "/collections", icon: RectangleStackIcon },
-    { name: "Crates", path: "/crates", icon: ArchiveBoxIcon },
-    { name: "Collectibles", path: "/collectibles", icon: TrophyIcon },
-    { name: "Agents", path: "/agents", icon: UserGroupIcon },
-    { name: "Keys", path: "/keys", icon: KeyIcon },
-    { name: "Patches", path: "/patches", icon: BugAntIcon },
-    { name: "Graffiti", path: "/graffiti", icon: PaintBrushIcon },
-    { name: "Music kits", path: "/music-kits", icon: MusicalNoteIcon },
-    { name: "Keychains", path: "/keychains", icon: TagIcon }
+    { name: t("links_all"), path: "/", icon: HomeIcon },
+    { name: t("links_skins"), path: "/skins", icon: BanknotesIcon },
+    { name: t("links_stickers"), path: "/stickers", icon: StarIcon },
+    {
+        name: t("links_collections"),
+        path: "/collections",
+        icon: RectangleStackIcon
+    },
+    { name: t("links_crates"), path: "/crates", icon: ArchiveBoxIcon },
+    { name: t("links_collectibles"), path: "/collectibles", icon: TrophyIcon },
+    { name: t("links_agents"), path: "/agents", icon: UserGroupIcon },
+    { name: t("links_keys"), path: "/keys", icon: KeyIcon },
+    { name: t("links_patches"), path: "/patches", icon: BugAntIcon },
+    { name: t("links_graffiti"), path: "/graffiti", icon: PaintBrushIcon },
+    { name: t("links_music_kits"), path: "/music-kits", icon: MusicalNoteIcon },
+    { name: t("links_keychains"), path: "/keychains", icon: TagIcon }
 ]
 
 fetchPrices()

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { filterItems } from "../utils"
+import { filterItems, getCurrentLocale, tLocal } from "../utils"
 
 export default class StickersService {
     async query({
@@ -9,20 +9,21 @@ export default class StickersService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
+        const locale = getCurrentLocale()
         let items = await axios
             .get(
-                "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/music_kits.json"
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/music_kits.json`
             )
             .then((res) => res.data)
 
         const filterList = [
             {
                 prop: "exclusive",
-                name: "Exclusive",
+                name: tLocal("filter_exclusive"),
                 type: "multi-select",
                 options: [
-                    { id: "true", name: "Yes" },
-                    { id: "false", name: "No" }
+                    { id: "true", name: tLocal("common_yes") },
+                    { id: "false", name: tLocal("common_no") }
                 ]
             }
         ]

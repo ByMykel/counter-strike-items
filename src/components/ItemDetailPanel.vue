@@ -1,6 +1,6 @@
 <template>
     <div
-        class="h-dvh md:border-l-2 border-black-300 md:w-80 xl:w-[30rem] flex flex-col absolute inset-0 md:relative bg-black-400"
+        class="h-dvh md:border-l-2 border-black-300 md:w-80 xl:w-[30rem] flex flex-col absolute inset-0 md:relative bg-black-400 z-50"
     >
         <div
             class="flex items-center w-full h-[69px] border-b-2 border-black-300 px-4 sticky top-0 text-black-100"
@@ -96,7 +96,7 @@
                         <LinkIcon class="w-6 h-6 text-gray-500" />
                     </div>
 
-                    Steam Community Market
+                    {{ $t("common_scm") }}
                 </a>
 
                 <div
@@ -242,8 +242,12 @@
                 <ItemDetailList
                     :items="selected.crates"
                     :show-toggle="selected.crates?.length > 4"
-                    :toggle-text-closed="`Show ${selected.crates.length} crates`"
-                    :toggle-text-displayed="`Hide crates`"
+                    :toggle-text-closed="
+                        $t('common_show_crates', {
+                            number: selected.crates.length
+                        })
+                    "
+                    :toggle-text-displayed="$t('common_hide_crates')"
                     @get-item-details="$emit('get-item-details', $event)"
                 />
 
@@ -260,8 +264,12 @@
                 <ItemDetailList
                     :items="selected.containsRare"
                     :show-toggle="true"
-                    :toggle-text-closed="`Show ${selected.containsRare.length} rate special items`"
-                    :toggle-text-displayed="`Hide rate special items`"
+                    :toggle-text-closed="
+                        $t('common_show_rare', {
+                            number: selected.containsRare.length
+                        })
+                    "
+                    :toggle-text-displayed="$t('common_hide_rare')"
                     @get-item-details="
                         $emit(
                             'get-item-details',
@@ -287,6 +295,8 @@ import { vElementVisibility } from "@vueuse/components"
 import { usePricesStore } from "../stores/prices"
 import ItemsPriceChart from "../components/ItemsPriceChart.vue"
 import ItemDetailList from "../components/ItemDetailList.vue"
+import { useI18n } from "petite-vue-i18n"
+import { getCurrentCurrency } from "../utils"
 
 const props = defineProps({
     selected: {
@@ -301,7 +311,9 @@ const props = defineProps({
 
 defineEmits(["delete-item", "get-item-details"])
 
-const { getPrice, getItemSteamPrice } = usePricesStore()
+const { getPrice, getItemSteamPrice, getItemSteamPriceInCurrency } =
+    usePricesStore()
+const { t } = useI18n()
 
 const showItemName = ref(false)
 
@@ -312,19 +324,19 @@ const itemPrices = computed(() => {
 
     return [
         steamPrice.last_24h && {
-            name: "Last 24h",
+            name: t("common_last_24h"),
             price: `€ ${steamPrice.last_24h.toFixed(2)}`
         },
         steamPrice.last_7d && {
-            name: "Last 7 days",
+            name: t("common_last_7d"),
             price: `€ ${steamPrice.last_7d.toFixed(2)}`
         },
         steamPrice.last_30d && {
-            name: "Last 30 days",
+            name: t("common_last_30d"),
             price: `€ ${steamPrice.last_30d.toFixed(2)}`
         },
         steamPrice.last_90d && {
-            name: "Last 90 days",
+            name: t("common_last_90d"),
             price: `€ ${steamPrice.last_90d.toFixed(2)}`
         }
     ].filter(Boolean)
@@ -353,23 +365,27 @@ function generateIdByWear(index: number, type: string = "") {
 
 function getItemSteamPriceByWear(index: number, type: string = "") {
     const id = props.selected.id.split("_")[0]
-    let price = ""
+    let price = null
 
     if (!type) {
-        const name = props.items[`${id}_${index}`].name
+        const name = props.items[`${id}_${index}`].market_hash_name
         price = getItemSteamPrice(name)
     }
 
     if (type === "so") {
-        const name = props.items[`${id}_${index}_so`].name
+        const name = props.items[`${id}_${index}_so`].market_hash_name
         price = getItemSteamPrice(name)
     }
 
     if (type === "st") {
-        const name = props.items[`${id}_${index}_st`].name
+        const name = props.items[`${id}_${index}_st`].market_hash_name
         price = getItemSteamPrice(name)
     }
 
-    return price ? `€ ${price}` : ""
+    if (price) {
+        return getItemSteamPriceInCurrency(price, getCurrentCurrency())
+    } else {
+        return ""
+    }
 }
 </script>

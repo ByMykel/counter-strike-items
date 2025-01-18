@@ -12,6 +12,7 @@
     "format": "npm run prettier && npm run lint"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.0.18",
     "@vueuse/components": "^10.3.0",
     "@vueuse/core": "^10.3.0",
@@ -20,6 +21,7 @@
     "fuse.js": "^7.0.0",
     "lodash.sortby": "^4.7.0",
     "lodash.uniqby": "^4.7.0",
+    "petite-vue-i18n": "^11.0.1",
     "pinia": "^2.1.6",
     "sha1": "^1.1.1",
     "vue": "^3.3.4",

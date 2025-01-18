@@ -4,7 +4,7 @@
             v-model="search"
             class="w-full h-full py-3 text-white rounded-md outline-none bg-black-300 border-2 border-black-300 focus:outline-none mb-4 sm:text-sm focus:ring-2 focus:ring-[#ff5e65] focus:border-transparent"
             type="text"
-            placeholder="Search to filter..."
+            :placeholder="$t('filter_search')"
         >
 
         <template v-if="filteredSelectedOptions.length">

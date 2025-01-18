@@ -1,5 +1,14 @@
 import Fuse from "fuse.js"
 import uniqBy from "lodash.uniqby"
+import {
+    currencies,
+    CURRENCY_STORAGE_KEY,
+    LOCALE_STORAGE_KEY,
+    localeToCurrencyMap,
+    supportedLocales
+} from "../constants"
+import { Currency, SupportedLocale } from "../types"
+import { messages } from "../locales"
 
 function hashString(str: string) {
     let hash = 0
@@ -167,4 +176,72 @@ export function generateOptions(
     // TODO: avoid using ts-ignore
     // @ts-ignore
     return uniqBy(options.filter(Boolean), "id")
+}
+
+export function getCurrentLocale(): SupportedLocale {
+    const storedLocale = localStorage.getItem(
+        LOCALE_STORAGE_KEY
+    ) as SupportedLocale | null
+    if (storedLocale && supportedLocales.includes(storedLocale)) {
+        return storedLocale
+    }
+    const detectedLocale = detectLocale()
+    localStorage.setItem(LOCALE_STORAGE_KEY, detectedLocale)
+    return detectedLocale
+}
+
+export function detectLocale(): SupportedLocale {
+    const browserLanguages = navigator.languages || [navigator.language]
+    for (const lang of browserLanguages) {
+        if (supportedLocales.includes(lang as SupportedLocale)) {
+            return lang as SupportedLocale
+        }
+        if (lang.startsWith("es-")) {
+            return "es-MX"
+        }
+    }
+    return "en" // Default fallback
+}
+
+export function changeLocale(locale: SupportedLocale) {
+    localStorage.setItem(LOCALE_STORAGE_KEY, locale)
+    location.reload()
+}
+
+export function getCurrentCurrency(): Currency {
+    const storedCurrency = localStorage.getItem(
+        CURRENCY_STORAGE_KEY
+    ) as Currency | null
+    if (storedCurrency && currencies.find(({ id }) => id === storedCurrency)) {
+        return storedCurrency
+    }
+    return localeToCurrencyMap[getCurrentLocale()]
+}
+
+export function changeCurrency(currency: Currency) {
+    localStorage.setItem(CURRENCY_STORAGE_KEY, currency)
+    location.reload()
+}
+
+export function tLocal(key: string) {
+    const locale = getCurrentLocale()
+
+    if (messages?.[locale]?.[key]) {
+        return messages?.[locale]?.[key]
+    } else {
+        console.warn(
+            `[tLocal] Not found '${key}' key in '${locale}' locale messages.`
+        )
+    }
+
+    if (messages?.en?.[key]) {
+        console.warn(
+            `[tLocal] Fall back to translate '${key}' key with 'en' locale.`
+        )
+        return messages?.en?.[key]
+    } else {
+        console.warn(`[tLocal] Not found '${key}' key in 'en' locale messages.`)
+    }
+
+    return key
 }

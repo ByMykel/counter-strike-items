@@ -1,5 +1,10 @@
 import axios from "axios"
-import { filterItems, generateOptions } from "../utils"
+import {
+    filterItems,
+    generateOptions,
+    getCurrentLocale,
+    tLocal
+} from "../utils"
 
 export default class CollectionsService {
     async query({
@@ -9,16 +14,17 @@ export default class CollectionsService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
+        const locale = getCurrentLocale()
         let items = await axios
             .get(
-                "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collections.json"
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/collections.json`
             )
             .then((res) => res.data)
 
         const filterList = [
             {
                 prop: "crates",
-                name: "Crate",
+                name: tLocal("filter_crate"),
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedProperty",
@@ -27,7 +33,7 @@ export default class CollectionsService {
             },
             {
                 prop: "contains",
-                name: "Contains",
+                name: tLocal("filter_contains"),
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedProperty",

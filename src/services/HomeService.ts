@@ -1,11 +1,16 @@
 import axios from "axios"
-import { filterItems, shuffleArrayWithSeed } from "../utils/index"
+import {
+    filterItems,
+    getCurrentLocale,
+    shuffleArrayWithSeed
+} from "../utils/index"
 
 export default class HomeService {
     async query({ search }: { search: string }) {
+        const locale = getCurrentLocale()
         let items: { name: string /* more properties */ }[] = await axios
             .get(
-                "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json"
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/all.json`
             )
             .then((res) => Object.values(res.data))
 
@@ -25,15 +30,16 @@ export default class HomeService {
     }
 
     async getAllItems() {
+        const locale = getCurrentLocale()
         let items = await axios
             .get(
-                "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json"
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/all.json`
             )
             .then((res) => res.data)
 
         let skins = await axios
             .get(
-                "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json"
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/skins.json`
             )
             .then((res) => res.data)
 

@@ -1,6 +1,6 @@
 <template>
     <div
-        class="h-dvh md:border-l-2 border-black-300 md:w-80 xl:w-[30rem] flex flex-col absolute inset-0 md:relative bg-black-400"
+        class="h-dvh md:border-l-2 border-black-300 md:w-80 xl:w-[30rem] flex flex-col absolute inset-0 md:relative bg-black-400 z-50"
     >
         <div
             class="flex items-center w-full h-[69px] border-b-2 border-black-300 px-4 sticky top-0 text-black-100"
@@ -29,7 +29,7 @@
                 >
                     <button
                         class="sticky top-0 flex items-center justify-between w-full p-4 font-semibold text-gray-100 border-b-2 border-black-300 bg-black-400"
-                        @click="show[filter.prop] = !show[filter.prop] ?? true"
+                        @click="show[filter.prop] = !show[filter.prop]"
                     >
                         <div>
                             {{ filter.name }}

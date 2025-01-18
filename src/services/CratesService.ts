@@ -1,5 +1,10 @@
 import axios from "axios"
-import { filterItems, generateOptions } from "../utils"
+import {
+    filterItems,
+    generateOptions,
+    getCurrentLocale,
+    tLocal
+} from "../utils"
 
 export default class CratesService {
     async query({
@@ -9,16 +14,17 @@ export default class CratesService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
+        const locale = getCurrentLocale()
         let items = await axios
             .get(
-                "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/crates.json"
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/crates.json`
             )
             .then((res) => res.data)
 
         const filterList = [
             {
                 prop: "contains",
-                name: "Contains",
+                name: tLocal("filter_contains"),
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedProperty",
@@ -27,7 +33,7 @@ export default class CratesService {
             },
             {
                 prop: "contains_rare",
-                name: "Contains special",
+                name: tLocal("filter_contains_rare"),
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedProperty",
@@ -36,7 +42,7 @@ export default class CratesService {
             },
             {
                 prop: "type",
-                name: "Type",
+                name: tLocal("filter_type"),
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromProperty",

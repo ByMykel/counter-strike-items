@@ -1,5 +1,10 @@
 import axios from "axios"
-import { filterItems, generateOptions } from "../utils"
+import {
+    filterItems,
+    generateOptions,
+    getCurrentLocale,
+    tLocal
+} from "../utils"
 
 export default class SkinService {
     async query({
@@ -9,9 +14,10 @@ export default class SkinService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
+        const locale = getCurrentLocale()
         let items = await axios
             .get(
-                "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins_not_grouped.json"
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/skins_not_grouped.json`
             )
             .then((res) =>
                 res.data.map((item: any) => {
@@ -28,7 +34,7 @@ export default class SkinService {
         const filterList = [
             {
                 prop: "rarity",
-                name: "Rarity",
+                name: tLocal("filter_rarity"),
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedSingleProperty",
@@ -37,7 +43,7 @@ export default class SkinService {
             },
             {
                 prop: "pattern",
-                name: "Pattern",
+                name: tLocal("filter_pattern"),
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedSingleProperty",
@@ -46,7 +52,7 @@ export default class SkinService {
             },
             {
                 prop: "style",
-                name: "Finish Style",
+                name: tLocal("filter_finish_style"),
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedSingleProperty",
@@ -55,7 +61,7 @@ export default class SkinService {
             },
             {
                 prop: "team",
-                name: "Team",
+                name: tLocal("filter_team"),
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedSingleProperty",
@@ -64,7 +70,7 @@ export default class SkinService {
             },
             {
                 prop: "weapon",
-                name: "Weapon",
+                name: tLocal("filter_weapon"),
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedSingleProperty",
@@ -73,7 +79,7 @@ export default class SkinService {
             },
             {
                 prop: "wear",
-                name: "Wear",
+                name: tLocal("filter_wear"),
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedSingleProperty",
@@ -82,7 +88,7 @@ export default class SkinService {
             },
             {
                 prop: "category",
-                name: "Category",
+                name: tLocal("filter_category"),
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedSingleProperty",
@@ -91,7 +97,7 @@ export default class SkinService {
             },
             {
                 prop: "paint_index",
-                name: "Paint index",
+                name: tLocal("filter_paint_index"),
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromProperty",
@@ -100,20 +106,20 @@ export default class SkinService {
             },
             {
                 prop: "souvenir",
-                name: "Souvenir",
+                name: tLocal("filter_souvenir"),
                 type: "multi-select",
                 options: [
-                    { id: "true", name: "Yes" },
-                    { id: "false", name: "No" }
+                    { id: "true", name: tLocal("common_yes") },
+                    { id: "false", name: tLocal("common_no") }
                 ]
             },
             {
                 prop: "stattrak",
-                name: "StatTrak™",
+                name: tLocal("filter_souvenir"),
                 type: "multi-select",
                 options: [
-                    { id: "true", name: "Yes" },
-                    { id: "false", name: "No" }
+                    { id: "true", name: tLocal("common_yes") },
+                    { id: "false", name: tLocal("common_no") }
                 ]
             }
         ]

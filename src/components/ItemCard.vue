@@ -16,7 +16,12 @@
                 v-if="marketHashName && getItemSteamPrice(marketHashName)"
                 class="absolute flex gap-1 text-sm font-semibold text-white top-2 left-2"
             >
-                € {{ getItemSteamPrice(marketHashName) }}
+                {{
+                    getItemSteamPriceInCurrency(
+                        getItemSteamPrice(marketHashName),
+                        getCurrentCurrency()
+                    )
+                }}
             </div>
 
             <div
@@ -57,8 +62,9 @@
 
 <script setup lang="ts">
 import { usePricesStore } from "../stores/prices"
+import { getCurrentCurrency } from "../utils"
 
-const { getItemSteamPrice } = usePricesStore()
+const { getItemSteamPrice, getItemSteamPriceInCurrency } = usePricesStore()
 
 defineProps<{
     id: string
