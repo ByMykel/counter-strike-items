@@ -14,7 +14,7 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.0.18",
-    "@vueuse/components": "^10.3.0",
+    "@vueuse/components": "^12.4.0",
     "@vueuse/core": "^10.3.0",
     "apexcharts": "^4.3.0",
     "axios": "^1.7.9",
