@@ -33,6 +33,7 @@ export const usePricesStore = defineStore("prices", () => {
                     prices?.steam.last_24h ||
                     prices?.steam.last_30d ||
                     prices?.steam.last_90d ||
+                    prices?.steam.last_ever ||
                     null
                 )?.toFixed(2)
             ) ?? null
@@ -57,11 +58,7 @@ export const usePricesStore = defineStore("prices", () => {
             return null
         }
 
-        if (["BTC", "ETH", "FET"].includes(currency)) {
-            return `${currencySigns[currency]} ${parseFloat(price.toFixed(10))}`
-        }
-
-        return `${currencySigns[currency]} ${parseFloat(price.toFixed(2))}`
+        return `${currencySigns[currency]} ${price}`
     }
 
     function convertCurrency(
@@ -82,7 +79,11 @@ export const usePricesStore = defineStore("prices", () => {
         const amountInUSD = amount / fromRate
         const convertedAmount = amountInUSD * toRate
 
-        return convertedAmount
+        if (["BTC", "ETH", "FET"].includes(toCurrency)) {
+            return parseFloat(convertedAmount.toFixed(10))
+        }
+
+        return parseFloat(convertedAmount.toFixed(2))
     }
 
     onMounted(async () => {
@@ -96,6 +97,7 @@ export const usePricesStore = defineStore("prices", () => {
     return {
         prices,
         fetchPrices,
+        convertCurrency,
         getPrice,
         getItemSteamPrice,
         getItemSteamPriceInCurrency

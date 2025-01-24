@@ -18,6 +18,8 @@
 
 <script setup lang="ts">
 import { computed } from "vue"
+import { currencySigns } from "../constants"
+import { getCurrentCurrency } from "../utils"
 
 const props = defineProps({
     priceHistory: {
@@ -99,7 +101,7 @@ const chartOptions = computed(() => ({
             labels: {
                 padding: 0,
                 formatter: function (value: number) {
-                    return value + " €"
+                    return value + ` ${currencySigns[getCurrentCurrency()]}`
                 }
             }
         }

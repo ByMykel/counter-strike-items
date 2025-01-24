@@ -37,7 +37,7 @@ export interface ItemDetail {
     skin_souvenir: boolean
     image: string
     market_hash_name: string
-    price_history: { time: number; value: number; volume: number }[]
+    price_history: { time: number; value: number | null; volume: number }[]
     variants: {
         id: string
         name: string

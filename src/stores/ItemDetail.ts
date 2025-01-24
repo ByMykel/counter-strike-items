@@ -4,8 +4,12 @@ import { defineStore } from "pinia"
 import { ItemDetail } from "../types/index"
 import HomeService from "../services/HomeService"
 import PriceService from "../services/PriceService"
+import { usePricesStore } from "./prices"
+import { getCurrentCurrency } from "../utils"
 
 export const useItemDetailStore = defineStore("item-detail", () => {
+    const { convertCurrency } = usePricesStore()
+
     const items = ref<{ [key: string]: any }>({})
     const selected = ref<ItemDetail>()
 
@@ -32,7 +36,9 @@ export const useItemDetailStore = defineStore("item-detail", () => {
         selected.value = {
             id: item.id,
             name: item.name,
-            description: item.description,
+            description: (item.description ?? " ")
+                .replaceAll("\\n", "")
+                .replaceAll('\\"', '"'),
             crates: item?.crates ?? [],
             collections: item?.collections ?? [],
             contains: item?.contains ?? [],
@@ -52,7 +58,11 @@ export const useItemDetailStore = defineStore("item-detail", () => {
             const prices = await new PriceService().fetchItemPrice(
                 selected.value.market_hash_name
             )
-            selected.value.price_history = prices
+            const currency = getCurrentCurrency()
+            selected.value.price_history = prices.map((item) => ({
+                ...item,
+                value: convertCurrency(item.value, "EUR", currency)
+            }))
         }
     }
 

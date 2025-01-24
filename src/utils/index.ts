@@ -190,6 +190,41 @@ export function getCurrentLocale(): SupportedLocale {
     return detectedLocale
 }
 
+export function getCurrentLocaleFullName() {
+    const locale = getCurrentLocale()
+    return {
+        bg: "bulgarian",
+        cs: "czech",
+        da: "danish",
+        de: "german",
+        el: "greek",
+        en: "english",
+        "es-ES": "spanish",
+        "es-MX": "latam",
+        fi: "finnish",
+        fr: "french",
+        hu: "hungarian",
+        it: "italian",
+        ja: "japanese",
+        ko: "korean",
+        nl: "dutch",
+        no: "norwegian",
+        pl: "polish",
+        "pt-BR": "brazilian",
+        "pt-PT": "portuguese",
+        ro: "romanian",
+        ru: "russian",
+        sk: "slovak",
+        sv: "swedish",
+        th: "thai",
+        tr: "turkish",
+        uk: "ukrainian",
+        "zh-CN": "schinese",
+        "zh-TW": "tchinese",
+        vi: "vietnamese"
+    }[locale]
+}
+
 export function detectLocale(): SupportedLocale {
     const browserLanguages = navigator.languages || [navigator.language]
     for (const lang of browserLanguages) {

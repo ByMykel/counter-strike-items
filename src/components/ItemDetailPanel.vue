@@ -86,7 +86,7 @@
             <div class="flex flex-col gap-5">
                 <a
                     v-if="selected.market_hash_name"
-                    :href="`https://steamcommunity.com/market/listings/730/${selected.market_hash_name}`"
+                    :href="`https://steamcommunity.com/market/listings/730/${selected.market_hash_name}?l=${getCurrentLocaleFullName()}`"
                     class="relative p-3 text-center rounded-md bg-black-300 text-black-100"
                     target="_blank"
                 >
@@ -102,7 +102,8 @@
                 <div
                     v-if="
                         getPrice(selected.market_hash_name)?.steam &&
-                            !selected.id.includes('skin')
+                            !selected.id.includes('skin') &&
+                            itemPrices.length
                     "
                     class="text-center divide-y rounded-md bg-black-300 text-black-100 divide-black-200/10"
                 >
@@ -296,7 +297,7 @@ import { usePricesStore } from "../stores/prices"
 import ItemsPriceChart from "../components/ItemsPriceChart.vue"
 import ItemDetailList from "../components/ItemDetailList.vue"
 import { useI18n } from "petite-vue-i18n"
-import { getCurrentCurrency } from "../utils"
+import { getCurrentCurrency, getCurrentLocaleFullName } from "../utils"
 
 const props = defineProps({
     selected: {
@@ -324,6 +325,13 @@ const itemPrices = computed(() => {
     if (!steamPrice) return []
 
     return [
+        steamPrice.last_ever && {
+            name: t("common_last_ever"),
+            price: getItemSteamPriceInCurrency(
+                parseFloat(steamPrice.last_ever),
+                currency
+            )
+        },
         steamPrice.last_24h && {
             name: t("common_last_24h"),
             price: getItemSteamPriceInCurrency(

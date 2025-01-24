@@ -115,7 +115,7 @@ export default class SkinService {
             },
             {
                 prop: "stattrak",
-                name: tLocal("filter_souvenir"),
+                name: tLocal("filter_stattrak"),
                 type: "multi-select",
                 options: [
                     { id: "true", name: tLocal("common_yes") },
