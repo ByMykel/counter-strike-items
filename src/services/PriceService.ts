@@ -1,9 +1,9 @@
 import axios from "axios"
 import sha1 from "sha1"
 import {
-    EXCHANGE_RATES_LAST_FETCHED_STORAGE_KEY,
-    EXCHANGE_RATES_STORAGE_KEY
-} from "../constants"
+    STORAGE_KEY_EXCHANGE_RATES,
+    STORAGE_KEY_EXCHANGE_RATES_LAST_FETCHED
+} from "../constants/currency"
 
 export default class PriceService {
     async fetchPrices() {
@@ -28,9 +28,9 @@ export default class PriceService {
     }
 
     async fetchExchangeRates() {
-        const storedData = localStorage.getItem(EXCHANGE_RATES_STORAGE_KEY)
+        const storedData = localStorage.getItem(STORAGE_KEY_EXCHANGE_RATES)
         const lastFetched = localStorage.getItem(
-            EXCHANGE_RATES_LAST_FETCHED_STORAGE_KEY
+            STORAGE_KEY_EXCHANGE_RATES_LAST_FETCHED
         )
         const today = new Date().toLocaleDateString()
 
@@ -43,10 +43,10 @@ export default class PriceService {
         )
 
         localStorage.setItem(
-            EXCHANGE_RATES_STORAGE_KEY,
+            STORAGE_KEY_EXCHANGE_RATES,
             JSON.stringify(response.data)
         )
-        localStorage.setItem(EXCHANGE_RATES_LAST_FETCHED_STORAGE_KEY, today)
+        localStorage.setItem(STORAGE_KEY_EXCHANGE_RATES_LAST_FETCHED, today)
 
         return response.data
     }

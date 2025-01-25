@@ -18,8 +18,8 @@
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { currencySigns } from "../constants"
 import { getCurrentCurrency } from "../utils"
+import { currencySigns } from "../constants/currency"
 
 const props = defineProps({
     priceHistory: {

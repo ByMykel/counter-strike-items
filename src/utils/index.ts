@@ -1,14 +1,14 @@
 import Fuse from "fuse.js"
 import uniqBy from "lodash.uniqby"
-import {
-    currencies,
-    CURRENCY_STORAGE_KEY,
-    LOCALE_STORAGE_KEY,
-    localeToCurrencyMap,
-    supportedLocales
-} from "../constants"
-import { Currency, SupportedLocale } from "../types"
 import { messages } from "../locales"
+import {
+    localeToCurrencyMap,
+    SupportedLocale,
+    supportedLocales
+} from "../types/locale"
+import { STORAGE_KEY_LOCALE } from "../constants/locale"
+import { CurrencyCode } from "../types/currency"
+import { currencies, STORAGE_KEY_CURRENCY } from "../constants/currency"
 
 function hashString(str: string) {
     let hash = 0
@@ -180,13 +180,13 @@ export function generateOptions(
 
 export function getCurrentLocale(): SupportedLocale {
     const storedLocale = localStorage.getItem(
-        LOCALE_STORAGE_KEY
+        STORAGE_KEY_LOCALE
     ) as SupportedLocale | null
     if (storedLocale && supportedLocales.includes(storedLocale)) {
         return storedLocale
     }
     const detectedLocale = detectLocale()
-    localStorage.setItem(LOCALE_STORAGE_KEY, detectedLocale)
+    localStorage.setItem(STORAGE_KEY_LOCALE, detectedLocale)
     return detectedLocale
 }
 
@@ -239,22 +239,22 @@ export function detectLocale(): SupportedLocale {
 }
 
 export function changeLocale(locale: SupportedLocale) {
-    localStorage.setItem(LOCALE_STORAGE_KEY, locale)
+    localStorage.setItem(STORAGE_KEY_LOCALE, locale)
     location.reload()
 }
 
-export function getCurrentCurrency(): Currency {
+export function getCurrentCurrency(): CurrencyCode {
     const storedCurrency = localStorage.getItem(
-        CURRENCY_STORAGE_KEY
-    ) as Currency | null
+        STORAGE_KEY_CURRENCY
+    ) as CurrencyCode | null
     if (storedCurrency && currencies.find(({ id }) => id === storedCurrency)) {
         return storedCurrency
     }
     return localeToCurrencyMap[getCurrentLocale()]
 }
 
-export function changeCurrency(currency: Currency) {
-    localStorage.setItem(CURRENCY_STORAGE_KEY, currency)
+export function changeCurrency(currency: CurrencyCode) {
+    localStorage.setItem(STORAGE_KEY_CURRENCY, currency)
     location.reload()
 }
 

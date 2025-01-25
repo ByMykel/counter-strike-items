@@ -123,7 +123,7 @@
                                             'block truncate mr-3'
                                         ]"
                                     >
-                                        {{ currency.currency }}
+                                        {{ currency.symbol }}
                                     </span>
                                     <span
                                         :class="[
@@ -170,7 +170,8 @@ import {
     getCurrentCurrency,
     getCurrentLocale
 } from "../utils"
-import { currencies, languages } from "../constants"
+import { currencies } from "../constants/currency"
+import { languages } from "../types/locale"
 
 const props = defineProps<{
     query: string

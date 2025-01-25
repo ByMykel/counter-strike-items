@@ -1,10 +1,6 @@
-import { Currency } from "./types"
+import { CurrencyCode } from "./currency"
 
-export const LOCALE_STORAGE_KEY = "counter_strike_items_locale"
-export const EXCHANGE_RATES_STORAGE_KEY = "exchange_rates"
-export const EXCHANGE_RATES_LAST_FETCHED_STORAGE_KEY =
-    "exchange_rates_last_fetched"
-export const CURRENCY_STORAGE_KEY = "counter_strike_items_currency"
+export type SupportedLocale = (typeof supportedLocales)[number]
 
 export const supportedLocales = [
     "bg",
@@ -186,115 +182,7 @@ export const languages = [
     }
 ]
 
-export const currencySigns: { [key: string]: string } = {
-    USD: "$",
-    EUR: "€",
-    GBP: "£",
-    CNY: "¥",
-    JPY: "¥",
-    CAD: "$",
-    AUD: "$",
-    HKD: "$",
-    ISK: "kr",
-    PHP: "₱",
-    DKK: "kr",
-    HUF: "Ft",
-    CZK: "Kč",
-    RON: "lei",
-    SEK: "kr",
-    IDR: "Rp",
-    INR: "₹",
-    BRL: "R$",
-    RUB: "₽",
-    HRK: "kn",
-    THB: "฿",
-    CHF: "Fr",
-    MYR: "RM",
-    BGN: "лв",
-    TRY: "₺",
-    NOK: "kr",
-    NZD: "$",
-    ZAR: "R",
-    MXN: "$",
-    SGD: "$",
-    ILS: "₪",
-    KRW: "₩",
-    PLN: "zł",
-    AED: "د.إ",
-    ARS: "$",
-    CLP: "$",
-    COP: "$",
-    CRC: "₡",
-    KWD: "د.ك",
-    KZT: "₸",
-    PEN: "S/.",
-    QAR: "ر.ق",
-    SAR: "ر.س",
-    TWD: "NT$",
-    UAH: "₴",
-    UYU: "$",
-    VND: "₫",
-    GEL: "₾",
-    BTC: "₿",
-    ETH: "Ξ",
-    FET: "FET"
-}
-
-export const currencies = [
-    { id: "USD", name: "United States Dollar", currency: "$" },
-    { id: "EUR", name: "Euro", currency: "€" },
-    { id: "GBP", name: "British Pound", currency: "£" },
-    { id: "CNY", name: "Chinese Yuan", currency: "¥" },
-    { id: "JPY", name: "Japanese Yen", currency: "¥" },
-    { id: "CAD", name: "Canadian Dollar", currency: "$" },
-    { id: "AUD", name: "Australian Dollar", currency: "$" },
-    { id: "HKD", name: "Hong Kong Dollar", currency: "$" },
-    { id: "ISK", name: "Icelandic Króna", currency: "kr" },
-    { id: "PHP", name: "Philippine Peso", currency: "₱" },
-    { id: "DKK", name: "Danish Krone", currency: "kr" },
-    { id: "HUF", name: "Hungarian Forint", currency: "Ft" },
-    { id: "CZK", name: "Czech Koruna", currency: "Kč" },
-    { id: "RON", name: "Romanian Leu", currency: "lei" },
-    { id: "SEK", name: "Swedish Krona", currency: "kr" },
-    { id: "IDR", name: "Indonesian Rupiah", currency: "Rp" },
-    { id: "INR", name: "Indian Rupee", currency: "₹" },
-    { id: "BRL", name: "Brazilian Real", currency: "R$" },
-    { id: "RUB", name: "Russian Ruble", currency: "₽" },
-    { id: "HRK", name: "Croatian Kuna", currency: "kn" },
-    { id: "THB", name: "Thai Baht", currency: "฿" },
-    { id: "CHF", name: "Swiss Franc", currency: "Fr" },
-    { id: "MYR", name: "Malaysian Ringgit", currency: "RM" },
-    { id: "BGN", name: "Bulgarian Lev", currency: "лв" },
-    { id: "TRY", name: "Turkish Lira", currency: "₺" },
-    { id: "NOK", name: "Norwegian Krone", currency: "kr" },
-    { id: "NZD", name: "New Zealand Dollar", currency: "$" },
-    { id: "ZAR", name: "South African Rand", currency: "R" },
-    { id: "MXN", name: "Mexican Peso", currency: "$" },
-    { id: "SGD", name: "Singapore Dollar", currency: "$" },
-    { id: "ILS", name: "Israeli New Shekel", currency: "₪" },
-    { id: "KRW", name: "South Korean Won", currency: "₩" },
-    { id: "PLN", name: "Polish Zloty", currency: "zł" },
-    { id: "AED", name: "United Arab Emirates Dirham", currency: "د.إ" },
-    { id: "ARS", name: "Argentine Peso", currency: "$" },
-    { id: "CLP", name: "Chilean Peso", currency: "$" },
-    { id: "COP", name: "Colombian Peso", currency: "$" },
-    { id: "CRC", name: "Costa Rican Colón", currency: "₡" },
-    { id: "KWD", name: "Kuwaiti Dinar", currency: "د.ك" },
-    { id: "KZT", name: "Kazakhstani Tenge", currency: "₸" },
-    { id: "PEN", name: "Peruvian Nuevo Sol", currency: "S/." },
-    { id: "QAR", name: "Qatari Rial", currency: "ر.ق" },
-    { id: "SAR", name: "Saudi Riyal", currency: "ر.س" },
-    { id: "TWD", name: "New Taiwan Dollar", currency: "NT$" },
-    { id: "UAH", name: "Ukrainian Hryvnia", currency: "₴" },
-    { id: "UYU", name: "Uruguayan Peso", currency: "$" },
-    { id: "VND", name: "Vietnamese Đồng", currency: "₫" },
-    { id: "GEL", name: "Georgian Lari", currency: "₾" },
-    { id: "BTC", name: "Bitcoin", currency: "₿" },
-    { id: "ETH", name: "Ethereum", currency: "Ξ" },
-    { id: "FET", name: "FET Token", currency: "FET" }
-]
-
-export const localeToCurrencyMap: Record<string, Currency> = {
+export const localeToCurrencyMap: Record<SupportedLocale, CurrencyCode> = {
     bg: "BGN",
     cs: "CZK",
     da: "DKK",

@@ -2,8 +2,8 @@ import { onMounted, ref } from "vue"
 import { defineStore } from "pinia"
 
 import PriceService from "../services/PriceService"
-import { Currency } from "../types"
-import { currencySigns } from "../constants"
+import { currencySigns } from "../constants/currency"
+import { CurrencyCode } from "../types/currency"
 
 export const usePricesStore = defineStore("prices", () => {
     const priceService = new PriceService()
@@ -42,7 +42,7 @@ export const usePricesStore = defineStore("prices", () => {
 
     function getItemSteamPriceInCurrency(
         priceInEuros: number,
-        currency: Currency
+        currency: CurrencyCode
     ) {
         if (priceInEuros === null) {
             return null
@@ -63,8 +63,8 @@ export const usePricesStore = defineStore("prices", () => {
 
     function convertCurrency(
         amount: number,
-        fromCurrency: Currency,
-        toCurrency: Currency
+        fromCurrency: CurrencyCode,
+        toCurrency: CurrencyCode
     ) {
         const fromRate = exchangeRates.value[fromCurrency]
         const toRate = exchangeRates.value[toCurrency]

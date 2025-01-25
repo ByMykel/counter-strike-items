@@ -1,6 +1,8 @@
-import { SupportedLocale } from "./types"
+import { SupportedLocale } from "./types/locale"
 
-export const messages: { [locale: SupportedLocale]: any } = {
+export const messages: {
+    [locale: SupportedLocale]: { [key: string]: string }
+} = {
     en: {
         common_search: "Search...",
         common_total: "total",
