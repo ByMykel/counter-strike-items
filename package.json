@@ -26,7 +26,7 @@
     "sha1": "^1.1.1",
     "vue": "^3.3.4",
     "vue-router": "^4.5.0",
-    "vue3-apexcharts": "^1.5.2"
+    "vue3-apexcharts": "^1.8.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.10",
