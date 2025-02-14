@@ -18,7 +18,7 @@
     "@vueuse/core": "^12.5.0",
     "apexcharts": "^4.4.0",
     "axios": "^1.7.9",
-    "fuse.js": "^7.0.0",
+    "fuse.js": "^7.1.0",
     "lodash.sortby": "^4.7.0",
     "lodash.uniqby": "^4.7.0",
     "petite-vue-i18n": "^11.1.0",
