@@ -32,11 +32,10 @@
                 }"
                 @click="$emit('get-item-details', item.id)"
             >
-                <img
-                    class="object-contain w-16"
+                <ItemDetailImage
                     :src="item.image"
                     :alt="item.name"
-                >
+                />
                 <div>
                     <p class="text-sm font-bold text-black-100">
                         {{ item.name }}
@@ -56,6 +55,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
+import ItemDetailImage from "./ItemDetailImage.vue"
 
 defineProps<{
     items: {

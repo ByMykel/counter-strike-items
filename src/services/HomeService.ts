@@ -55,7 +55,7 @@ export default class HomeService {
             }
 
             types.forEach((type) => {
-                (item?.wears ?? []).forEach((_: any, index: number) => {
+                ;(item?.wears ?? []).forEach((_: any, index: number) => {
                     if (type === "skin_stattrak") {
                         items[`${item.id}_${index}_st`] = {
                             ...items[`${item.id}_${index}_st`],

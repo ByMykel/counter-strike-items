@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore --fix src",
+    "lint": "eslint --fix src",
     "prettier": "prettier src --check --write",
     "format": "npm run prettier && npm run lint"
   },
