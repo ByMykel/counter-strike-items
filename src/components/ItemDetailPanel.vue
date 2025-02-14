@@ -39,7 +39,7 @@
             </div>
 
             <div
-                class="relative bg-black-300/80 bg-[url('/img/graph-paper.svg')] rounded-md group"
+                class="relative bg-black-300/80 bg-[url('../img/graph-paper.svg')] rounded-md group"
             >
                 <ItemsPriceChart
                     v-if="selected.market_hash_name"

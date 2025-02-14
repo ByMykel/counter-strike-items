@@ -11,7 +11,7 @@
         />
         <div
             ref="el"
-            class="grid w-full gap-3 p-4 px-5 pb-32 mx-auto overflow-y-scroll h-dvh items-grid-small md:items-grid"
+            class="grid w-full gap-3 p-4 px-5 pb-32 mx-auto overflow-y-scroll h-[calc(100vh-69px)] items-grid-small md:items-grid"
         >
             <ItemCard
                 v-for="item in items"
