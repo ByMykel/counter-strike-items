@@ -16,7 +16,7 @@
     "@heroicons/vue": "^2.2.0",
     "@vueuse/components": "^12.5.0",
     "@vueuse/core": "^12.5.0",
-    "apexcharts": "^4.4.0",
+    "apexcharts": "^4.5.0",
     "axios": "^1.7.9",
     "fuse.js": "^7.1.0",
     "lodash.sortby": "^4.7.0",
