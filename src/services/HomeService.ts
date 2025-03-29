@@ -88,6 +88,16 @@ export default class HomeService {
             })
         })
 
+        let baseWeapons = await axios
+            .get(
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/base_weapons.json`
+            )
+            .then((res) => res.data)
+
+        baseWeapons.forEach((item: any) => {
+            items[item.id] = item
+        })
+
         return items
     }
 }

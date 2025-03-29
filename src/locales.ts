@@ -50,7 +50,8 @@ export const messages: {
         links_patches: "Patches",
         links_graffiti: "Graffiti",
         links_music_kits: "Music kits",
-        links_keychains: "Keychains"
+        links_keychains: "Keychains",
+        links_base_weapons: "Base weapons"
     },
     "es-ES": {
         common_search: "Buscar...",
@@ -99,7 +100,8 @@ export const messages: {
         links_patches: "Parches",
         links_graffiti: "Grafitis",
         links_music_kits: "Kits de música",
-        links_keychains: "Llaveros"
+        links_keychains: "Llaveros",
+        links_base_weapons: "Armas base"
     },
     "es-MX": {
         common_search: "Buscar...",
@@ -148,7 +150,8 @@ export const messages: {
         links_patches: "Parches",
         links_graffiti: "Grafitis",
         links_music_kits: "Kits de música",
-        links_keychains: "Llaveros"
+        links_keychains: "Llaveros",
+        links_base_weapons: "Armas base"
     }
     // TODO: add more languages
 }

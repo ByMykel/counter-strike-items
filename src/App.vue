@@ -111,7 +111,8 @@ import {
     StarIcon,
     TrophyIcon,
     UserGroupIcon,
-    TagIcon
+    TagIcon,
+    Square3Stack3DIcon
 } from "@heroicons/vue/24/outline"
 import { usePricesStore } from "./stores/prices"
 import { useItemDetailStore } from "./stores/ItemDetail"
@@ -138,7 +139,8 @@ const routes = [
     { name: t("links_patches"), path: "/patches", icon: BugAntIcon },
     { name: t("links_graffiti"), path: "/graffiti", icon: PaintBrushIcon },
     { name: t("links_music_kits"), path: "/music-kits", icon: MusicalNoteIcon },
-    { name: t("links_keychains"), path: "/keychains", icon: TagIcon }
+    { name: t("links_keychains"), path: "/keychains", icon: TagIcon },
+    { name: t("links_base_weapons"), path: "/base-weapons", icon: Square3Stack3DIcon }
 ]
 
 fetchPrices()

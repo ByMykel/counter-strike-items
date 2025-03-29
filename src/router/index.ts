@@ -62,6 +62,11 @@ const router = createRouter({
             path: "/keychains",
             name: "keychains",
             component: () => import("../views/KeychainsView.vue")
+        },
+        {
+            path: "/base-weapons",
+            name: "base-weapons",
+            component: () => import("../views/BaseWeaponsView.vue")
         }
     ]
 })
