@@ -6,10 +6,16 @@
             :loading="skinsListStore.loading"
             :search="skinsListStore.search"
             :has-filters="skinsListStore.filters.length > 0"
+            :has-selected-filters="
+                Object.keys(skinsListStore.filtersValues).length > 0
+            "
+            :filters="skinsListStore.filters"
+            :filters-values="skinsListStore.filtersValues"
             @set-query="skinsListStore.setSearch($event)"
             @select="selectItem"
             @load-more="skinsListStore.loadMore()"
             @open-filters="openFilters()"
+            @remove-filter="removeFilter"
         />
         <FiltersPanel
             v-if="showFilters"
@@ -30,7 +36,7 @@ import { useItemDetailStore } from "../stores/ItemDetail"
 import SkinService from "../services/SkinService"
 import ItemsList from "../components/ItemsList.vue"
 import FiltersPanel from "../components/FiltersPanel.vue"
-
+import { useTitle } from "../composable/useTitle"
 const itemDetailStore = useItemDetailStore()
 const skinsListStore = createListStore({
     query: new SkinService().query
@@ -57,4 +63,13 @@ function removeFilters() {
     skinsListStore.removeFilters()
     skinsListStore.fetch()
 }
+
+function removeFilter({ prop, value }: { prop: string; value: string }) {
+    const currentValues = skinsListStore.filtersValues[prop] ?? []
+    const newValues = currentValues.filter((v) => v !== value)
+    skinsListStore.setFilters({ prop, value: newValues })
+    skinsListStore.fetch()
+}
+
+useTitle("Skins - Counter-Strike items")
 </script>

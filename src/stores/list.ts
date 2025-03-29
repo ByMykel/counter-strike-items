@@ -74,7 +74,7 @@ export const createListStore =
                 reset()
                 search.value = newSearch
                 fetch()
-                saveSearchQueryParam(newSearch)
+                saveSearchQueryParam()
             }
 
             function setFilters({
@@ -89,10 +89,12 @@ export const createListStore =
                 } else {
                     filtersValues.value[prop] = value
                 }
+                saveSearchQueryParam()
             }
 
             function removeFilters() {
                 filtersValues.value = {}
+                saveSearchQueryParam()
             }
 
             function reset() {
@@ -101,16 +103,41 @@ export const createListStore =
                 itemsCount.value = 0
             }
 
-            function saveSearchQueryParam(search: string) {
-                router.push({ query: search.length ? { q: search } : {} })
+            function saveSearchQueryParam() {
+                const query: Record<string, string | string[]> = {}
+                if (search.value.length) query.q = search.value
+
+                // Add filters to query params
+                Object.entries(filtersValues.value).forEach(([key, values]) => {
+                    if (values.length) query[key] = values
+                })
+
+                router.push({ query })
             }
 
             onMounted(() => {
-                const query =
-                    typeof route.query.q === "string" && route.query.q
-                        ? route.query.q
-                        : search.value
-                setSearch(query)
+                filtersValues.value = {}
+                search.value = ""
+
+                // Restore search and filters from current route
+                const searchQuery =
+                    typeof route.query.q === "string" ? route.query.q : ""
+                search.value = searchQuery
+
+                // Restore filters from URL
+                Object.entries(route.query).forEach(([key, value]) => {
+                    if (key !== "q" && value) {
+                        if (typeof value === "string") {
+                            filtersValues.value[key] = value.includes(",")
+                                ? value.split(",")
+                                : [value]
+                        } else if (Array.isArray(value)) {
+                            filtersValues.value[key] = value as string[]
+                        }
+                    }
+                })
+
+                fetch()
             })
 
             onUnmounted(() => {
@@ -122,6 +149,8 @@ export const createListStore =
                         setSearch("")
                     }
                 })
+                // For some reason, the query is not being removed when the store is disposed
+                router.push({ query: {} })
             })
 
             return {

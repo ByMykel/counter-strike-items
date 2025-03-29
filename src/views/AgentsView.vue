@@ -6,10 +6,16 @@
             :loading="agentsListStore.loading"
             :search="agentsListStore.search"
             :has-filters="agentsListStore.filters.length > 0"
+            :has-selected-filters="
+                Object.keys(agentsListStore.filtersValues).length > 0
+            "
+            :filters="agentsListStore.filters"
+            :filters-values="agentsListStore.filtersValues"
             @set-query="agentsListStore.setSearch($event)"
             @select="selectItem"
             @load-more="agentsListStore.loadMore()"
             @open-filters="openFilters()"
+            @remove-filter="removeFilter"
         />
         <FiltersPanel
             v-if="showFilters"
@@ -30,6 +36,7 @@ import { useItemDetailStore } from "../stores/ItemDetail"
 import AgentsService from "../services/AgentsService"
 import ItemsList from "../components/ItemsList.vue"
 import FiltersPanel from "../components/FiltersPanel.vue"
+import { useTitle } from "../composable/useTitle"
 
 const itemDetailStore = useItemDetailStore()
 const agentsListStore = createListStore({
@@ -57,4 +64,13 @@ function removeFilters() {
     agentsListStore.removeFilters()
     agentsListStore.fetch()
 }
+
+function removeFilter({ prop, value }: { prop: string; value: string }) {
+    const currentValues = agentsListStore.filtersValues[prop] ?? []
+    const newValues = currentValues.filter((v) => v !== value)
+    agentsListStore.setFilters({ prop, value: newValues })
+    agentsListStore.fetch()
+}
+
+useTitle("Agents - Counter-Strike items")
 </script>

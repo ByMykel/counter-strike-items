@@ -6,10 +6,16 @@
             :loading="cratesListStore.loading"
             :search="cratesListStore.search"
             :has-filters="cratesListStore.filters.length > 0"
+            :has-selected-filters="
+                Object.keys(cratesListStore.filtersValues).length > 0
+            "
+            :filters="cratesListStore.filters"
+            :filters-values="cratesListStore.filtersValues"
             @set-query="cratesListStore.setSearch($event)"
             @select="selectItem"
             @load-more="cratesListStore.loadMore()"
             @open-filters="openFilters()"
+            @remove-filter="removeFilter"
         />
         <FiltersPanel
             v-if="showFilters"
@@ -30,6 +36,7 @@ import { useItemDetailStore } from "../stores/ItemDetail"
 import CratesService from "../services/CratesService"
 import ItemsList from "../components/ItemsList.vue"
 import FiltersPanel from "../components/FiltersPanel.vue"
+import { useTitle } from "../composable/useTitle"
 
 const itemDetailStore = useItemDetailStore()
 const cratesListStore = createListStore({
@@ -57,4 +64,13 @@ function removeFilters() {
     cratesListStore.removeFilters()
     cratesListStore.fetch()
 }
+
+function removeFilter({ prop, value }: { prop: string; value: string }) {
+    const currentValues = cratesListStore.filtersValues[prop] ?? []
+    const newValues = currentValues.filter((v) => v !== value)
+    cratesListStore.setFilters({ prop, value: newValues })
+    cratesListStore.fetch()
+}
+
+useTitle("Crates - Counter-Strike items")
 </script>

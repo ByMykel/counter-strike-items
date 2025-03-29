@@ -6,8 +6,12 @@
             :total="itemsCount"
             :loading="loading"
             :has-filters="hasFilters"
+            :has-selected-filters="hasSelectedFilters"
+            :filters="filters"
+            :filters-values="filtersValues"
             @input="$emit('set-query', $event)"
             @open-filters="$emit('open-filters')"
+            @remove-filter="$emit('remove-filter', $event)"
         />
         <div
             ref="el"
@@ -43,6 +47,7 @@ import { vElementVisibility } from "@vueuse/components"
 import SearchBar from "./SearchBar.vue"
 import ItemCard from "./ItemCard.vue"
 import ItemsSkeleton from "./ItemsSkeleton.vue"
+import { Filter } from "../types"
 
 withDefaults(
     defineProps<{
@@ -51,13 +56,23 @@ withDefaults(
         loading: boolean
         search: string
         hasFilters?: boolean
+        hasSelectedFilters?: boolean
+        filters: Filter[]
+        filtersValues: { [prop: string]: string[] }
     }>(),
     {
-        hasFilters: false
+        hasFilters: false,
+        hasSelectedFilters: false
     }
 )
 
-const emit = defineEmits(["set-query", "select", "load-more", "open-filters"])
+const emit = defineEmits([
+    "set-query",
+    "select",
+    "load-more",
+    "open-filters",
+    "remove-filter"
+])
 
 const el = ref<HTMLElement | null>(null)
 const { y } = useScroll(el)

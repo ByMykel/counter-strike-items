@@ -6,10 +6,16 @@
             :loading="collectionsListStore.loading"
             :search="collectionsListStore.search"
             :has-filters="collectionsListStore.filters.length > 0"
+            :has-selected-filters="
+                Object.keys(collectionsListStore.filtersValues).length > 0
+            "
+            :filters="collectionsListStore.filters"
+            :filters-values="collectionsListStore.filtersValues"
             @set-query="collectionsListStore.setSearch($event)"
             @select="selectItem"
             @load-more="collectionsListStore.loadMore()"
             @open-filters="openFilters()"
+            @remove-filter="removeFilter"
         />
         <FiltersPanel
             v-if="showFilters"
@@ -30,7 +36,7 @@ import { useItemDetailStore } from "../stores/ItemDetail"
 import CollectionsService from "../services/CollectionsService"
 import ItemsList from "../components/ItemsList.vue"
 import FiltersPanel from "../components/FiltersPanel.vue"
-
+import { useTitle } from "../composable/useTitle"
 const itemDetailStore = useItemDetailStore()
 const collectionsListStore = createListStore({
     query: new CollectionsService().query
@@ -57,4 +63,13 @@ function removeFilters() {
     collectionsListStore.removeFilters()
     collectionsListStore.fetch()
 }
+
+function removeFilter({ prop, value }: { prop: string; value: string }) {
+    const currentValues = collectionsListStore.filtersValues[prop] ?? []
+    const newValues = currentValues.filter((v) => v !== value)
+    collectionsListStore.setFilters({ prop, value: newValues })
+    collectionsListStore.fetch()
+}
+
+useTitle("Collections - Counter-Strike items")
 </script>

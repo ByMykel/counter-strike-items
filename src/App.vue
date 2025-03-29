@@ -54,7 +54,10 @@
                                     class="relative group"
                                 >
                                     <RouterLink
-                                        :to="routeItem.path"
+                                        :to="{
+                                            path: routeItem.path,
+                                            query: {}
+                                        }"
                                         class="flex justify-center gap-4 p-2 rounded-md lg:justify-start text-black-100 hover:bg-black-300 hover:text-white"
                                         active-class="text-white bg-black-300"
                                     >

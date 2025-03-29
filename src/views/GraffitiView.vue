@@ -6,10 +6,16 @@
             :loading="graffitiListStore.loading"
             :search="graffitiListStore.search"
             :has-filters="graffitiListStore.filters.length > 0"
+            :has-selected-filters="
+                Object.keys(graffitiListStore.filtersValues).length > 0
+            "
+            :filters="graffitiListStore.filters"
+            :filters-values="graffitiListStore.filtersValues"
             @set-query="graffitiListStore.setSearch($event)"
             @select="selectItem"
             @load-more="graffitiListStore.loadMore()"
             @open-filters="openFilters()"
+            @remove-filter="removeFilter"
         />
         <FiltersPanel
             v-if="showFilters"
@@ -30,7 +36,7 @@ import { useItemDetailStore } from "../stores/ItemDetail"
 import GraffitiService from "../services/GraffitiService"
 import ItemsList from "../components/ItemsList.vue"
 import FiltersPanel from "../components/FiltersPanel.vue"
-
+import { useTitle } from "../composable/useTitle"
 const itemDetailStore = useItemDetailStore()
 const graffitiListStore = createListStore({
     query: new GraffitiService().query
@@ -57,4 +63,13 @@ function removeFilters() {
     graffitiListStore.removeFilters()
     graffitiListStore.fetch()
 }
+
+function removeFilter({ prop, value }: { prop: string; value: string }) {
+    const currentValues = graffitiListStore.filtersValues[prop] ?? []
+    const newValues = currentValues.filter((v) => v !== value)
+    graffitiListStore.setFilters({ prop, value: newValues })
+    graffitiListStore.fetch()
+}
+
+useTitle("Graffiti - Counter-Strike items")
 </script>

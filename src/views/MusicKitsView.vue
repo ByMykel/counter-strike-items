@@ -6,10 +6,16 @@
             :loading="musicKitsListStore.loading"
             :search="musicKitsListStore.search"
             :has-filters="musicKitsListStore.filters.length > 0"
+            :has-selected-filters="
+                Object.keys(musicKitsListStore.filtersValues).length > 0
+            "
+            :filters="musicKitsListStore.filters"
+            :filters-values="musicKitsListStore.filtersValues"
             @set-query="musicKitsListStore.setSearch($event)"
             @select="selectItem"
             @load-more="musicKitsListStore.loadMore()"
             @open-filters="openFilters()"
+            @remove-filter="removeFilter"
         />
         <FiltersPanel
             v-if="showFilters"
@@ -30,6 +36,7 @@ import { useItemDetailStore } from "../stores/ItemDetail"
 import MusicKitsService from "../services/MusicKitsService"
 import ItemsList from "../components/ItemsList.vue"
 import FiltersPanel from "../components/FiltersPanel.vue"
+import { useTitle } from "../composable/useTitle"
 
 const itemDetailStore = useItemDetailStore()
 const musicKitsListStore = createListStore({
@@ -57,4 +64,13 @@ function removeFilters() {
     musicKitsListStore.removeFilters()
     musicKitsListStore.fetch()
 }
+
+function removeFilter({ prop, value }: { prop: string; value: string }) {
+    const currentValues = musicKitsListStore.filtersValues[prop] ?? []
+    const newValues = currentValues.filter((v) => v !== value)
+    musicKitsListStore.setFilters({ prop, value: newValues })
+    musicKitsListStore.fetch()
+}
+
+useTitle("Music Kits - Counter-Strike items")
 </script>
