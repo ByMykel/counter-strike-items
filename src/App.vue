@@ -140,7 +140,11 @@ const routes = [
     { name: t("links_graffiti"), path: "/graffiti", icon: PaintBrushIcon },
     { name: t("links_music_kits"), path: "/music-kits", icon: MusicalNoteIcon },
     { name: t("links_keychains"), path: "/keychains", icon: TagIcon },
-    { name: t("links_base_weapons"), path: "/base-weapons", icon: Square3Stack3DIcon }
+    {
+        name: t("links_base_weapons"),
+        path: "/base-weapons",
+        icon: Square3Stack3DIcon
+    }
 ]
 
 fetchPrices()

@@ -38,7 +38,11 @@ export const messages: {
         filter_effect: "Effect",
         filter_tournament: "Tournament",
         filter_player: "Player",
-
+        filter_legacy_model: "Legacy model",
+        filter_crates: "Crates",
+        filter_collections: "Collections",
+        filter_genuine: "Genuine",
+        
         links_all: "All",
         links_skins: "Skins",
         links_stickers: "Stickers",
@@ -88,6 +92,10 @@ export const messages: {
         filter_effect: "Efecto",
         filter_tournament: "Torneo",
         filter_player: "Jugador",
+        filter_legacy_model: "Modelo antiguo",
+        filter_crates: "Cajas",
+        filter_collections: "Colecciones",
+        filter_genuine: "Genuine",
 
         links_all: "Todo",
         links_skins: "Skins",
@@ -138,6 +146,10 @@ export const messages: {
         filter_effect: "Efecto",
         filter_tournament: "Torneo",
         filter_player: "Jugador",
+        filter_legacy_model: "Modelo antiguo",
+        filter_crates: "Cajas",
+        filter_collections: "Colecciones",
+        filter_genuine: "Genuine",
 
         links_all: "Todo",
         links_skins: "Skins",

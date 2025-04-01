@@ -35,10 +35,25 @@ export default class StickersService {
                 prop: "type",
                 name: tLocal("filter_type"),
                 type: "multi-select",
-                options: generateOptions(items, {
-                    type: "fromProperty",
-                    property: "type"
-                })
+                options: [
+                    ...generateOptions(items, {
+                        type: "fromProperty",
+                        property: "type"
+                    }),
+                    {
+                        id: "null",
+                        name: "Other"
+                    }
+                ]
+            },
+            {
+                prop: "genuine",
+                name: tLocal("filter_genuine"),
+                type: "multi-select",
+                options: [
+                    { id: "true", name: tLocal("common_yes") },
+                    { id: "false", name: tLocal("common_no") }
+                ]
             }
         ]
 

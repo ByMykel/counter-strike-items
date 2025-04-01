@@ -26,7 +26,7 @@
                 :souvenir="item?.souvenir ?? false"
                 :stattrak="item?.stattrak ?? false"
                 :rare="item?.rare ?? false"
-                :genuine="item.name.includes('Genuine')"
+                :genuine="item?.genuine ?? false"
                 :market-hash-name="item.market_hash_name"
                 @show="$emit('select', item.id)"
             />

@@ -15,23 +15,54 @@ export default class SkinService {
         filters: { [prop: string]: string[] }
     }) {
         const locale = getCurrentLocale()
+        let skins = await axios
+            .get(
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/skins.json`
+            )
+            .then((res: any) =>
+                res.data.reduce((acc: any, item: any) => {
+                    acc[item.id] = item
+                    return acc
+                }, {})
+            )
+
         let items = await axios
             .get(
                 `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/skins_not_grouped.json`
             )
-            .then((res) =>
+            .then((res: any) =>
                 res.data.map((item: any) => {
                     return {
                         ...item,
                         rare: [
                             "sfui_invpanel_filter_melee",
                             "sfui_invpanel_filter_gloves"
-                        ].includes(item.category.id)
+                        ].includes(item.category.id),
+                        collections: skins[item.skin_id]?.collections ?? [],
+                        crates: skins[item.skin_id]?.crates ?? []
                     }
                 })
             )
 
         const filterList = [
+            {
+                prop: "crates",
+                name: tLocal("filter_crates"),
+                type: "multi-select",
+                options: generateOptions(items, {
+                    type: "fromNestedProperty",
+                    property: "crates"
+                })
+            },
+            {
+                prop: "collections",
+                name: tLocal("filter_collections"),
+                type: "multi-select",
+                options: generateOptions(items, {
+                    type: "fromNestedProperty",
+                    property: "collections"
+                })
+            },
             {
                 prop: "rarity",
                 name: tLocal("filter_rarity"),
@@ -57,15 +88,6 @@ export default class SkinService {
                 options: generateOptions(items, {
                     type: "fromNestedSingleProperty",
                     property: "style"
-                })
-            },
-            {
-                prop: "team",
-                name: tLocal("filter_team"),
-                type: "multi-select",
-                options: generateOptions(items, {
-                    type: "fromNestedSingleProperty",
-                    property: "team"
                 })
             },
             {
@@ -116,6 +138,24 @@ export default class SkinService {
             {
                 prop: "stattrak",
                 name: tLocal("filter_stattrak"),
+                type: "multi-select",
+                options: [
+                    { id: "true", name: tLocal("common_yes") },
+                    { id: "false", name: tLocal("common_no") }
+                ]
+            },
+            {
+                prop: "team",
+                name: tLocal("filter_team"),
+                type: "multi-select",
+                options: generateOptions(items, {
+                    type: "fromNestedSingleProperty",
+                    property: "team"
+                })
+            },
+            {
+                prop: "legacy_model",
+                name: tLocal("filter_legacy_model"),
                 type: "multi-select",
                 options: [
                     { id: "true", name: tLocal("common_yes") },

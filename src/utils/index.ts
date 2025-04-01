@@ -84,6 +84,8 @@ export function filterItems(
                 const itemProp = item[prop]
                 const filterValues = filters[prop]
 
+                if (itemProp == null && filterValues.includes("null"))
+                    return true
                 if (itemProp == null) return false
 
                 if (Array.isArray(itemProp)) {
@@ -96,7 +98,7 @@ export function filterItems(
                 // Direct match for string, boolean, or object with an 'id'
                 return filterValues.includes(
                     typeof itemProp === "object"
-                        ? itemProp.id?.toString()
+                        ? itemProp?.id?.toString()
                         : itemProp.toString()
                 )
             })
