@@ -42,7 +42,8 @@ export const messages: {
         filter_crates: "Crates",
         filter_collections: "Collections",
         filter_genuine: "Genuine",
-        
+        filter_marketable: "Marketable",
+
         links_all: "All",
         links_skins: "Skins",
         links_stickers: "Stickers",
@@ -96,7 +97,7 @@ export const messages: {
         filter_crates: "Cajas",
         filter_collections: "Colecciones",
         filter_genuine: "Genuine",
-
+        filter_marketable: "Marketable",
         links_all: "Todo",
         links_skins: "Skins",
         links_stickers: "Pegatinas",
@@ -150,6 +151,7 @@ export const messages: {
         filter_crates: "Cajas",
         filter_collections: "Colecciones",
         filter_genuine: "Genuine",
+        filter_marketable: "Marketable",
 
         links_all: "Todo",
         links_skins: "Skins",

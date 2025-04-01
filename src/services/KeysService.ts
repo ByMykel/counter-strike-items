@@ -30,6 +30,15 @@ export default class StickersService {
                     type: "fromNestedProperty",
                     property: "crates"
                 })
+            },
+            {
+                prop: "marketable",
+                name: tLocal("filter_marketable"),
+                type: "multi-select",
+                options: [
+                    { id: "true", name: tLocal("common_yes") },
+                    { id: "false", name: tLocal("common_no") }
+                ]
             }
         ]
 
