@@ -20,7 +20,7 @@
                 class="w-full py-2 mb-2 font-semibold text-red-800 border-y-2 border-red-800/20 bg-red-900/20 hover:bg-red-900/30"
                 @click="$emit('remove-filters')"
             >
-                Remove all selected
+                Remove all selected filters
             </button>
             <div>
                 <div

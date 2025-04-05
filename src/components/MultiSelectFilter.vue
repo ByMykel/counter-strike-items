@@ -6,35 +6,6 @@
             type="text"
             :placeholder="$t('filter_search')"
         >
-
-        <template v-if="filteredSelectedOptions.length">
-            <button
-                type="button"
-                class="w-full py-1 mb-2 text-red-800 rounded-md bg-red-900/20 hover:bg-red-900/30"
-                @click="removeSelected()"
-            >
-                Remove all selected
-            </button>
-
-            <label
-                v-for="option in filteredSelectedOptions"
-                :key="option.id"
-                class="flex items-center gap-2 p-2 text-gray-300 rounded-md cursor-pointer hover:bg-black-300"
-            >
-                <input
-                    type="checkbox"
-                    class="w-4 h-4 text-[#ff5e65] border-gray-300 rounded focus:ring-[#ff5e65]"
-                    :value="option.id"
-                    :checked="isSelected(option.id)"
-                    @change="toggleOption(option.id)"
-                >
-                {{ option.name }}
-            </label>
-            <div
-                v-if="filteredSelectedOptions.length && filteredOptions.length"
-                class="my-2 border-t-2 border-dashed border-black-300"
-            />
-        </template>
         <label
             v-for="option in filteredOptions"
             :key="option.id"
@@ -66,22 +37,6 @@ const search = ref("")
 
 const filteredOptions = computed(() => {
     return props.options.filter((option) => {
-        if (props.values.includes(option.id)) {
-            return false
-        }
-
-        return option.name
-            .toLocaleLowerCase()
-            .includes(search.value.toLocaleLowerCase())
-    })
-})
-
-const filteredSelectedOptions = computed(() => {
-    return props.options.filter((option) => {
-        if (!props.values.includes(option.id)) {
-            return false
-        }
-
         return option.name
             .toLocaleLowerCase()
             .includes(search.value.toLocaleLowerCase())
@@ -101,9 +56,5 @@ const toggleOption = (id: string) => {
 
 const isSelected = (id: string) => {
     return props.values.includes(id)
-}
-
-function removeSelected() {
-    emit("update:values", [])
 }
 </script>
