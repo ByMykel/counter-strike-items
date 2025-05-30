@@ -35,7 +35,7 @@
     "@types/lodash.uniqby": "^4.7.9",
     "@types/sha1": "^1.1.5",
     "@typescript-eslint/eslint-plugin": "^8.32.0",
-    "@typescript-eslint/parser": "^8.32.1",
+    "@typescript-eslint/parser": "^8.33.0",
     "@vite-pwa/assets-generator": "^1.0.0",
     "@vitejs/plugin-vue": "^5.2.4",
     "autoprefixer": "^10.4.21",
