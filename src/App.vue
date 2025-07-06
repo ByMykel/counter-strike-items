@@ -112,7 +112,8 @@ import {
     TrophyIcon,
     UserGroupIcon,
     TagIcon,
-    Square3Stack3DIcon
+    Square3Stack3DIcon,
+    VideoCameraIcon
 } from "@heroicons/vue/24/outline"
 import { usePricesStore } from "./stores/prices"
 import { useItemDetailStore } from "./stores/ItemDetail"
@@ -144,7 +145,8 @@ const routes = [
         name: t("links_base_weapons"),
         path: "/base-weapons",
         icon: Square3Stack3DIcon
-    }
+    },
+    { name: t("links_highlights"), path: "/highlights", icon: VideoCameraIcon }
 ]
 
 fetchPrices()

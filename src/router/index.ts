@@ -67,6 +67,11 @@ const router = createRouter({
             path: "/base-weapons",
             name: "base-weapons",
             component: () => import("../views/BaseWeaponsView.vue")
+        },
+        {
+            path: "/highlights",
+            name: "highlights",
+            component: () => import("../views/HighlightsView.vue")
         }
     ]
 })

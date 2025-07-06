@@ -15,21 +15,37 @@
         />
         <div
             ref="el"
-            class="grid w-full gap-3 p-4 px-5 pb-32 mx-auto overflow-y-scroll h-[calc(100vh-69px)] items-grid-small md:items-grid"
+            class="grid w-full gap-3 p-4 px-5 pb-32 mx-auto overflow-y-scroll h-[calc(100vh-69px)]"
+            :class="{
+                'grid-cols-1 lg:grid-cols-2': isVideo,
+                'items-grid-small md:items-grid': !isVideo
+            }"
         >
-            <ItemCard
-                v-for="item in items"
-                :id="item.id"
-                :key="item.id"
-                :name="item.name"
-                :image="item.image"
-                :souvenir="item?.souvenir ?? false"
-                :stattrak="item?.stattrak ?? false"
-                :rare="item?.rare ?? false"
-                :genuine="item?.genuine ?? false"
-                :market-hash-name="item.market_hash_name"
-                @show="$emit('select', item.id)"
-            />
+            <template v-if="!isVideo">
+                <ItemCard
+                    v-for="item in items"
+                    :id="item.id"
+                    :key="item.id"
+                    :name="item.name"
+                    :image="item.image"
+                    :souvenir="item?.souvenir ?? false"
+                    :stattrak="item?.stattrak ?? false"
+                    :rare="item?.rare ?? false"
+                    :genuine="item?.genuine ?? false"
+                    :market-hash-name="item.market_hash_name"
+                    @show="$emit('select', item.id)"
+                />
+            </template>
+            <template v-else>
+                <ItemVideo
+                    v-for="item in items"
+                    :id="item.id"
+                    :key="item.id"
+                    :name="item.name"
+                    :video="item.video"
+                    :market-hash-name="item.market_hash_name"
+                />
+            </template>
             <ItemsSkeleton v-if="loading" />
             <div
                 v-if="!loading"
@@ -44,10 +60,11 @@
 import { ref } from "vue"
 import { useScroll } from "@vueuse/core"
 import { vElementVisibility } from "@vueuse/components"
+import { Filter } from "../types"
 import SearchBar from "./SearchBar.vue"
 import ItemCard from "./ItemCard.vue"
+import ItemVideo from "./ItemVideo.vue"
 import ItemsSkeleton from "./ItemsSkeleton.vue"
-import { Filter } from "../types"
 
 withDefaults(
     defineProps<{
@@ -59,10 +76,12 @@ withDefaults(
         hasSelectedFilters?: boolean
         filters: Filter[]
         filtersValues: { [prop: string]: string[] }
+        isVideo?: boolean
     }>(),
     {
         hasFilters: false,
-        hasSelectedFilters: false
+        hasSelectedFilters: false,
+        isVideo: false
     }
 )
 

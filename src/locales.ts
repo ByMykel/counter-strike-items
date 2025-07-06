@@ -56,7 +56,10 @@ export const messages: {
         links_graffiti: "Graffiti",
         links_music_kits: "Music kits",
         links_keychains: "Keychains",
-        links_base_weapons: "Base weapons"
+        links_base_weapons: "Base weapons",
+        links_highlights: "Highlights",
+        filter_map: "Map",
+        filter_stage: "Stage"
     },
     "es-ES": {
         common_search: "Buscar...",
@@ -110,7 +113,10 @@ export const messages: {
         links_graffiti: "Grafitis",
         links_music_kits: "Kits de música",
         links_keychains: "Llaveros",
-        links_base_weapons: "Armas base"
+        links_base_weapons: "Armas base",
+        links_highlights: "Destacados",
+        filter_map: "Mapa",
+        filter_stage: "Etapa"
     },
     "es-MX": {
         common_search: "Buscar...",
@@ -165,7 +171,10 @@ export const messages: {
         links_graffiti: "Grafitis",
         links_music_kits: "Kits de música",
         links_keychains: "Llaveros",
-        links_base_weapons: "Armas base"
+        links_base_weapons: "Armas base",
+        links_highlights: "Destacados",
+        filter_map: "Mapa",
+        filter_stage: "Etapa"
     }
     // TODO: add more languages
 }
