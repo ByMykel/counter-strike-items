@@ -32,6 +32,15 @@ export default class HighlightsService {
                 })
             },
             {
+                prop: "tournament_player",
+                name: tLocal("filter_player"),
+                type: "multi-select",
+                options: generateOptions(items, {
+                    type: "fromProperty",
+                    property: "tournament_player"
+                })
+            },
+            {
                 prop: "map",
                 name: tLocal("filter_map"),
                 type: "multi-select",

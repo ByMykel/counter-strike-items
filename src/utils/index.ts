@@ -71,7 +71,9 @@ export function filterItems(
             includeScore: false,
             shouldSort: true,
             findAllMatches: true,
-            useExtendedSearch: true
+            useExtendedSearch: false,
+            ignoreLocation: true,
+            minMatchCharLength: 1
         })
 
         const searchResults = fuse.search(search)
