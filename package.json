@@ -15,7 +15,7 @@
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.2.0",
     "@vueuse/components": "^13.4.0",
-    "@vueuse/core": "^13.2.0",
+    "@vueuse/core": "^13.5.0",
     "apexcharts": "^4.4.0",
     "axios": "^1.10.0",
     "fuse.js": "^7.1.0",
