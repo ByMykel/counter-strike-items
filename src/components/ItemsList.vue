@@ -39,11 +39,9 @@
             <template v-else>
                 <ItemVideo
                     v-for="item in items"
-                    :id="item.id"
                     :key="item.id"
                     :name="item.name"
                     :video="item.video"
-                    :market-hash-name="item.market_hash_name"
                 />
             </template>
             <ItemsSkeleton v-if="loading" />
