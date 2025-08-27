@@ -1,5 +1,5 @@
 import axios from "axios"
-import sha1 from "sha1"
+import * as cheerio from "cheerio"
 import {
     STORAGE_KEY_EXCHANGE_RATES,
     STORAGE_KEY_EXCHANGE_RATES_LAST_FETCHED
@@ -17,14 +17,35 @@ export default class PriceService {
     async fetchItemPrice(
         marketHashName: string
     ): Promise<{ time: number; value: number; volume: number }[]> {
-        const endpoint = `https://raw.githubusercontent.com/ByMykel/counter-strike-price-tracker/main/static/pricehistory/${sha1(marketHashName)}.json`
-
+        const url = `https://corsproxy.io/?url=https://steamcommunity.com/market/listings/730/${encodeURI(marketHashName)}`
+        let html: string
         try {
-            const response = await axios.get(endpoint)
-            return response.data.splice(-20)
+            const response = await axios.get(url)
+            html = response.data
         } catch (error) {
             return []
         }
+        const $ = cheerio.load(html)
+        const scripts = $("script").get()
+        const lines =
+            (scripts[scripts.length - 1]?.children[0] as any)?.data?.split(
+                ";"
+            ) ?? []
+
+        const prices = lines.find((line: string) => line.includes("var line1="))
+
+        if (prices == null) {
+            return []
+        }
+
+        const priceData = prices.substring(prices.indexOf("var line1=") + 10)
+        return JSON.parse(priceData)
+            .map(([time, value, volume]: string[]) => ({
+                time: Date.parse(time),
+                value,
+                volume: parseInt(volume)
+            }))
+            .slice(-50)
     }
 
     async fetchExchangeRates() {

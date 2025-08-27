@@ -41,18 +41,18 @@ export const usePricesStore = defineStore("prices", () => {
     }
 
     function getItemSteamPriceInCurrency(
-        priceInEuros: number,
+        priceInUSD: number,
         currency: CurrencyCode
     ) {
-        if (priceInEuros === null) {
+        if (priceInUSD === null) {
             return null
         }
 
-        if (currency === "EUR") {
-            return `${currencySigns["EUR"]} ${parseFloat(priceInEuros.toFixed(2))}`
+        if (currency === "USD") {
+            return `${currencySigns["USD"]} ${parseFloat(priceInUSD.toFixed(2))}`
         }
 
-        const price = convertCurrency(priceInEuros, "EUR", currency)
+        const price = convertCurrency(priceInUSD, "USD", currency)
 
         if (!price) {
             return null

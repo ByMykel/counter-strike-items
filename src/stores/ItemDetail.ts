@@ -8,6 +8,7 @@ import { usePricesStore } from "./prices"
 import { getCurrentCurrency } from "../utils"
 
 export const useItemDetailStore = defineStore("item-detail", () => {
+    const priceService = new PriceService()
     const { convertCurrency } = usePricesStore()
 
     const items = ref<{ [key: string]: any }>({})
@@ -55,13 +56,13 @@ export const useItemDetailStore = defineStore("item-detail", () => {
         }
 
         if (selected.value.market_hash_name) {
-            const prices = await new PriceService().fetchItemPrice(
+            const prices = await priceService.fetchItemPrice(
                 selected.value.market_hash_name
             )
             const currency = getCurrentCurrency()
             selected.value.price_history = prices.map((item) => ({
                 ...item,
-                value: convertCurrency(item.value, "EUR", currency)
+                value: convertCurrency(item.value, "USD", currency)
             }))
         }
     }
