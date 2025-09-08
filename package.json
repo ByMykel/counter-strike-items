@@ -22,7 +22,7 @@
     "fuse.js": "^7.1.0",
     "lodash.sortby": "^4.7.0",
     "lodash.uniqby": "^4.7.0",
-    "petite-vue-i18n": "^11.1.11",
+    "petite-vue-i18n": "^11.1.12",
     "pinia": "^3.0.3",
     "vidstack": "^1.12.13",
     "vue": "^3.5.20",
