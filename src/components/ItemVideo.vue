@@ -17,7 +17,7 @@
             <!-- Loading skeleton -->
             <div
                 v-if="!imageLoaded"
-                class="absolute inset-0 bg-gray-700 rounded-md animate-pulse"
+                class="absolute inset-0 bg-black-300 rounded-md animate-pulse"
             />
 
             <!-- Play button overlay -->
