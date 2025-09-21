@@ -42,6 +42,7 @@
                     :key="item.id"
                     :name="item.name"
                     :video="item.video"
+                    :thumbnail="item.thumbnail"
                 />
             </template>
             <ItemsSkeleton v-if="loading" />
