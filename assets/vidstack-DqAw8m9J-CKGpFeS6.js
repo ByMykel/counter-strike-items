@@ -1,1 +1,0 @@
-import{k as i,v as s}from"./useTitle-DGC_5tDi.js";class a{#i;#t;constructor(t){this.#t=t}start(){i(this.#i)&&this.#s()}stop(){s(this.#i)&&window.cancelAnimationFrame(this.#i),this.#i=void 0}#s(){this.#i=window.requestAnimationFrame(()=>{i(this.#i)||(this.#t(),this.#s())})}}export{a as R};
