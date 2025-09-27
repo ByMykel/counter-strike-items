@@ -24,7 +24,7 @@
     "lodash.uniqby": "^4.7.0",
     "petite-vue-i18n": "^11.1.12",
     "pinia": "^3.0.3",
-    "vue": "^3.5.21",
+    "vue": "^3.5.22",
     "vue-eslint-parser": "^10.2.0",
     "vue-router": "^4.5.1",
     "vue3-apexcharts": "^1.5.2"
