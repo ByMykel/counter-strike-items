@@ -59,30 +59,30 @@ export default class StickersService {
                 })
             },
             {
-                prop: "tournament_event",
+                prop: "tournament",
                 name: tLocal("filter_tournament"),
                 type: "multi-select",
                 options: generateOptions(items, {
-                    type: "fromProperty",
-                    property: "tournament_event"
+                    type: "fromNestedSingleProperty",
+                    property: "tournament"
                 })
             },
             {
-                prop: "tournament_team",
+                prop: "team",
                 name: tLocal("filter_team"),
                 type: "multi-select",
                 options: generateOptions(items, {
-                    type: "fromProperty",
-                    property: "tournament_team"
+                    type: "fromNestedSingleProperty",
+                    property: "team"
                 })
             },
             {
-                prop: "tournament_player",
+                prop: "player",
                 name: tLocal("filter_player"),
                 type: "multi-select",
                 options: generateOptions(items, {
-                    type: "fromProperty",
-                    property: "tournament_player"
+                    type: "fromNestedSingleProperty",
+                    property: "player"
                 })
             }
         ]

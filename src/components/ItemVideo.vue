@@ -39,17 +39,15 @@
             </div>
         </div>
 
-        <media-player
+        <video
             v-if="shouldLoadVideo"
-            class="object-cover w-full h-full rounded-md flex items-center justify-center"
+            class="object-cover w-full h-full rounded-md"
             :src="video"
-            cross-origin
-            plays-inline
             autoplay
-        >
-            <media-provider />
-            <media-video-layout />
-        </media-player>
+            muted
+            playsinline
+            controls
+        />
 
         <div>
             <p
@@ -64,7 +62,6 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
-import "vidstack/bundle"
 
 defineProps<{
     name: string
