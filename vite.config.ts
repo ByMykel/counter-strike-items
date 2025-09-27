@@ -1,6 +1,5 @@
 import { defineConfig } from "vite"
 import vue from "@vitejs/plugin-vue"
-import { vite as vidstack } from "vidstack/plugins"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,6 +12,5 @@ export default defineConfig({
                 }
             }
         }),
-        vidstack()
     ]
 })
