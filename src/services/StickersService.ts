@@ -41,6 +41,15 @@ export default class StickersService {
                 })
             },
             {
+                prop: "collections",
+                name: tLocal("filter_collections"),
+                type: "multi-select",
+                options: generateOptions(items, {
+                    type: "fromNestedProperty",
+                    property: "collections"
+                })
+            },
+            {
                 prop: "type",
                 name: tLocal("filter_type"),
                 type: "multi-select",

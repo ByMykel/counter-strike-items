@@ -30,7 +30,16 @@ export default class KeychainsService {
                     type: "fromNestedSingleProperty",
                     property: "rarity"
                 })
-            }
+            },
+            {
+                prop: "collections",
+                name: tLocal("filter_collections"),
+                type: "multi-select",
+                options: generateOptions(items, {
+                    type: "fromNestedProperty",
+                    property: "collections"
+                })
+            },
         ]
 
         return {
