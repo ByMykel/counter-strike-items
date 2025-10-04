@@ -1,6 +1,7 @@
 <template>
     <div class="relative flex-1 w-full">
         <SearchBar
+            v-if="hasSearch"
             :query="search"
             :scrolled-down="y > 40"
             :total="itemsCount"
@@ -76,11 +77,13 @@ withDefaults(
         filters: Filter[]
         filtersValues: { [prop: string]: string[] }
         isVideo?: boolean
+        hasSearch?: boolean
     }>(),
     {
         hasFilters: false,
         hasSelectedFilters: false,
-        isVideo: false
+        isVideo: false,
+        hasSearch: true
     }
 )
 

@@ -44,6 +44,7 @@ export const messages: {
         filter_genuine: "Genuine",
         filter_marketable: "Marketable",
 
+        links_latest_items: "Latest items",
         links_all: "All",
         links_skins: "Skins",
         links_stickers: "Stickers",
@@ -101,6 +102,8 @@ export const messages: {
         filter_collections: "Colecciones",
         filter_genuine: "Genuine",
         filter_marketable: "Marketable",
+
+        links_latest_items: "Últimos cambios",
         links_all: "Todo",
         links_skins: "Skins",
         links_stickers: "Pegatinas",
@@ -159,6 +162,7 @@ export const messages: {
         filter_genuine: "Genuine",
         filter_marketable: "Marketable",
 
+        links_latest_items: "Últimos cambios",
         links_all: "Todo",
         links_skins: "Skins",
         links_stickers: "Pegatinas",

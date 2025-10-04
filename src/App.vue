@@ -113,7 +113,8 @@ import {
     UserGroupIcon,
     TagIcon,
     Square3Stack3DIcon,
-    VideoCameraIcon
+    VideoCameraIcon,
+    FaceSmileIcon
 } from "@heroicons/vue/24/outline"
 import { usePricesStore } from "./stores/prices"
 import { useItemDetailStore } from "./stores/ItemDetail"
@@ -125,7 +126,8 @@ const itemDetailStore = useItemDetailStore()
 const { t } = useI18n()
 
 const routes = [
-    { name: t("links_all"), path: "/", icon: HomeIcon },
+    { name: t("links_latest_items"), path: "/", icon: FaceSmileIcon },
+    { name: t("links_all"), path: "/home", icon: HomeIcon },
     { name: t("links_skins"), path: "/skins", icon: BanknotesIcon },
     { name: t("links_stickers"), path: "/stickers", icon: StarIcon },
     {

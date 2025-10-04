@@ -24,5 +24,5 @@ const itemsListStore = createListStore({
     query: new HomeService().query
 })("home")()
 
-useTitle("Counter-Strike items")
+useTitle("All - Counter-Strike items")
 </script>

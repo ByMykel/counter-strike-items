@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "lint": "eslint --fix src",
     "prettier": "prettier src --check --write",
-    "format": "npm run prettier && npm run lint"
+    "format": "npm run prettier && npm run lint",
+    "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",

@@ -39,7 +39,7 @@ export default class KeychainsService {
                     type: "fromNestedProperty",
                     property: "collections"
                 })
-            },
+            }
         ]
 
         return {

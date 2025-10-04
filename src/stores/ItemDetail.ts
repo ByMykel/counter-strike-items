@@ -9,6 +9,7 @@ import { getCurrentCurrency } from "../utils"
 
 export const useItemDetailStore = defineStore("item-detail", () => {
     const priceService = new PriceService()
+    const homeService = new HomeService()
     const { convertCurrency } = usePricesStore()
 
     const items = ref<{ [key: string]: any }>({})
@@ -71,7 +72,7 @@ export const useItemDetailStore = defineStore("item-detail", () => {
         selected.value = undefined
     }
 
-    new HomeService().getAllItems().then((newItems) => (items.value = newItems))
+    homeService.getAllItems().then((newItems) => (items.value = newItems))
 
     return {
         items,
