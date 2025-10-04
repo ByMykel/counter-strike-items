@@ -1,8 +1,5 @@
 <template>
-    <div
-        v-if="!loading"
-        class="w-full p-4 px-5 space-y-20 overflow-y-scroll h-screen"
-    >
+    <div class="w-full p-4 px-5 space-y-20 overflow-y-scroll h-screen">
         <div
             v-for="section in items"
             :key="section.title"
@@ -30,23 +27,28 @@
             <div
                 class="grid w-full gap-3 mx-auto items-grid-small md:items-grid"
             >
-                <ItemCard
-                    v-for="item in section.items"
-                    :id="item.id"
-                    :key="item.id"
-                    :name="item.name"
-                    :image="item.image"
-                    :souvenir="item?.souvenir ?? false"
-                    :stattrak="item?.stattrak ?? false"
-                    :rare="item?.rare ?? false"
-                    :genuine="item?.genuine ?? false"
-                    :market-hash-name="item.market_hash_name"
-                    @show="itemDetailStore.getItemDetails(item.id)"
+                <template v-if="!loading">
+                    <ItemCard
+                        v-for="item in section.items"
+                        :id="item.id"
+                        :key="item.id"
+                        :name="item.name"
+                        :image="item.image"
+                        :souvenir="item?.souvenir ?? false"
+                        :stattrak="item?.stattrak ?? false"
+                        :rare="item?.rare ?? false"
+                        :genuine="item?.genuine ?? false"
+                        :market-hash-name="item.market_hash_name"
+                        @show="itemDetailStore.getItemDetails(item.id)"
+                    />
+                </template>
+                <ItemsSkeleton
+                    v-else
+                    :number-items="section.items.length"
                 />
             </div>
         </div>
     </div>
-    <ItemsSkeleton v-else />
 </template>
 
 <script setup lang="ts">
@@ -70,7 +72,7 @@ const items = computed(() => {
                 itemDetailStore.items["collection-set-kc-ml-community-01"],
                 itemDetailStore.items["collection-set-community-2025"],
                 itemDetailStore.items["collection-set-sugarface2"]
-            ].filter(Boolean)
+            ]
         },
         {
             title: "Show Off",
@@ -79,7 +81,7 @@ const items = computed(() => {
             items: [
                 itemDetailStore.items["collection-set-community-36"],
                 itemDetailStore.items["crate-5176"]
-            ].filter(Boolean)
+            ]
         },
         {
             title: "Tonight's Forecast: Rain-cient",
@@ -96,50 +98,21 @@ const items = computed(() => {
                 itemDetailStore.items["music_kit-93"],
                 itemDetailStore.items["music_kit-94"],
                 itemDetailStore.items["music_kit-95"]
-            ].filter(Boolean)
+            ]
         },
         {
             title: "Season Two: Episode One",
             link: "https://www.counter-strike.net/newsentry/529852487375519751",
             date: "July 16, 2025",
             items: [
-                // itemDetailStore.items["collectible-5140"],
-                // itemDetailStore.items["collectible-5141"],
-                // itemDetailStore.items["collectible-5142"],
-                // itemDetailStore.items["collectible-5143"],
-                // itemDetailStore.items["collectible-5144"],
                 itemDetailStore.items["collectible-5145"],
-                // itemDetailStore.items["collectible-5146"],
-                // itemDetailStore.items["collectible-5147"],
-                // itemDetailStore.items["collectible-5148"],
-                // itemDetailStore.items["collectible-5149"],
                 itemDetailStore.items["collectible-5150"],
-                // itemDetailStore.items["collectible-5151"],
-                // itemDetailStore.items["collectible-5152"],
-                // itemDetailStore.items["collectible-5153"],
-                // itemDetailStore.items["collectible-5154"],
                 itemDetailStore.items["collectible-5155"],
-                // itemDetailStore.items["collectible-5156"],
-                // itemDetailStore.items["collectible-5157"],
-                // itemDetailStore.items["collectible-5158"],
-                // itemDetailStore.items["collectible-5159"],
                 itemDetailStore.items["collectible-5160"],
-                // itemDetailStore.items["collectible-5161"],
-                // itemDetailStore.items["collectible-5162"],
-                // itemDetailStore.items["collectible-5163"],
-                // itemDetailStore.items["collectible-5164"],
                 itemDetailStore.items["collectible-5165"],
-                // itemDetailStore.items["collectible-5166"],
-                // itemDetailStore.items["collectible-5167"],
-                // itemDetailStore.items["collectible-5168"],
-                // itemDetailStore.items["collectible-5169"],
                 itemDetailStore.items["collectible-5170"],
-                // itemDetailStore.items["collectible-5171"],
-                // itemDetailStore.items["collectible-5172"],
-                // itemDetailStore.items["collectible-5173"],
-                // itemDetailStore.items["collectible-5174"],
                 itemDetailStore.items["collectible-5175"]
-            ].filter(Boolean)
+            ]
         }
     ]
 })
