@@ -53,6 +53,7 @@ export const useItemDetailStore = defineStore("item-detail", () => {
             market_hash_name: item?.market_hash_name ?? "",
             price_history: [],
             variants,
+            related_collectibles: item?.related_collectibles ?? [],
             style: item?.style ?? null
         }
 

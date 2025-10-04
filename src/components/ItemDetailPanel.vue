@@ -58,7 +58,7 @@
                 >
             </div>
 
-            <div class="py-3 space-y-2">
+            <div class="py-3 pb-4 space-y-2">
                 <p
                     v-element-visibility="onNameVisibility"
                     class="col-span-8 text-white"
@@ -68,6 +68,7 @@
 
                 <!-- eslint-disable vue/no-v-html -->
                 <p
+                    v-if="selected.description"
                     class="text-sm text-black-100"
                     v-html="selected.description"
                 />
@@ -281,6 +282,12 @@
 
                 <ItemDetailList
                     :items="selected.variants"
+                    :selected-item-id="selected.id"
+                    @get-item-details="$emit('get-item-details', $event)"
+                />
+
+                <ItemDetailList
+                    :items="selected.related_collectibles"
                     :selected-item-id="selected.id"
                     @get-item-details="$emit('get-item-details', $event)"
                 />

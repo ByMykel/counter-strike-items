@@ -43,6 +43,87 @@ export default class HomeService {
             )
             .then((res) => res.data)
 
+        let collectibles = await axios
+            .get(
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/collectibles.json`
+            )
+            .then((res) => res.data)
+
+        const collectibleConfigs = [
+            {
+                type: "Tournament Finalist Trophy",
+                prefix: "#CSGO_CollectibleCoin_",
+                key: "tournamentFinalistTrophyByTournament"
+            },
+            {
+                type: "Old Pick'Em Trophy",
+                prefix: "#CSGO_CollectibleCoin_",
+                key: "OldPickEmTrophyByTournament"
+            },
+            {
+                type: "Fantasy Trophy",
+                prefix: "#CSGO_CollectibleCoin_",
+                key: "FantasyCoinByTournament"
+            },
+            {
+                type: "Operation Coin",
+                prefix: "#CSGO_Collectible_",
+                key: "operationCoinByOperation"
+            },
+            {
+                type: "Service Medal",
+                prefix: "#CSGO_Collectible_",
+                key: "serviceMedalByLevel"
+            },
+            {
+                type: "Pick'Em Coin",
+                prefix: "#CSGO_TournamentJournal_",
+                key: "PickEmCoinByTournament"
+            },
+            {
+                type: "Premier Season Coin",
+                prefix: "#CSGO_Collectible_",
+                key: "premierSeasonCoinBySeason"
+            }
+        ]
+
+        const groupedCollectibles = collectibleConfigs.reduce((acc, config) => {
+            acc[config.key] = collectibles.reduce(
+                (groupAcc: any, item: any) => {
+                    if (item.type !== config.type) return groupAcc
+
+                    const key = item.original.item_name
+                        .split(config.prefix)?.[1]
+                        ?.split("_")?.[0]
+
+                    if (!groupAcc[key]) {
+                        groupAcc[key] = []
+                    }
+
+                    groupAcc[key].push(item)
+                    return groupAcc
+                },
+                {}
+            )
+            return acc
+        }, {} as any)
+
+        Object.values(items).forEach((item: any) => {
+            if (!item.id.startsWith("collectible-")) return
+            items[item.id].related_collectibles = []
+
+            const config = collectibleConfigs.find((c) => c.type === item.type)
+            if (config) {
+                const key = item.original.item_name
+                    .split(config.prefix)?.[1]
+                    ?.split("_")?.[0]
+                if (key) {
+                    items[item.id].related_collectibles =
+                        groupedCollectibles[config.key][key]
+                }
+            }
+        })
+
         skins.forEach((item: any) => {
             const types = ["skin"]
 

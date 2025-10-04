@@ -15,6 +15,7 @@ export interface ItemDetail {
     price_history: { time: number; value: number | null; volume: number }[]
     variants?: variant[]
     style?: Style
+    related_collectibles?: Collectible[]
 }
 
 interface variant {
@@ -71,4 +72,10 @@ interface Style {
     id: string
     name: string
     url: string
+}
+
+interface Collectible {
+    id: string
+    name: string
+    image: string
 }
