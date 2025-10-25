@@ -136,6 +136,15 @@ export default class SkinService {
                 ]
             },
             {
+                prop: "phase",
+                name: tLocal("filter_phase"),
+                type: "multi-select",
+                options: generateOptions(items, {
+                    type: "fromProperty",
+                    property: "phase"
+                })
+            },
+            {
                 prop: "stattrak",
                 name: tLocal("filter_stattrak"),
                 type: "multi-select",

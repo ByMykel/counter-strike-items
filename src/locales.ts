@@ -43,6 +43,7 @@ export const messages: {
         filter_collections: "Collections",
         filter_genuine: "Genuine",
         filter_marketable: "Marketable",
+        filter_phase: "Phase",
 
         links_latest_items: "Latest items",
         links_all: "All",
@@ -102,6 +103,7 @@ export const messages: {
         filter_collections: "Colecciones",
         filter_genuine: "Genuine",
         filter_marketable: "Marketable",
+        filter_phase: "Fase",
 
         links_latest_items: "Últimos cambios",
         links_all: "Todo",
@@ -161,6 +163,7 @@ export const messages: {
         filter_collections: "Coleções",
         filter_genuine: "Genuíno",
         filter_marketable: "Comercializável",
+        filter_phase: "Fase",
 
         links_latest_items: "Últimos itens",
         links_all: "Todos",
@@ -220,6 +223,7 @@ export const messages: {
         filter_collections: "Коллекции",
         filter_genuine: "Подлинный",
         filter_marketable: "Торгуемый",
+        filter_phase: "Фаза",
 
         links_latest_items: "Последние предметы",
         links_all: "Все",
@@ -279,6 +283,7 @@ export const messages: {
         filter_collections: "收藏品",
         filter_genuine: "正版",
         filter_marketable: "可交易",
+        filter_phase: "阶段",
 
         links_latest_items: "最新物品",
         links_all: "全部",
