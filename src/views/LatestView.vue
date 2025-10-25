@@ -19,7 +19,7 @@
             <a
                 :href="section.link"
                 target="_blank"
-                class="text-sm text-white hover:underline flex items-center gap-2"
+                class="text-sm text-white hover:underline flex items-center gap-2 max-w-fit"
             >
                 <LinkIcon class="w-4 h-4" />Link to counter strike blog
             </a>
