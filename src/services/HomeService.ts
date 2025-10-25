@@ -6,26 +6,53 @@ import {
 } from "../utils/index"
 
 export default class HomeService {
-    async query({ search }: { search: string }) {
+    async query({
+        search,
+        filters
+    }: {
+        search: string
+        filters: { [prop: string]: string[] }
+    }) {
         const locale = getCurrentLocale()
-        let items: { name: string /* more properties */ }[] = await axios
-            .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/all.json`
-            )
-            .then((res) => Object.values(res.data))
+        let items: { name: string; image: string /* more properties */ }[] =
+            await axios
+                .get(
+                    `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/all.json`
+                )
+                .then((res) => Object.values(res.data))
 
-        if (search) {
-            return {
-                items: filterItems(items, search)
+        items = items.map((item) => ({
+            ...item,
+            cdn_image: !item.image?.includes("githubusercontent")
+        }))
+
+        const filterList = [
+            {
+                prop: "cdn_image",
+                name: "Valve's CDN image",
+                type: "multi-select",
+                options: [
+                    { id: "true", name: "Yes" },
+                    { id: "false", name: "No" }
+                ]
             }
-        }
+        ]
 
-        return {
-            // Return home items randomizated based on date.
-            items: shuffleArrayWithSeed(
+        let filteredItems = items
+        if (Object.keys(filters).length > 0) {
+            filteredItems = filterItems(items, search, filters)
+        } else if (search) {
+            filteredItems = filterItems(items, search)
+        } else {
+            filteredItems = shuffleArrayWithSeed(
                 items,
                 new Date().toISOString().slice(0, 10)
             )
+        }
+
+        return {
+            items: filteredItems,
+            filters: filterList
         }
     }
 
