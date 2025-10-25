@@ -21,6 +21,44 @@
 
         <div class="h-[calc(100vh-69px)] px-4 py-4 overflow-x-hidden">
             <div
+                v-if="isDebugMode"
+                class="p-3 bg-black-300 rounded-md mb-4"
+            >
+                <p class="text-sm font-semibold text-white mb-2">
+                    Debug
+                </p>
+                <dl class="space-y-2">
+                    <div>
+                        <dt class="text-sm font-semibold text-white">
+                            image_inventory
+                        </dt>
+                        <dd class="text-sm text-black-100 break-all">
+                            {{ selected.image_inventory || "N/A" }}
+                        </dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-semibold text-white">
+                            use valve's CDN image
+                        </dt>
+                        <dd class="text-sm text-black-100 break-all">
+                            {{
+                                selected.image.includes("githubusercontent")
+                                    ? "No"
+                                    : "Yes"
+                            }}
+                        </dd>
+                    </div>
+                    <div v-if="selected.image.includes('githubusercontent')">
+                        <dt class="text-sm font-semibold text-white">
+                            image
+                        </dt>
+                        <dd class="text-sm text-black-100 break-all">
+                            {{ selected.image || "N/A" }}
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+            <div
                 v-if="selected.specialNotes.length"
                 class="mb-4 space-y-3"
             >
@@ -305,6 +343,7 @@ import ItemsPriceChart from "../components/ItemsPriceChart.vue"
 import ItemDetailList from "../components/ItemDetailList.vue"
 import { useI18n } from "petite-vue-i18n"
 import { getCurrentCurrency, getCurrentLocaleFullName } from "../utils"
+import { useDebug } from "../composables/useDebug"
 
 const props = defineProps({
     selected: {
@@ -324,6 +363,7 @@ const { getPrice, getItemSteamPrice, getItemSteamPriceInCurrency } =
 const { t } = useI18n()
 
 const showItemName = ref(false)
+const { isDebugMode } = useDebug()
 
 const itemPrices = computed(() => {
     const steamPrice = getPrice(props.selected.market_hash_name)?.steam

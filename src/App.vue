@@ -9,7 +9,7 @@
                 >
                     <div class="flex items-center">
                         <img
-                            src="https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/econ/tools/casket_png.png"
+                            src="https://community.fastly.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGJG51EejH_XV0MGkITXE5AB094KtuwG0Exv1yMfkqXcCtvT_MPw5JPTKV2bDk7Z3sudtHSjr2w0ptCMWPT2u/330x192"
                             alt="counter-strike-items logo"
                             class="mr-2 h-7"
                         >
@@ -120,10 +120,14 @@ import { usePricesStore } from "./stores/prices"
 import { useItemDetailStore } from "./stores/ItemDetail"
 import ItemDetailPanel from "./components/ItemDetailPanel.vue"
 import { useI18n } from "petite-vue-i18n"
+import { useDebug } from "./composables/useDebug"
 
 const { fetchPrices } = usePricesStore()
 const itemDetailStore = useItemDetailStore()
 const { t } = useI18n()
+
+// Initialize debug mode globally
+useDebug()
 
 const routes = [
     { name: t("links_latest_items"), path: "/", icon: FaceSmileIcon },

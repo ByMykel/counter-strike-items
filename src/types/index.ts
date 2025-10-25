@@ -16,6 +16,7 @@ export interface ItemDetail {
     variants?: variant[]
     style?: Style
     related_collectibles?: Collectible[]
+    image_inventory: string
 }
 
 interface variant {
