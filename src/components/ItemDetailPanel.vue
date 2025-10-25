@@ -77,20 +77,10 @@
             </div>
 
             <div
-                class="relative bg-black-300/80 bg-[url('../img/graph-paper.svg')] rounded-md group"
+                class="relative bg-black-300/80 bg-[url('../img/graph-paper.svg')] rounded-md"
             >
-                <ItemsPriceChart
-                    v-if="selected.market_hash_name"
-                    class="absolute opacity-0 top-0 right-0 h-[16rem] left-0 group-hover:opacity-100 duration-200 transition-all rounded-md"
-                    :price-history="selected.price_history"
-                />
                 <img
-                    class="object-scale-down w-full h-[16rem] duration-200 transition-all relative z-[1]"
-                    :class="{
-                        'p-2': !selected.id.includes('agent-'),
-                        'group-hover:pointer-events-none group-hover:opacity-0':
-                            selected.market_hash_name
-                    }"
+                    class="object-scale-down w-full h-[16rem] p-2"
                     :src="selected.image"
                     :alt="selected.name"
                 >
@@ -138,28 +128,6 @@
                     {{ $t("common_scm") }}
                 </a>
 
-                <div
-                    v-if="
-                        getPrice(selected.market_hash_name)?.steam &&
-                            !selected.id.includes('skin') &&
-                            itemPrices.length
-                    "
-                    class="text-center divide-y rounded-md bg-black-300 text-black-100 divide-black-200/10"
-                >
-                    <div
-                        v-for="price of itemPrices"
-                        :key="price.name"
-                        class="grid grid-cols-2 p-3"
-                    >
-                        <div class="font-semibold text-left text-black-100">
-                            {{ price.name }}
-                        </div>
-                        <div class="text-right text-white">
-                            {{ price.price }}
-                        </div>
-                    </div>
-                </div>
-
                 <template v-if="selected.wears.length">
                     <div
                         class="overflow-hidden divide-y-4 rounded-md divide-black-200/10"
@@ -187,10 +155,6 @@
                                         <span
                                             class="font-bold text-black-100"
                                         >{{ item.name }}</span>
-                                    </p>
-
-                                    <p class="text-white">
-                                        {{ getItemSteamPriceByWear(index) }}
                                     </p>
                                 </div>
                             </button>
@@ -224,12 +188,6 @@
                                             class="font-bold text-black-100"
                                         >{{ item.name }}</span>
                                     </p>
-
-                                    <p class="text-white">
-                                        {{
-                                            getItemSteamPriceByWear(index, "st")
-                                        }}
-                                    </p>
                                 </div>
                             </button>
                         </div>
@@ -261,12 +219,6 @@
                                         <span
                                             class="font-bold text-black-100"
                                         >{{ item.name }}</span>
-                                    </p>
-
-                                    <p class="text-white">
-                                        {{
-                                            getItemSteamPriceByWear(index, "so")
-                                        }}
                                     </p>
                                 </div>
                             </button>
@@ -335,14 +287,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue"
+import { ref } from "vue"
 import { XMarkIcon, LinkIcon } from "@heroicons/vue/24/outline"
 import { vElementVisibility } from "@vueuse/components"
-import { usePricesStore } from "../stores/prices"
-import ItemsPriceChart from "../components/ItemsPriceChart.vue"
 import ItemDetailList from "../components/ItemDetailList.vue"
-import { useI18n } from "petite-vue-i18n"
-import { getCurrentCurrency, getCurrentLocaleFullName } from "../utils"
+import { getCurrentLocaleFullName } from "../utils"
 import { useDebug } from "../composables/useDebug"
 
 const props = defineProps({
@@ -358,57 +307,8 @@ const props = defineProps({
 
 defineEmits(["delete-item", "get-item-details"])
 
-const { getPrice, getItemSteamPrice, getItemSteamPriceInCurrency } =
-    usePricesStore()
-const { t } = useI18n()
-
 const showItemName = ref(false)
 const { isDebugMode } = useDebug()
-
-const itemPrices = computed(() => {
-    const steamPrice = getPrice(props.selected.market_hash_name)?.steam
-    const currency = getCurrentCurrency()
-
-    if (!steamPrice) return []
-
-    return [
-        steamPrice.last_ever && {
-            name: t("common_last_ever"),
-            price: getItemSteamPriceInCurrency(
-                parseFloat(steamPrice.last_ever),
-                currency
-            )
-        },
-        steamPrice.last_24h && {
-            name: t("common_last_24h"),
-            price: getItemSteamPriceInCurrency(
-                parseFloat(steamPrice.last_24h),
-                currency
-            )
-        },
-        steamPrice.last_7d && {
-            name: t("common_last_7d"),
-            price: getItemSteamPriceInCurrency(
-                parseFloat(steamPrice.last_7d),
-                currency
-            )
-        },
-        steamPrice.last_30d && {
-            name: t("common_last_30d"),
-            price: getItemSteamPriceInCurrency(
-                parseFloat(steamPrice.last_30d),
-                currency
-            )
-        },
-        steamPrice.last_90d && {
-            name: t("common_last_90d"),
-            price: getItemSteamPriceInCurrency(
-                parseFloat(steamPrice.last_90d),
-                currency
-            )
-        }
-    ].filter(Boolean)
-})
 
 function onNameVisibility(state: boolean) {
     showItemName.value = !state
@@ -429,31 +329,5 @@ function generateIdByWear(index: number, type: string = "") {
     }
 
     return ""
-}
-
-function getItemSteamPriceByWear(index: number, type: string = "") {
-    const id = props.selected.id.split("_")[0]
-    let price = null
-
-    if (!type) {
-        const name = props.items[`${id}_${index}`].market_hash_name
-        price = getItemSteamPrice(name)
-    }
-
-    if (type === "so") {
-        const name = props.items[`${id}_${index}_so`].market_hash_name
-        price = getItemSteamPrice(name)
-    }
-
-    if (type === "st") {
-        const name = props.items[`${id}_${index}_st`].market_hash_name
-        price = getItemSteamPrice(name)
-    }
-
-    if (price) {
-        return getItemSteamPriceInCurrency(price, getCurrentCurrency())
-    } else {
-        return ""
-    }
 }
 </script>

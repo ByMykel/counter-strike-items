@@ -84,64 +84,6 @@
                         </ListboxOptions>
                     </div>
                 </Listbox>
-
-                <Listbox
-                    :model-value="selectedCurrency"
-                    @update:model-value="changeCurrency($event.id)"
-                >
-                    <div class="mt-1">
-                        <ListboxButton
-                            class="p-1 rounded-md hover:bg-black-200"
-                        >
-                            <CurrencyDollarIcon
-                                class="w-6 h-6 text-black-100"
-                            />
-                        </ListboxButton>
-
-                        <ListboxOptions
-                            class="absolute mt-1 right-0 max-h-60 !w-[250px] overflow-auto rounded-md bg-black-400 py-1 text-base shadow-lg ring-1 ring-white/5 focus:outline-none sm:text-sm"
-                        >
-                            <ListboxOption
-                                v-for="currency in currencies"
-                                v-slot="{ active, selected }"
-                                :key="currency.name"
-                                :value="currency"
-                                as="template"
-                            >
-                                <li
-                                    :class="[
-                                        active
-                                            ? 'bg-[#ff5e65]/10 text-[#ff5e65]'
-                                            : 'text-white',
-                                        selected
-                                            ? 'bg-[#ff5e65]/10 !text-[#ff5e65]'
-                                            : '',
-                                        'relative cursor-default select-none py-2 px-4 flex items-center gap-2'
-                                    ]"
-                                >
-                                    <span
-                                        :class="[
-                                            selected
-                                                ? 'font-medium'
-                                                : 'font-normal',
-                                            'block truncate mr-3'
-                                        ]"
-                                    >
-                                        {{ currency.symbol }}
-                                    </span>
-                                    <span
-                                        :class="[
-                                            selected
-                                                ? 'font-medium'
-                                                : 'font-normal',
-                                            'block truncate'
-                                        ]"
-                                    >{{ currency.name }}</span>
-                                </li>
-                            </ListboxOption>
-                        </ListboxOptions>
-                    </div>
-                </Listbox>
             </div>
             <input
                 v-model="query"
@@ -191,7 +133,6 @@ import {
     MagnifyingGlassIcon,
     FunnelIcon,
     LanguageIcon,
-    CurrencyDollarIcon,
     XMarkIcon
 } from "@heroicons/vue/24/outline"
 import {
@@ -200,13 +141,7 @@ import {
     ListboxOptions,
     ListboxOption
 } from "@headlessui/vue"
-import {
-    changeCurrency,
-    changeLocale,
-    getCurrentCurrency,
-    getCurrentLocale
-} from "../utils"
-import { currencies } from "../constants/currency"
+import { changeLocale, getCurrentLocale } from "../utils"
 import { languages } from "../types/locale"
 import { Filter } from "../types"
 
@@ -234,9 +169,5 @@ watch(
 
 const selectedLanguage = ref(
     languages.find(({ id }) => id === getCurrentLocale())
-)
-
-const selectedCurrency = ref(
-    currencies.find(({ id }) => id === getCurrentCurrency())
 )
 </script>

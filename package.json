@@ -17,7 +17,6 @@
     "@heroicons/vue": "^2.2.0",
     "@vueuse/components": "^13.9.0",
     "@vueuse/core": "^13.9.0",
-    "apexcharts": "^4.4.0",
     "axios": "^1.12.2",
     "cheerio": "^1.1.2",
     "fuse.js": "^7.1.0",
@@ -27,8 +26,7 @@
     "pinia": "^3.0.3",
     "vue": "^3.5.22",
     "vue-eslint-parser": "^10.2.0",
-    "vue-router": "^4.6.3",
-    "vue3-apexcharts": "^1.5.2"
+    "vue-router": "^4.6.3"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.10",

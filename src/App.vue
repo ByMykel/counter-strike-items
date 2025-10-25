@@ -116,13 +116,11 @@ import {
     VideoCameraIcon,
     FaceSmileIcon
 } from "@heroicons/vue/24/outline"
-import { usePricesStore } from "./stores/prices"
 import { useItemDetailStore } from "./stores/ItemDetail"
 import ItemDetailPanel from "./components/ItemDetailPanel.vue"
 import { useI18n } from "petite-vue-i18n"
 import { useDebug } from "./composables/useDebug"
 
-const { fetchPrices } = usePricesStore()
 const itemDetailStore = useItemDetailStore()
 const { t } = useI18n()
 
@@ -154,6 +152,4 @@ const routes = [
     },
     { name: t("links_highlights"), path: "/highlights", icon: VideoCameraIcon }
 ]
-
-fetchPrices()
 </script>

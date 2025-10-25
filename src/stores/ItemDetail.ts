@@ -3,14 +3,9 @@ import { defineStore } from "pinia"
 
 import { ItemDetail } from "../types/index"
 import HomeService from "../services/HomeService"
-import PriceService from "../services/PriceService"
-import { usePricesStore } from "./prices"
-import { getCurrentCurrency } from "../utils"
 
 export const useItemDetailStore = defineStore("item-detail", () => {
-    const priceService = new PriceService()
     const homeService = new HomeService()
-    const { convertCurrency } = usePricesStore()
 
     const items = ref<{ [key: string]: any }>({})
     const selected = ref<ItemDetail>()
@@ -56,17 +51,6 @@ export const useItemDetailStore = defineStore("item-detail", () => {
             related_collectibles: item?.related_collectibles ?? [],
             style: item?.style ?? null,
             image_inventory: item?.original?.image_inventory ?? ""
-        }
-
-        if (selected.value.market_hash_name) {
-            const prices = await priceService.fetchItemPrice(
-                selected.value.market_hash_name
-            )
-            const currency = getCurrentCurrency()
-            selected.value.price_history = prices.map((item) => ({
-                ...item,
-                value: convertCurrency(item.value, "USD", currency)
-            }))
         }
     }
 

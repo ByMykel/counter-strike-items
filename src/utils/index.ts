@@ -1,14 +1,8 @@
 import Fuse from "fuse.js"
 import uniqBy from "lodash.uniqby"
 import { messages } from "../locales"
-import {
-    localeToCurrencyMap,
-    SupportedLocale,
-    supportedLocales
-} from "../types/locale"
+import { SupportedLocale, supportedLocales } from "../types/locale"
 import { STORAGE_KEY_LOCALE } from "../constants/locale"
-import { CurrencyCode } from "../types/currency"
-import { currencies, STORAGE_KEY_CURRENCY } from "../constants/currency"
 
 function hashString(str: string) {
     let hash = 0
@@ -244,21 +238,6 @@ export function detectLocale(): SupportedLocale {
 
 export function changeLocale(locale: SupportedLocale) {
     localStorage.setItem(STORAGE_KEY_LOCALE, locale)
-    location.reload()
-}
-
-export function getCurrentCurrency(): CurrencyCode {
-    const storedCurrency = localStorage.getItem(
-        STORAGE_KEY_CURRENCY
-    ) as CurrencyCode | null
-    if (storedCurrency && currencies.find(({ id }) => id === storedCurrency)) {
-        return storedCurrency
-    }
-    return localeToCurrencyMap[getCurrentLocale()]
-}
-
-export function changeCurrency(currency: CurrencyCode) {
-    localStorage.setItem(STORAGE_KEY_CURRENCY, currency)
     location.reload()
 }
 
