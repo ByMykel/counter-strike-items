@@ -13,6 +13,7 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@csfloat/cs2-inspect-serializer": "^1.0.1",
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.2.0",
     "@vueuse/components": "^13.9.0",

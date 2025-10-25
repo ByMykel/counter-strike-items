@@ -20,44 +20,10 @@
         </div>
 
         <div class="h-[calc(100vh-69px)] px-4 py-4 overflow-x-hidden">
-            <div
-                v-if="isDebugMode"
-                class="p-3 bg-black-300 rounded-md mb-4"
-            >
-                <p class="text-sm font-semibold text-white mb-2">
-                    Debug
-                </p>
-                <dl class="space-y-2">
-                    <div>
-                        <dt class="text-sm font-semibold text-white">
-                            image_inventory
-                        </dt>
-                        <dd class="text-sm text-black-100 break-all">
-                            {{ selected.image_inventory || "N/A" }}
-                        </dd>
-                    </div>
-                    <div>
-                        <dt class="text-sm font-semibold text-white">
-                            use valve's CDN image
-                        </dt>
-                        <dd class="text-sm text-black-100 break-all">
-                            {{
-                                selected.image.includes("githubusercontent")
-                                    ? "No"
-                                    : "Yes"
-                            }}
-                        </dd>
-                    </div>
-                    <div v-if="selected.image.includes('githubusercontent')">
-                        <dt class="text-sm font-semibold text-white">
-                            image
-                        </dt>
-                        <dd class="text-sm text-black-100 break-all">
-                            {{ selected.image || "N/A" }}
-                        </dd>
-                    </div>
-                </dl>
-            </div>
+            <DebugPanel
+                :selected="selected"
+                :raw-item-data="items[selected.id]"
+            />
             <div
                 v-if="selected.specialNotes.length"
                 class="mb-4 space-y-3"
@@ -113,20 +79,37 @@
             </div>
 
             <div class="flex flex-col gap-5">
-                <a
-                    v-if="selected.market_hash_name"
-                    :href="`https://steamcommunity.com/market/listings/730/${selected.market_hash_name}?l=${getCurrentLocaleFullName()}`"
-                    class="relative p-3 text-center rounded-md bg-black-300 text-black-100"
-                    target="_blank"
-                >
-                    <div
-                        class="absolute top-0 bottom-0 left-0 flex items-center px-3"
+                <div class="flex flex-col gap-2">
+                    <a
+                        v-if="selected.market_hash_name"
+                        :href="`https://steamcommunity.com/market/listings/730/${selected.market_hash_name}?l=${getCurrentLocaleFullName()}`"
+                        class="relative p-3 text-center rounded-md bg-black-300 text-black-100"
+                        target="_blank"
                     >
-                        <LinkIcon class="w-6 h-6 text-gray-500" />
-                    </div>
+                        <div
+                            class="absolute top-0 bottom-0 left-0 flex items-center px-3"
+                        >
+                            <LinkIcon class="w-6 h-6 text-gray-500" />
+                        </div>
 
-                    {{ $t("common_scm") }}
-                </a>
+                        {{ $t("common_scm") }}
+                    </a>
+
+                    <a
+                        v-if="inspectLink"
+                        :href="inspectLink"
+                        class="relative p-3 text-center rounded-md bg-black-300 text-black-100"
+                        target="_blank"
+                    >
+                        <div
+                            class="absolute top-0 bottom-0 left-0 flex items-center px-3"
+                        >
+                            <EyeIcon class="w-6 h-6 text-gray-500" />
+                        </div>
+
+                        Inspect in Game
+                    </a>
+                </div>
 
                 <template v-if="selected.wears.length">
                     <div
@@ -287,12 +270,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
-import { XMarkIcon, LinkIcon } from "@heroicons/vue/24/outline"
+import { ref, computed } from "vue"
+import { XMarkIcon, LinkIcon, EyeIcon } from "@heroicons/vue/24/outline"
 import { vElementVisibility } from "@vueuse/components"
 import ItemDetailList from "../components/ItemDetailList.vue"
+import DebugPanel from "../components/DebugPanel.vue"
 import { getCurrentLocaleFullName } from "../utils"
-import { useDebug } from "../composables/useDebug"
+import { useInspect } from "../composables/useInspect"
 
 const props = defineProps({
     selected: {
@@ -308,11 +292,16 @@ const props = defineProps({
 defineEmits(["delete-item", "get-item-details"])
 
 const showItemName = ref(false)
-const { isDebugMode } = useDebug()
 
 function onNameVisibility(state: boolean) {
     showItemName.value = !state
 }
+
+// Use the inspect composable
+const { inspectLink } = useInspect(
+    computed(() => props.selected),
+    computed(() => props.items[props.selected.id])
+)
 
 function generateIdByWear(index: number, type: string = "") {
     const id = props.selected.id.split("_")[0]
