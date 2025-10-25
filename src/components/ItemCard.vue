@@ -7,7 +7,11 @@
         >
             <img
                 class="object-contain w-full pointer-events-none h-full py-4 rounded-md bg-black-300/80 bg-[url('../img/graph-paper.svg')]"
-                :class="{ 'pb-0': id.includes('agent-') }"
+                :class="{
+                    'pb-0': id.includes('agent-'),
+                    'border-2 border-yellow-500':
+                        isDebugMode && image.includes('githubusercontent')
+                }"
                 :src="image"
                 :alt="name"
             >
@@ -49,6 +53,8 @@
 </template>
 
 <script setup lang="ts">
+import { useDebug } from "../composables/useDebug"
+
 defineProps<{
     id: string
     name: string
@@ -61,4 +67,6 @@ defineProps<{
 }>()
 
 defineEmits(["show"])
+
+const { isDebugMode } = useDebug()
 </script>
