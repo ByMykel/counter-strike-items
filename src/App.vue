@@ -95,6 +95,30 @@
             </div>
         </div>
     </div>
+
+    <!-- Debug Mode Label -->
+    <Transition
+        name="debug-slide"
+        enter-active-class="transition-transform duration-300 ease-out"
+        leave-active-class="transition-transform duration-300 ease-in"
+        enter-from-class="transform translate-y-full"
+        enter-to-class="transform translate-y-0"
+        leave-from-class="transform translate-y-0"
+        leave-to-class="transform translate-y-full"
+    >
+        <div
+            v-if="isDebugMode"
+            class="fixed bottom-4 left-1/2 transform -translate-x-1/2 px-3 py-1 bg-yellow-500 text-white text-sm font-semibold rounded-md shadow-md z-50 flex items-center gap-2"
+        >
+            <span>DEBUG MODE ENABLED</span>
+            <button
+                class="px-2 py-0.5 bg-yellow-600 hover:bg-yellow-700 text-white text-xs rounded transition-colors"
+                @click="isDebugMode = false"
+            >
+                Disable
+            </button>
+        </div>
+    </Transition>
 </template>
 
 <script setup lang="ts">
@@ -125,7 +149,7 @@ const itemDetailStore = useItemDetailStore()
 const { t } = useI18n()
 
 // Initialize debug mode globally
-useDebug()
+const { isDebugMode } = useDebug()
 
 const routes = [
     { name: t("links_latest_items"), path: "/", icon: FaceSmileIcon },
