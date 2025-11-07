@@ -163,6 +163,29 @@ export default class HomeService {
             }
 
             types.forEach((type) => {
+                // Vanilla skins don't have a wear
+                if (item.id.startsWith("skin-vanilla")) {
+                    items[item.id] = {
+                        ...items[item.id],
+                        crates: item.crates,
+                        collections: item.collections,
+                        wears: item.wears,
+                        skin_souvenir: item.souvenir,
+                        skin_stattrak: item.stattrak
+                    }
+
+                    if (type === "skin_stattrak") {
+                        items[`${item.id}_st`] = {
+                            ...items[`${item.id}_st`],
+                            crates: item.crates,
+                            collections: item.collections,
+                            wears: item.wears,
+                            skin_souvenir: item.souvenir,
+                            skin_stattrak: item.stattrak
+                        }
+                    }
+                }
+
                 ;(item?.wears ?? []).forEach((_: any, index: number) => {
                     if (type === "skin_stattrak") {
                         items[`${item.id}_${index}_st`] = {

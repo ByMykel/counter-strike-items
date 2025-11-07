@@ -12,26 +12,23 @@ interface RawItemData {
     paint_index?: string
     wear?: { id: string }
     rarity?: { id: string }
+    stattrak?: boolean
 }
 
 // Inspect link generators for different item types
 const inspectGenerators = {
     skin: (_item: InspectableItem, rawItem: RawItemData) => {
-        if (
-            !rawItem.weapon?.weapon_id ||
-            !rawItem.paint_index ||
-            !rawItem.wear?.id ||
-            !rawItem.rarity?.id
-        ) {
+        if (!rawItem.weapon?.weapon_id || !rawItem.rarity?.id) {
             return null
         }
 
         return {
             // TODO: some attributes are missing, for example quality
             defindex: rawItem.weapon.weapon_id,
-            paintindex: parseInt(rawItem.paint_index),
-            paintwear: getWearValue(rawItem.wear.id),
+            paintindex: rawItem.paint_index ? parseInt(rawItem.paint_index) : 0,
+            paintwear: rawItem.wear ? getWearValue(rawItem.wear.id) : 0.0001,
             rarity: getRarityValue(rawItem.rarity.id),
+            quality: rawItem.stattrak ? 9 : undefined, // 9 = StatTrak™
             stickers: [],
             keychains: []
         }
