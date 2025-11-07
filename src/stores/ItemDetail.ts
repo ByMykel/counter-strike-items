@@ -14,13 +14,13 @@ export const useItemDetailStore = defineStore("item-detail", () => {
         if (!Object.keys(items.value).length) return
 
         const item = items.value[id]
-        
+
         // Check if item exists before accessing its properties
         if (!item) {
             console.warn(`Item with id "${id}" not found`)
             return
         }
-        
+
         let variants: {
             id: string
             name: string

@@ -115,7 +115,10 @@
                     <div
                         class="overflow-hidden divide-y-4 rounded-md divide-black-200/10"
                     >
-                        <div class="divide-y bg-black-300 divide-black-200/10">
+                        <div
+                            v-if="hasNormalWears"
+                            class="divide-y bg-black-300 divide-black-200/10"
+                        >
                             <button
                                 v-for="(item, index) of selected.wears"
                                 :key="item.id"
@@ -228,12 +231,7 @@
 
                 <ItemDetailList
                     :items="selected.contains"
-                    @get-item-details="
-                        $emit(
-                            'get-item-details',
-                            $event.includes('skin') ? `${$event}_0` : $event
-                        )
-                    "
+                    @get-item-details="getItemDetails($event)"
                 />
 
                 <ItemDetailList
@@ -245,12 +243,7 @@
                         })
                     "
                     :toggle-text-displayed="$t('common_hide_rare')"
-                    @get-item-details="
-                        $emit(
-                            'get-item-details',
-                            $event.includes('skin') ? `${$event}_0` : $event
-                        )
-                    "
+                    @get-item-details="getItemDetails($event)"
                 />
 
                 <ItemDetailList
@@ -289,9 +282,18 @@ const props = defineProps({
     }
 })
 
-defineEmits(["delete-item", "get-item-details"])
+const emit = defineEmits(["delete-item", "get-item-details"])
 
 const showItemName = ref(false)
+
+const hasNormalWears = computed(() => {
+    // MP5-SD | Lab Rats is the only skin that has no normal wears only souvenir
+    if (props.selected.id.startsWith("skin-e73d6e7e9004")) {
+        return false
+    }
+
+    return true
+})
 
 function onNameVisibility(state: boolean) {
     showItemName.value = !state
@@ -318,5 +320,14 @@ function generateIdByWear(index: number, type: string = "") {
     }
 
     return ""
+}
+
+function getItemDetails(id: string) {
+    if (id.startsWith("skin-vanilla")) {
+        emit("get-item-details", id)
+        return
+    }
+
+    emit("get-item-details", id.includes("skin") ? `${id}_0` : id)
 }
 </script>
