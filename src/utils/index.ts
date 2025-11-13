@@ -229,9 +229,6 @@ export function detectLocale(): SupportedLocale {
         if (supportedLocales.includes(lang as SupportedLocale)) {
             return lang as SupportedLocale
         }
-        if (lang.startsWith("es-")) {
-            return "es-MX"
-        }
     }
     return "en" // Default fallback
 }

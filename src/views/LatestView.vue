@@ -64,6 +64,38 @@ const itemDetailStore = useItemDetailStore()
 const items = computed(() => {
     return [
         {
+            title: "The Starladder Budapest Major 2025",
+            link: "https://www.counter-strike.net/newsentry/578276333072682038",
+            date: "November 12, 2025",
+            items: [
+                itemDetailStore.items["sticker_slab-9495"],
+                itemDetailStore.items["sticker_slab-9692"],
+
+                itemDetailStore.items["collectible-5226"],
+                itemDetailStore.items["collectible-5213"],
+                itemDetailStore.items["crate-5216"],
+                itemDetailStore.items["crate-5217"],
+                itemDetailStore.items["crate-5218"],
+                itemDetailStore.items["crate-5230"],
+                itemDetailStore.items["crate-5231"],
+                itemDetailStore.items["crate-5232"],
+                itemDetailStore.items["crate-5233"],
+
+                itemDetailStore.items["crate-5219_highlight"],
+                itemDetailStore.items["crate-5219"],
+                itemDetailStore.items["crate-5220_highlight"],
+                itemDetailStore.items["crate-5220"],
+                itemDetailStore.items["crate-5222_highlight"],
+                itemDetailStore.items["crate-5222"],
+                itemDetailStore.items["crate-5223_highlight"],
+                itemDetailStore.items["crate-5223"],
+                itemDetailStore.items["crate-5224_highlight"],
+                itemDetailStore.items["crate-5224"],
+                itemDetailStore.items["crate-5225_highlight"],
+                itemDetailStore.items["crate-5225"]
+            ]
+        },
+        {
             title: "Community Maps, Charms, and More",
             link: "https://www.counter-strike.net/newsentry/498333631688738072",
             date: "October 2, 2025",
