@@ -77,6 +77,11 @@ const router = createRouter({
             path: "/highlights",
             name: "highlights",
             component: () => import("../views/HighlightsView.vue")
+        },
+        {
+            path: "/matrix",
+            name: "matrix",
+            component: () => import("../views/SpecialItemsMatrixView.vue")
         }
     ]
 })

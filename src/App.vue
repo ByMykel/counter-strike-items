@@ -1,42 +1,14 @@
 <template>
     <div class="flex flex-row h-dvh">
         <div
+            v-if="showSidebar"
             class="border-r-2 w-14 shrink-0 bg-black-400 lg:w-72 border-black-300"
         >
             <div class="flex flex-col h-full">
                 <div
                     class="hidden lg:flex items-center w-full h-[69px] border-b-2 border-black-300 px-4 sticky top-0 text-black-100 shrink-0"
                 >
-                    <div class="flex items-center">
-                        <img
-                            src="https://community.fastly.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGJG51EejH_XV0MGkITXE5AB094KtuwG0Exv1yMfkqXcCtvT_MPw5JPTKV2bDk7Z3sudtHSjr2w0ptCMWPT2u/330x192"
-                            alt="counter-strike-items logo"
-                            class="mr-2 h-7"
-                        >
-                        <div>
-                            <p
-                                class="block text-base font-semibold leading-none tracking-wider text-[#ff5e65]"
-                            >
-                                counter-strike-items
-                            </p>
-                            <div
-                                class="text-xs text-left text-black-100 leading-none tracking-wide mt-[0.2rem]"
-                            >
-                                by
-                                <a
-                                    href="https://github.com/ByMykel"
-                                    target="_blank"
-                                    class="transition hover:text-white"
-                                >ByMykel</a>
-                                on
-                                <a
-                                    href="https://github.com/ByMykel/counter-strike-items"
-                                    target="_blank"
-                                    class="transition hover:text-white"
-                                >github</a>
-                            </div>
-                        </div>
-                    </div>
+                    <AppBranding />
                 </div>
                 <nav class="flex-1 px-1 py-5 lg:overflow-y-auto">
                     <ul
@@ -82,9 +54,9 @@
                 </nav>
             </div>
         </div>
-        <div class="w-full grow">
-            <div class="flex flex-row">
-                <RouterView />
+        <div class="w-full grow min-w-0 flex-1 min-h-0">
+            <div class="flex flex-row min-w-0 h-full">
+                <RouterView class="min-w-0 flex-1 h-full" />
                 <ItemDetailPanel
                     v-if="itemDetailStore.selected"
                     :selected="itemDetailStore.selected"
@@ -122,7 +94,8 @@
 </template>
 
 <script setup lang="ts">
-import { RouterView } from "vue-router"
+import { computed } from "vue"
+import { RouterView, useRoute } from "vue-router"
 import {
     ArchiveBoxIcon,
     BanknotesIcon,
@@ -138,21 +111,32 @@ import {
     TagIcon,
     Square3Stack3DIcon,
     VideoCameraIcon,
-    FaceSmileIcon
+    FaceSmileIcon,
+    TableCellsIcon
 } from "@heroicons/vue/24/outline"
 import { useItemDetailStore } from "./stores/ItemDetail"
 import ItemDetailPanel from "./components/ItemDetailPanel.vue"
+import AppBranding from "./components/AppBranding.vue"
 import { useI18n } from "petite-vue-i18n"
 import { useDebug } from "./composables/useDebug"
 
 const itemDetailStore = useItemDetailStore()
 const { t } = useI18n()
+const route = useRoute()
 
 // Initialize debug mode globally
 const { isDebugMode } = useDebug()
 
+// Hide sidebar on special items matrix page
+const showSidebar = computed(() => route.path !== "/matrix")
+
 const routes = [
     { name: t("links_latest_items"), path: "/", icon: FaceSmileIcon },
+    {
+        name: t("links_special_items_matrix"),
+        path: "/matrix",
+        icon: TableCellsIcon
+    },
     { name: t("links_all"), path: "/home", icon: HomeIcon },
     { name: t("links_skins"), path: "/skins", icon: BanknotesIcon },
     { name: t("links_stickers"), path: "/stickers", icon: StarIcon },

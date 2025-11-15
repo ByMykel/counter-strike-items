@@ -178,4 +178,12 @@ export default class SkinService {
             filters: filterList
         }
     }
+
+    async loadSkins(): Promise<any[]> {
+        const locale = getCurrentLocale()
+        const response = await axios.get(
+            `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/skins.json`
+        )
+        return response.data
+    }
 }

@@ -60,6 +60,7 @@ export const messages: {
         links_keychains: "Keychains",
         links_base_weapons: "Base weapons",
         links_highlights: "Highlights",
+        links_special_items_matrix: "Matrix",
         filter_map: "Map",
         filter_stage: "Stage"
     },
@@ -120,6 +121,7 @@ export const messages: {
         links_keychains: "钥匙链",
         links_base_weapons: "基础武器",
         links_highlights: "精选",
+        links_special_items_matrix: "特殊物品矩阵",
         filter_map: "地图",
         filter_stage: "阶段"
     }
