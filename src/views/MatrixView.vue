@@ -177,6 +177,7 @@ const translateX = ref(0)
 const isDragging = ref(false)
 const dragStartX = ref(0)
 const dragStartTranslateX = ref(0)
+const hasDragged = ref(false)
 
 // All tabs data loaded from service
 const allTabsData = ref<TabData[]>([])
@@ -329,36 +330,39 @@ function selectCrate(crateId: string) {
 }
 
 function selectItem(itemId: string) {
-    // Format the ID correctly for skins (same logic as ItemDetailPanel)
-    if (itemId.startsWith("skin-vanilla")) {
-        itemDetailStore.getItemDetails(itemId)
-        return
-    }
-
-    // For skins, append _0 to get the first wear variant
-    const formattedId = itemId.includes("skin") ? `${itemId}_0` : itemId
-    itemDetailStore.getItemDetails(formattedId)
+    itemDetailStore.getItemDetails(itemId)
 }
 
 // Horizontal drag functionality
 function handleMouseDown(e: MouseEvent) {
     if (e.button !== 0) return // Only left mouse button
-    // Don't drag if clicking on interactive elements
     const target = e.target as HTMLElement
-    if (
-        target.tagName === "BUTTON" ||
-        target.tagName === "IMG" ||
-        target.closest("button")
-    ) {
-        return
+    const button = target.closest("button")
+
+    // If clicking on a button, prevent its default click behavior temporarily
+    if (button) {
+        button.addEventListener("click", preventClickIfDragged, {
+            once: true,
+            capture: true
+        })
     }
+
     isDragging.value = true
+    hasDragged.value = false
     dragStartX.value = e.clientX
     dragStartTranslateX.value = translateX.value
     e.preventDefault()
 
     document.addEventListener("mousemove", handleMouseMove)
     document.addEventListener("mouseup", handleMouseUp)
+}
+
+function preventClickIfDragged(e: Event) {
+    if (hasDragged.value) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+    }
 }
 
 let rafId: number | null = null
@@ -385,6 +389,12 @@ function getMinTranslate(): number {
 
 function handleMouseMove(e: MouseEvent) {
     if (!isDragging.value) return
+
+    const deltaX = Math.abs(e.clientX - dragStartX.value)
+    // Mark as dragged if moved more than 5px
+    if (deltaX > 5) {
+        hasDragged.value = true
+    }
 
     if (rafId !== null) {
         cancelAnimationFrame(rafId)
@@ -416,16 +426,19 @@ function handleMouseUp() {
 // Touch event handlers for mobile
 function handleTouchStart(e: TouchEvent) {
     if (e.touches.length !== 1) return // Only handle single touch
-    // Don't drag if touching interactive elements
     const target = e.target as HTMLElement
-    if (
-        target.tagName === "BUTTON" ||
-        target.tagName === "IMG" ||
-        target.closest("button")
-    ) {
-        return
+    const button = target.closest("button")
+
+    // If touching a button, prevent its default click behavior temporarily
+    if (button) {
+        button.addEventListener("click", preventClickIfDragged, {
+            once: true,
+            capture: true
+        })
     }
+
     isDragging.value = true
+    hasDragged.value = false
     dragStartX.value = e.touches[0].clientX
     dragStartTranslateX.value = translateX.value
     e.preventDefault()
@@ -436,6 +449,12 @@ function handleTouchStart(e: TouchEvent) {
 
 function handleTouchMove(e: TouchEvent) {
     if (!isDragging.value || e.touches.length !== 1) return
+
+    const deltaX = Math.abs(e.touches[0].clientX - dragStartX.value)
+    // Mark as dragged if moved more than 5px
+    if (deltaX > 5) {
+        hasDragged.value = true
+    }
 
     if (rafId !== null) {
         cancelAnimationFrame(rafId)
