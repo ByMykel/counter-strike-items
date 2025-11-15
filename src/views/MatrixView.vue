@@ -43,6 +43,7 @@
             style="height: 0"
             @wheel.shift="handleWheel"
             @mousedown="handleMouseDown"
+            @touchstart="handleTouchStart"
             @scroll="handleScroll"
         >
             <div
@@ -412,6 +413,57 @@ function handleMouseUp() {
     document.removeEventListener("mouseup", handleMouseUp)
 }
 
+// Touch event handlers for mobile
+function handleTouchStart(e: TouchEvent) {
+    if (e.touches.length !== 1) return // Only handle single touch
+    // Don't drag if touching interactive elements
+    const target = e.target as HTMLElement
+    if (
+        target.tagName === "BUTTON" ||
+        target.tagName === "IMG" ||
+        target.closest("button")
+    ) {
+        return
+    }
+    isDragging.value = true
+    dragStartX.value = e.touches[0].clientX
+    dragStartTranslateX.value = translateX.value
+    e.preventDefault()
+
+    document.addEventListener("touchmove", handleTouchMove, { passive: false })
+    document.addEventListener("touchend", handleTouchEnd)
+}
+
+function handleTouchMove(e: TouchEvent) {
+    if (!isDragging.value || e.touches.length !== 1) return
+
+    if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+    }
+
+    rafId = requestAnimationFrame(() => {
+        const deltaX = e.touches[0].clientX - dragStartX.value
+        const maxTranslate = 0
+        const minTranslate = getMinTranslate()
+        // Clamp the value to ensure we don't drag beyond bounds
+        const newTranslateX = Math.max(
+            Math.min(dragStartTranslateX.value + deltaX, maxTranslate),
+            minTranslate
+        )
+        // Round to avoid sub-pixel accumulation
+        translateX.value = Math.round(newTranslateX)
+        rafId = null
+    })
+
+    e.preventDefault()
+}
+
+function handleTouchEnd() {
+    isDragging.value = false
+    document.removeEventListener("touchmove", handleTouchMove)
+    document.removeEventListener("touchend", handleTouchEnd)
+}
+
 let wheelRafId: number | null = null
 
 // Horizontal scroll with wheel (only called when shift is held due to @wheel.shift modifier)
@@ -492,6 +544,8 @@ watch(selectedTab, (newTab) => {
 onUnmounted(() => {
     document.removeEventListener("mousemove", handleMouseMove)
     document.removeEventListener("mouseup", handleMouseUp)
+    document.removeEventListener("touchmove", handleTouchMove)
+    document.removeEventListener("touchend", handleTouchEnd)
     if (rafId !== null) {
         cancelAnimationFrame(rafId)
     }

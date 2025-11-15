@@ -81,7 +81,7 @@ const router = createRouter({
         {
             path: "/matrix",
             name: "matrix",
-            component: () => import("../views/SpecialItemsMatrixView.vue")
+            component: () => import("../views/MatrixView.vue")
         }
     ]
 })
