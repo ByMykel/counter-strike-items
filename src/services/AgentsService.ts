@@ -1,12 +1,7 @@
 import axios from "axios"
-import {
-    filterItems,
-    generateOptions,
-    getCurrentLocale,
-    tLocal
-} from "../utils"
+import { filterItems, generateOptions } from "../utils"
 
-export default class StickersService {
+export default class AgentsService {
     async query({
         search,
         filters
@@ -14,17 +9,16 @@ export default class StickersService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
-        const locale = getCurrentLocale()
         let items = await axios
             .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/agents.json`
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/agents.json`
             )
             .then((res) => res.data)
 
         const filterList = [
             {
                 prop: "rarity",
-                name: tLocal("filter_rarity"),
+                name: "Rarity",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedSingleProperty",
@@ -33,7 +27,7 @@ export default class StickersService {
             },
             {
                 prop: "team",
-                name: tLocal("filter_team"),
+                name: "Team",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedSingleProperty",

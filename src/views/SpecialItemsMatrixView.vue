@@ -500,5 +500,5 @@ onUnmounted(() => {
     }
 })
 
-useTitle("Special Items Matrix - Counter-Strike items")
+useTitle("Matrix - Counter-Strike items")
 </script>

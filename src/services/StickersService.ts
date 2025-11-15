@@ -1,10 +1,5 @@
 import axios from "axios"
-import {
-    filterItems,
-    generateOptions,
-    getCurrentLocale,
-    tLocal
-} from "../utils"
+import { filterItems, generateOptions } from "../utils"
 
 export default class StickersService {
     async query({
@@ -14,17 +9,16 @@ export default class StickersService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
-        const locale = getCurrentLocale()
         let items = await axios
             .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/stickers.json`
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/stickers.json`
             )
             .then((res) => res.data)
 
         const filterList = [
             {
                 prop: "rarity",
-                name: tLocal("filter_rarity"),
+                name: "Rarity",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedSingleProperty",
@@ -33,7 +27,7 @@ export default class StickersService {
             },
             {
                 prop: "crates",
-                name: tLocal("filter_crate"),
+                name: "Crate",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedProperty",
@@ -42,7 +36,7 @@ export default class StickersService {
             },
             {
                 prop: "collections",
-                name: tLocal("filter_collections"),
+                name: "Collections",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedProperty",
@@ -51,7 +45,7 @@ export default class StickersService {
             },
             {
                 prop: "type",
-                name: tLocal("filter_type"),
+                name: "Type",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromProperty",
@@ -60,7 +54,7 @@ export default class StickersService {
             },
             {
                 prop: "effect",
-                name: tLocal("filter_effect"),
+                name: "Effect",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromProperty",
@@ -69,7 +63,7 @@ export default class StickersService {
             },
             {
                 prop: "tournament",
-                name: tLocal("filter_tournament"),
+                name: "Tournament",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedSingleProperty",
@@ -78,7 +72,7 @@ export default class StickersService {
             },
             {
                 prop: "team",
-                name: tLocal("filter_team"),
+                name: "Team",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedSingleProperty",
@@ -87,7 +81,7 @@ export default class StickersService {
             },
             {
                 prop: "player",
-                name: tLocal("filter_player"),
+                name: "Player",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromNestedSingleProperty",

@@ -1,8 +1,5 @@
 import Fuse from "fuse.js"
 import uniqBy from "lodash.uniqby"
-import { messages } from "../locales"
-import { SupportedLocale, supportedLocales } from "../types/locale"
-import { STORAGE_KEY_LOCALE } from "../constants/locale"
 
 function hashString(str: string) {
     let hash = 0
@@ -174,89 +171,4 @@ export function generateOptions(
     // TODO: avoid using ts-ignore
     // @ts-ignore
     return uniqBy(options.filter(Boolean), "id")
-}
-
-export function getCurrentLocale(): SupportedLocale {
-    const storedLocale = localStorage.getItem(
-        STORAGE_KEY_LOCALE
-    ) as SupportedLocale | null
-    if (storedLocale && supportedLocales.includes(storedLocale)) {
-        return storedLocale
-    }
-    const detectedLocale = detectLocale()
-    localStorage.setItem(STORAGE_KEY_LOCALE, detectedLocale)
-    return detectedLocale
-}
-
-export function getCurrentLocaleFullName() {
-    const locale = getCurrentLocale()
-    return {
-        bg: "bulgarian",
-        cs: "czech",
-        da: "danish",
-        de: "german",
-        el: "greek",
-        en: "english",
-        "es-ES": "spanish",
-        "es-MX": "latam",
-        fi: "finnish",
-        fr: "french",
-        hu: "hungarian",
-        it: "italian",
-        ja: "japanese",
-        ko: "korean",
-        nl: "dutch",
-        no: "norwegian",
-        pl: "polish",
-        "pt-BR": "brazilian",
-        "pt-PT": "portuguese",
-        ro: "romanian",
-        ru: "russian",
-        sk: "slovak",
-        sv: "swedish",
-        th: "thai",
-        tr: "turkish",
-        uk: "ukrainian",
-        "zh-CN": "schinese",
-        "zh-TW": "tchinese",
-        vi: "vietnamese"
-    }[locale]
-}
-
-export function detectLocale(): SupportedLocale {
-    const browserLanguages = navigator.languages || [navigator.language]
-    for (const lang of browserLanguages) {
-        if (supportedLocales.includes(lang as SupportedLocale)) {
-            return lang as SupportedLocale
-        }
-    }
-    return "en" // Default fallback
-}
-
-export function changeLocale(locale: SupportedLocale) {
-    localStorage.setItem(STORAGE_KEY_LOCALE, locale)
-    location.reload()
-}
-
-export function tLocal(key: string) {
-    const locale = getCurrentLocale()
-
-    if (messages?.[locale]?.[key]) {
-        return messages?.[locale]?.[key]
-    } else {
-        console.warn(
-            `[tLocal] Not found '${key}' key in '${locale}' locale messages.`
-        )
-    }
-
-    if (messages?.en?.[key]) {
-        console.warn(
-            `[tLocal] Fall back to translate '${key}' key with 'en' locale.`
-        )
-        return messages?.en?.[key]
-    } else {
-        console.warn(`[tLocal] Not found '${key}' key in 'en' locale messages.`)
-    }
-
-    return key
 }

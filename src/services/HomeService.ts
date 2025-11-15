@@ -1,9 +1,5 @@
 import axios from "axios"
-import {
-    filterItems,
-    getCurrentLocale,
-    shuffleArrayWithSeed
-} from "../utils/index"
+import { filterItems, shuffleArrayWithSeed } from "../utils/index"
 
 export default class HomeService {
     async query({
@@ -13,11 +9,10 @@ export default class HomeService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
-        const locale = getCurrentLocale()
         let items: { name: string; image: string /* more properties */ }[] =
             await axios
                 .get(
-                    `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/all.json`
+                    `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
                 )
                 .then((res) => Object.values(res.data))
 
@@ -57,22 +52,21 @@ export default class HomeService {
     }
 
     async getAllItems() {
-        const locale = getCurrentLocale()
         let items = await axios
             .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/all.json`
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
             )
             .then((res) => res.data)
 
         let skins = await axios
             .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/skins.json`
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json`
             )
             .then((res) => res.data)
 
         let collectibles = await axios
             .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/collectibles.json`
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collectibles.json`
             )
             .then((res) => res.data)
 
@@ -221,7 +215,7 @@ export default class HomeService {
 
         let baseWeapons = await axios
             .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/base_weapons.json`
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/base_weapons.json`
             )
             .then((res) => res.data)
 

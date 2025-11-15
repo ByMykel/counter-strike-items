@@ -1,10 +1,5 @@
 import axios from "axios"
-import {
-    filterItems,
-    generateOptions,
-    getCurrentLocale,
-    tLocal
-} from "../utils"
+import { filterItems, generateOptions } from "../utils"
 
 export default class HighlightsService {
     async query({
@@ -14,17 +9,16 @@ export default class HighlightsService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
-        const locale = getCurrentLocale()
         let items = await axios
             .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/highlights.json`
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/highlights.json`
             )
             .then((res) => res.data)
 
         const filterList = [
             {
                 prop: "tournament_event",
-                name: tLocal("filter_tournament"),
+                name: "Tournament",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromProperty",
@@ -33,7 +27,7 @@ export default class HighlightsService {
             },
             {
                 prop: "tournament_player",
-                name: tLocal("filter_player"),
+                name: "Player",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromProperty",
@@ -42,7 +36,7 @@ export default class HighlightsService {
             },
             {
                 prop: "map",
-                name: tLocal("filter_map"),
+                name: "Map",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromProperty",
@@ -51,7 +45,7 @@ export default class HighlightsService {
             },
             {
                 prop: "stage",
-                name: tLocal("filter_stage"),
+                name: "Stage",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromProperty",
@@ -60,7 +54,7 @@ export default class HighlightsService {
             },
             {
                 prop: "team0",
-                name: tLocal("filter_team") + " 0",
+                name: "Team 0",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromProperty",
@@ -69,7 +63,7 @@ export default class HighlightsService {
             },
             {
                 prop: "team1",
-                name: tLocal("filter_team") + " 1",
+                name: "Team 1",
                 type: "multi-select",
                 options: generateOptions(items, {
                     type: "fromProperty",

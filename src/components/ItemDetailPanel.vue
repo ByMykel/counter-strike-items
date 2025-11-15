@@ -82,7 +82,7 @@
                 <div class="flex flex-col gap-2">
                     <a
                         v-if="selected.market_hash_name"
-                        :href="`https://steamcommunity.com/market/listings/730/${selected.market_hash_name}?l=${getCurrentLocaleFullName()}`"
+                        :href="`https://steamcommunity.com/market/listings/730/${selected.market_hash_name}?l=english`"
                         class="relative p-3 text-center rounded-md bg-black-300 text-black-100"
                         target="_blank"
                     >
@@ -92,7 +92,7 @@
                             <LinkIcon class="w-6 h-6 text-gray-500" />
                         </div>
 
-                        {{ $t("common_scm") }}
+                        Steam Community Market
                     </a>
 
                     <a
@@ -220,12 +220,8 @@
                 <ItemDetailList
                     :items="selected.crates"
                     :show-toggle="selected.crates?.length > 4"
-                    :toggle-text-closed="
-                        $t('common_show_crates', {
-                            number: selected.crates.length
-                        })
-                    "
-                    :toggle-text-displayed="$t('common_hide_crates')"
+                    :toggle-text-closed="`Show ${selected.crates.length} crates`"
+                    toggle-text-displayed="Hide crates"
                     @get-item-details="$emit('get-item-details', $event)"
                 />
 
@@ -237,12 +233,8 @@
                 <ItemDetailList
                     :items="selected.containsRare"
                     :show-toggle="true"
-                    :toggle-text-closed="
-                        $t('common_show_rare', {
-                            number: selected.containsRare.length
-                        })
-                    "
-                    :toggle-text-displayed="$t('common_hide_rare')"
+                    :toggle-text-closed="`Show ${selected.containsRare.length} rare special items`"
+                    toggle-text-displayed="Hide rare special items"
                     @get-item-details="getItemDetails($event)"
                 />
 
@@ -268,7 +260,6 @@ import { XMarkIcon, LinkIcon, EyeIcon } from "@heroicons/vue/24/outline"
 import { vElementVisibility } from "@vueuse/components"
 import ItemDetailList from "../components/ItemDetailList.vue"
 import DebugPanel from "../components/DebugPanel.vue"
-import { getCurrentLocaleFullName } from "../utils"
 import { useInspect } from "../composables/useInspect"
 
 const props = defineProps({

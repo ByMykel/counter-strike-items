@@ -1,5 +1,5 @@
 import axios from "axios"
-import { filterItems, getCurrentLocale } from "../utils"
+import { filterItems } from "../utils"
 
 export default class BaseWeaponsService {
     async query({
@@ -9,10 +9,9 @@ export default class BaseWeaponsService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
-        const locale = getCurrentLocale()
         let items = await axios
             .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/${locale}/base_weapons.json`
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/base_weapons.json`
             )
             .then((res) => res.data)
 

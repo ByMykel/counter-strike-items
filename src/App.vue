@@ -117,11 +117,9 @@ import {
 import { useItemDetailStore } from "./stores/ItemDetail"
 import ItemDetailPanel from "./components/ItemDetailPanel.vue"
 import AppBranding from "./components/AppBranding.vue"
-import { useI18n } from "petite-vue-i18n"
 import { useDebug } from "./composables/useDebug"
 
 const itemDetailStore = useItemDetailStore()
-const { t } = useI18n()
 const route = useRoute()
 
 // Initialize debug mode globally
@@ -131,33 +129,33 @@ const { isDebugMode } = useDebug()
 const showSidebar = computed(() => route.path !== "/matrix")
 
 const routes = [
-    { name: t("links_latest_items"), path: "/", icon: FaceSmileIcon },
+    { name: "Latest items", path: "/", icon: FaceSmileIcon },
     {
-        name: t("links_special_items_matrix"),
+        name: "Matrix",
         path: "/matrix",
         icon: TableCellsIcon
     },
-    { name: t("links_all"), path: "/home", icon: HomeIcon },
-    { name: t("links_skins"), path: "/skins", icon: BanknotesIcon },
-    { name: t("links_stickers"), path: "/stickers", icon: StarIcon },
+    { name: "All", path: "/home", icon: HomeIcon },
+    { name: "Skins", path: "/skins", icon: BanknotesIcon },
+    { name: "Stickers", path: "/stickers", icon: StarIcon },
     {
-        name: t("links_collections"),
+        name: "Collections",
         path: "/collections",
         icon: RectangleStackIcon
     },
-    { name: t("links_crates"), path: "/crates", icon: ArchiveBoxIcon },
-    { name: t("links_collectibles"), path: "/collectibles", icon: TrophyIcon },
-    { name: t("links_agents"), path: "/agents", icon: UserGroupIcon },
-    { name: t("links_keys"), path: "/keys", icon: KeyIcon },
-    { name: t("links_patches"), path: "/patches", icon: BugAntIcon },
-    { name: t("links_graffiti"), path: "/graffiti", icon: PaintBrushIcon },
-    { name: t("links_music_kits"), path: "/music-kits", icon: MusicalNoteIcon },
-    { name: t("links_keychains"), path: "/keychains", icon: TagIcon },
+    { name: "Crates", path: "/crates", icon: ArchiveBoxIcon },
+    { name: "Collectibles", path: "/collectibles", icon: TrophyIcon },
+    { name: "Agents", path: "/agents", icon: UserGroupIcon },
+    { name: "Keys", path: "/keys", icon: KeyIcon },
+    { name: "Patches", path: "/patches", icon: BugAntIcon },
+    { name: "Graffiti", path: "/graffiti", icon: PaintBrushIcon },
+    { name: "Music kits", path: "/music-kits", icon: MusicalNoteIcon },
+    { name: "Keychains", path: "/keychains", icon: TagIcon },
     {
-        name: t("links_base_weapons"),
+        name: "Base weapons",
         path: "/base-weapons",
         icon: Square3Stack3DIcon
     },
-    { name: t("links_highlights"), path: "/highlights", icon: VideoCameraIcon }
+    { name: "Highlights", path: "/highlights", icon: VideoCameraIcon }
 ]
 </script>
