@@ -176,8 +176,10 @@ const loading = ref(true)
 const translateX = ref(0)
 const isDragging = ref(false)
 const dragStartX = ref(0)
+const dragStartY = ref(0)
 const dragStartTranslateX = ref(0)
 const hasDragged = ref(false)
+const isHorizontalDrag = ref(false)
 
 // All tabs data loaded from service
 const allTabsData = ref<TabData[]>([])
@@ -358,7 +360,8 @@ function handleMouseDown(e: MouseEvent) {
 }
 
 function preventClickIfDragged(e: Event) {
-    if (hasDragged.value) {
+    // Only prevent click if we actually dragged horizontally
+    if (hasDragged.value && isHorizontalDrag.value) {
         e.preventDefault()
         e.stopPropagation()
         e.stopImmediatePropagation()
@@ -439,9 +442,13 @@ function handleTouchStart(e: TouchEvent) {
 
     isDragging.value = true
     hasDragged.value = false
+    isHorizontalDrag.value = false
     dragStartX.value = e.touches[0].clientX
+    dragStartY.value = e.touches[0].clientY
     dragStartTranslateX.value = translateX.value
-    e.preventDefault()
+
+    // Don't prevent default here - let vertical scrolling work
+    // We'll only prevent default in touchmove if it's a horizontal drag
 
     document.addEventListener("touchmove", handleTouchMove, { passive: false })
     document.addEventListener("touchend", handleTouchEnd)
@@ -451,34 +458,65 @@ function handleTouchMove(e: TouchEvent) {
     if (!isDragging.value || e.touches.length !== 1) return
 
     const deltaX = Math.abs(e.touches[0].clientX - dragStartX.value)
-    // Mark as dragged if moved more than 5px
-    if (deltaX > 5) {
+    const deltaY = Math.abs(e.touches[0].clientY - dragStartY.value)
+
+    // Only treat as horizontal drag if horizontal movement is greater than vertical
+    // and we've moved at least 10px horizontally
+    if (deltaX > 10 && deltaX > deltaY) {
+        if (!isHorizontalDrag.value) {
+            isHorizontalDrag.value = true
+        }
         hasDragged.value = true
+
+        if (rafId !== null) {
+            cancelAnimationFrame(rafId)
+        }
+
+        rafId = requestAnimationFrame(() => {
+            const deltaX = e.touches[0].clientX - dragStartX.value
+            const maxTranslate = 0
+            const minTranslate = getMinTranslate()
+            // Clamp the value to ensure we don't drag beyond bounds
+            const newTranslateX = Math.max(
+                Math.min(dragStartTranslateX.value + deltaX, maxTranslate),
+                minTranslate
+            )
+            // Round to avoid sub-pixel accumulation
+            translateX.value = Math.round(newTranslateX)
+            rafId = null
+        })
+
+        // Only prevent default if it's a horizontal drag
+        e.preventDefault()
+    } else if (!isHorizontalDrag.value) {
+        // If it's vertical scrolling, don't prevent default and don't drag
+        // Just let the browser handle vertical scrolling naturally
+        return
+    } else {
+        // Continue horizontal drag even if there's some vertical movement
+        if (rafId !== null) {
+            cancelAnimationFrame(rafId)
+        }
+
+        rafId = requestAnimationFrame(() => {
+            const deltaX = e.touches[0].clientX - dragStartX.value
+            const maxTranslate = 0
+            const minTranslate = getMinTranslate()
+            const newTranslateX = Math.max(
+                Math.min(dragStartTranslateX.value + deltaX, maxTranslate),
+                minTranslate
+            )
+            translateX.value = Math.round(newTranslateX)
+            rafId = null
+        })
+
+        e.preventDefault()
     }
-
-    if (rafId !== null) {
-        cancelAnimationFrame(rafId)
-    }
-
-    rafId = requestAnimationFrame(() => {
-        const deltaX = e.touches[0].clientX - dragStartX.value
-        const maxTranslate = 0
-        const minTranslate = getMinTranslate()
-        // Clamp the value to ensure we don't drag beyond bounds
-        const newTranslateX = Math.max(
-            Math.min(dragStartTranslateX.value + deltaX, maxTranslate),
-            minTranslate
-        )
-        // Round to avoid sub-pixel accumulation
-        translateX.value = Math.round(newTranslateX)
-        rafId = null
-    })
-
-    e.preventDefault()
 }
 
 function handleTouchEnd() {
     isDragging.value = false
+    isHorizontalDrag.value = false
     document.removeEventListener("touchmove", handleTouchMove)
     document.removeEventListener("touchend", handleTouchEnd)
 }
