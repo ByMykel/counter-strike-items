@@ -360,8 +360,8 @@ function handleMouseDown(e: MouseEvent) {
 }
 
 function preventClickIfDragged(e: Event) {
-    // Only prevent click if we actually dragged horizontally
-    if (hasDragged.value && isHorizontalDrag.value) {
+    // Prevent click if there was any dragging movement
+    if (hasDragged.value) {
         e.preventDefault()
         e.stopPropagation()
         e.stopImmediatePropagation()
@@ -394,7 +394,7 @@ function handleMouseMove(e: MouseEvent) {
     if (!isDragging.value) return
 
     const deltaX = Math.abs(e.clientX - dragStartX.value)
-    // Mark as dragged if moved more than 5px
+    // Mark as dragged if moved more than 5px (any direction)
     if (deltaX > 5) {
         hasDragged.value = true
     }
@@ -459,6 +459,12 @@ function handleTouchMove(e: TouchEvent) {
 
     const deltaX = Math.abs(e.touches[0].clientX - dragStartX.value)
     const deltaY = Math.abs(e.touches[0].clientY - dragStartY.value)
+    const totalMovement = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
+
+    // Mark as dragged if there's any significant movement (more than 5px)
+    if (totalMovement > 5) {
+        hasDragged.value = true
+    }
 
     // Only treat as horizontal drag if horizontal movement is greater than vertical
     // and we've moved at least 10px horizontally
@@ -466,7 +472,6 @@ function handleTouchMove(e: TouchEvent) {
         if (!isHorizontalDrag.value) {
             isHorizontalDrag.value = true
         }
-        hasDragged.value = true
 
         if (rafId !== null) {
             cancelAnimationFrame(rafId)
@@ -491,6 +496,7 @@ function handleTouchMove(e: TouchEvent) {
     } else if (!isHorizontalDrag.value) {
         // If it's vertical scrolling, don't prevent default and don't drag
         // Just let the browser handle vertical scrolling naturally
+        // But hasDragged is already set above, so button clicks will be prevented
         return
     } else {
         // Continue horizontal drag even if there's some vertical movement
