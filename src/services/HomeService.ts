@@ -9,27 +9,50 @@ export default class HomeService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
-        let items: { name: string; image: string /* more properties */ }[] =
-            await axios
-                .get(
-                    `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
-                )
-                .then((res) => Object.values(res.data))
+        let items: {
+            name: string
+            image: string
+            image_domain?: string /* more properties */
+        }[] = await axios
+            .get(
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
+            )
+            .then((res) => Object.values(res.data))
 
-        items = items.map((item) => ({
-            ...item,
-            cdn_image: !item.image?.includes("githubusercontent")
-        }))
+        items = items.map((item) => {
+            let imageDomain = "unknown"
+            if (item.image) {
+                try {
+                    const url = new URL(item.image)
+                    imageDomain = url.hostname
+                } catch {
+                    // If URL parsing fails, try to extract domain from string
+                    const match = item.image.match(/https?:\/\/([^\/]+)/)
+                    if (match) {
+                        imageDomain = match[1]
+                    }
+                }
+            }
+            return {
+                ...item,
+                image_domain: imageDomain
+            }
+        })
+
+        // Get unique domains from all items
+        const uniqueDomains = Array.from(
+            new Set(items.map((item) => item.image_domain).filter(Boolean))
+        ).sort()
 
         const filterList = [
             {
-                prop: "cdn_image",
-                name: "Valve's CDN image",
+                prop: "image_domain",
+                name: "Image domain",
                 type: "multi-select",
-                options: [
-                    { id: "true", name: "Yes" },
-                    { id: "false", name: "No" }
-                ]
+                options: uniqueDomains.map((domain) => ({
+                    id: domain,
+                    name: domain
+                }))
             }
         ]
 

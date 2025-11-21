@@ -53,7 +53,7 @@ const visibleFilters = computed(() => {
         return itemsListStore.filters
     }
     return itemsListStore.filters.filter(
-        (filter) => filter.prop !== "cdn_image"
+        (filter) => filter.prop !== "image_domain"
     )
 })
 
