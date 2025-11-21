@@ -5,6 +5,13 @@
         <div
             class="flex items-center w-full h-[69px] border-b-2 border-black-300 px-4 sticky top-0 text-black-100"
         >
+            <button
+                v-if="hasHistory"
+                class="mr-2 disabled:cursor-wait"
+                @click="$emit('go-back')"
+            >
+                <ArrowLeftIcon class="w-6 h-6 text-white" />
+            </button>
             <p
                 v-show="showItemName"
                 class="ml-4 mr-5 truncate text-black-100"
@@ -19,7 +26,10 @@
             </button>
         </div>
 
-        <div class="h-[calc(100vh-69px)] px-4 py-4 overflow-x-hidden">
+        <div
+            ref="scrollContainer"
+            class="h-[calc(100vh-69px)] px-4 py-4 overflow-x-hidden overflow-y-auto"
+        >
             <DebugPanel
                 :selected="selected"
                 :raw-item-data="items[selected.id]"
@@ -255,12 +265,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue"
-import { XMarkIcon, LinkIcon, EyeIcon } from "@heroicons/vue/24/outline"
+import { ref, computed, watch, nextTick } from "vue"
+import {
+    XMarkIcon,
+    LinkIcon,
+    EyeIcon,
+    ArrowLeftIcon
+} from "@heroicons/vue/24/outline"
 import { vElementVisibility } from "@vueuse/components"
 import ItemDetailList from "../components/ItemDetailList.vue"
 import DebugPanel from "../components/DebugPanel.vue"
 import { useInspect } from "../composables/useInspect"
+import { useItemDetailStore } from "../stores/ItemDetail"
 
 const props = defineProps({
     selected: {
@@ -273,9 +289,25 @@ const props = defineProps({
     }
 })
 
-const emit = defineEmits(["delete-item", "get-item-details"])
+const emit = defineEmits(["delete-item", "get-item-details", "go-back"])
+
+const itemDetailStore = useItemDetailStore()
+const hasHistory = computed(() => itemDetailStore.history.length > 0)
 
 const showItemName = ref(false)
+const scrollContainer = ref<HTMLElement | null>(null)
+
+// Scroll to top when selected item changes
+watch(
+    () => props.selected.id,
+    () => {
+        nextTick(() => {
+            if (scrollContainer.value) {
+                scrollContainer.value.scrollTo({ top: 0, behavior: "smooth" })
+            }
+        })
+    }
+)
 
 const hasNormalWears = computed(() => {
     // MP5-SD | Lab Rats is the only skin that has no normal wears only souvenir

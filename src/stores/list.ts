@@ -105,11 +105,26 @@ export const createListStore =
 
             function saveSearchQueryParam() {
                 const query: Record<string, string | string[]> = {}
+
+                Object.entries(route.query).forEach(([key, value]) => {
+                    if (value !== null && value !== undefined) {
+                        if (Array.isArray(value)) {
+                            query[key] = value.filter(
+                                (v) => v !== null
+                            ) as string[]
+                        } else if (typeof value === "string") {
+                            query[key] = value
+                        }
+                    }
+                })
+
                 if (search.value.length) query.q = search.value
+                else delete query.q
 
                 // Add filters to query params
                 Object.entries(filtersValues.value).forEach(([key, values]) => {
                     if (values.length) query[key] = values
+                    else delete query[key]
                 })
 
                 router.push({ query })
@@ -126,7 +141,7 @@ export const createListStore =
 
                 // Restore filters from URL
                 Object.entries(route.query).forEach(([key, value]) => {
-                    if (key !== "q" && value) {
+                    if (key !== "q" && key !== "itemId" && value) {
                         if (typeof value === "string") {
                             filtersValues.value[key] = value.includes(",")
                                 ? value.split(",")

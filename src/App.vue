@@ -28,7 +28,9 @@
                                     <RouterLink
                                         :to="{
                                             path: routeItem.path,
-                                            query: {}
+                                            query: route.query.itemId
+                                                ? { itemId: route.query.itemId }
+                                                : {}
                                         }"
                                         class="flex justify-center gap-4 p-2 rounded-md lg:justify-start text-black-100 hover:bg-black-300 hover:text-white"
                                         active-class="text-white bg-black-300"
@@ -63,6 +65,7 @@
                     :items="itemDetailStore.items"
                     @get-item-details="itemDetailStore.getItemDetails($event)"
                     @delete-item="itemDetailStore.deleteItem()"
+                    @go-back="itemDetailStore.goBack()"
                 />
             </div>
         </div>
@@ -138,6 +141,7 @@ const routes = [
     { name: "All", path: "/home", icon: HomeIcon },
     { name: "Skins", path: "/skins", icon: BanknotesIcon },
     { name: "Stickers", path: "/stickers", icon: StarIcon },
+    { name: "Sticker Slabs", path: "/sticker-slabs", icon: StarIcon },
     {
         name: "Collections",
         path: "/collections",

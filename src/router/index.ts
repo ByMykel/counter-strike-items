@@ -24,6 +24,11 @@ const router = createRouter({
             component: () => import("../views/StickersView.vue")
         },
         {
+            path: "/sticker-slabs",
+            name: "sticker-slabs",
+            component: () => import("../views/StickerSlabsView.vue")
+        },
+        {
             path: "/collections",
             name: "collections",
             component: () => import("../views/CollectionsView.vue")
