@@ -41,7 +41,11 @@ export default class HomeService {
 
         // Get unique domains from all items
         const uniqueDomains = Array.from(
-            new Set(items.map((item) => item.image_domain).filter(Boolean))
+            new Set(
+                items
+                    .map((item) => item.image_domain)
+                    .filter((domain): domain is string => Boolean(domain))
+            )
         ).sort()
 
         const filterList = [
