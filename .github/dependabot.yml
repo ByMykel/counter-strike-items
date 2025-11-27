@@ -4,3 +4,35 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      vue-ecosystem:
+        patterns:
+          - "vue"
+          - "vue-router"
+          - "pinia"
+          - "@vueuse/*"
+          - "vue-eslint-parser"
+      typescript-eslint:
+        patterns:
+          - "typescript"
+          - "@typescript-eslint/*"
+          - "eslint"
+          - "eslint-plugin-vue"
+          - "vue-tsc"
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+          - "postcss"
+          - "autoprefixer"
+      vite:
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+      type-definitions:
+        patterns:
+          - "@types/*"
+      headless-ui:
+        patterns:
+          - "@headlessui/*"
+          - "@heroicons/*"
