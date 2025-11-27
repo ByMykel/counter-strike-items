@@ -11,7 +11,7 @@ export default class StickerSlabsService {
     }) {
         let items = await axios
             .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/stickers_slab.json`
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/sticker_slabs.json`
             )
             .then((res) => res.data)
 
