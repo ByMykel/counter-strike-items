@@ -18,7 +18,7 @@
             ref="el"
             class="grid w-full gap-3 p-4 px-5 pb-32 mx-auto overflow-y-scroll h-[calc(100vh-69px)]"
             :class="{
-                'grid-cols-1 lg:grid-cols-2': isVideo,
+                'grid-cols-1 lg:grid-cols-2 xl:grid-cols-3': isVideo,
                 'items-grid-small md:items-grid': !isVideo
             }"
         >
