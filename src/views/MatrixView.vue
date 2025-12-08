@@ -47,7 +47,6 @@
             @scroll="handleScroll"
         >
             <div
-                ref="matrixRef"
                 class="select-none"
                 :style="{
                     minWidth: 'max-content',
@@ -171,7 +170,6 @@ const itemDetailStore = useItemDetailStore()
 const route = useRoute()
 const router = useRouter()
 const containerRef = ref<HTMLElement>()
-const matrixRef = ref<HTMLElement>()
 const loading = ref(true)
 const translateX = ref(0)
 const isDragging = ref(false)
