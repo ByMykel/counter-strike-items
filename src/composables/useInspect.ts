@@ -13,6 +13,8 @@ interface RawItemData {
     wear?: { id: string }
     rarity?: { id: string }
     stattrak?: boolean
+    def_index?: string
+    genuine?: boolean
 }
 
 // Inspect link generators for different item types
@@ -32,6 +34,30 @@ const inspectGenerators = {
             stickers: [],
             keychains: []
         }
+    },
+
+    collectible: (_item: InspectableItem, rawItem: RawItemData) => {
+        if (!rawItem.def_index) {
+            console.warn("No def_index found for collectible")
+            return null
+        }
+
+        const defindex = parseInt(rawItem.def_index)
+        if (isNaN(defindex)) {
+            console.warn("Invalid def_index:", rawItem.def_index)
+            return null
+        }
+
+        return {
+            defindex,
+            rarity: rawItem.rarity?.id
+                ? getRarityValue(rawItem.rarity.id)
+                : undefined,
+            quality: rawItem.genuine ? 1 : 4, // 1 = Genuine, 4 = Unique
+            paintindex: 0,
+            stickers: [],
+            keychains: []
+        }
     }
 
     // Add more item types here as needed
@@ -42,6 +68,7 @@ const inspectGenerators = {
 
 export function useInspect(item: any, rawItem: any) {
     const inspectLink = computed(() => {
+        let inspectData = null
         try {
             if (!item.value || !rawItem.value) return null
 
@@ -53,7 +80,7 @@ export function useInspect(item: any, rawItem: any) {
                 return null
             }
 
-            const inspectData = generator(item.value, rawItem.value)
+            inspectData = generator(item.value, rawItem.value)
 
             if (!inspectData) {
                 console.warn("Failed to generate inspect data")
@@ -62,7 +89,12 @@ export function useInspect(item: any, rawItem: any) {
 
             return generateLink(inspectData)
         } catch (error) {
-            console.error("Failed to generate inspect link:", error)
+            console.error(
+                "Failed to generate inspect link:",
+                error,
+                "with data:",
+                inspectData
+            )
             return null
         }
     })
@@ -75,6 +107,7 @@ export function useInspect(item: any, rawItem: any) {
 // Helper functions
 function getItemType(item: InspectableItem): keyof typeof inspectGenerators {
     if (item.id.includes("skin")) return "skin"
+    if (item.id.includes("collectible")) return "collectible"
     // Add more type detection logic here
     // if (item.id.includes('sticker')) return 'sticker'
     // if (item.id.includes('agent')) return 'agent'
