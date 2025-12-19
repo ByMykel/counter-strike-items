@@ -64,6 +64,21 @@ const itemDetailStore = useItemDetailStore()
 const items = computed(() => {
     return [
         {
+            title: "The Year of the Bees",
+            link: "https://www.counter-strike.net/newsentry/500593045099512825",
+            date: "December 18, 2025",
+            items: [
+                itemDetailStore.items["crate-5233"],
+
+                itemDetailStore.items["collectible-5270"],
+                itemDetailStore.items["collectible-5271"],
+                itemDetailStore.items["collectible-5272"],
+                itemDetailStore.items["collectible-5273"],
+                itemDetailStore.items["collectible-5274"],
+                itemDetailStore.items["collectible-5275"]
+            ]
+        },
+        {
             title: "The Starladder Budapest Major 2025",
             link: "https://www.counter-strike.net/newsentry/578276333072682038",
             date: "November 12, 2025",
@@ -79,7 +94,6 @@ const items = computed(() => {
                 itemDetailStore.items["crate-5230"],
                 itemDetailStore.items["crate-5231"],
                 itemDetailStore.items["crate-5232"],
-                itemDetailStore.items["crate-5233"],
 
                 itemDetailStore.items["crate-5219_highlight"],
                 itemDetailStore.items["crate-5219"],
