@@ -135,12 +135,13 @@
                                 class="flex w-full gap-4 p-3"
                                 :class="{
                                     'bg-black-200/30':
-                                        generateIdByWear(index) === selected.id
+                                        generateIdByWear(Number(index)) ===
+                                        selected.id
                                 }"
                                 @click="
                                     $emit(
                                         'get-item-details',
-                                        generateIdByWear(index)
+                                        generateIdByWear(Number(index))
                                     )
                                 "
                             >
@@ -165,13 +166,15 @@
                                 class="flex w-full gap-4 p-3"
                                 :class="{
                                     'bg-black-200/30':
-                                        generateIdByWear(index, 'st') ===
-                                        selected.id
+                                        generateIdByWear(
+                                            Number(index),
+                                            'st'
+                                        ) === selected.id
                                 }"
                                 @click="
                                     $emit(
                                         'get-item-details',
-                                        generateIdByWear(index, 'st')
+                                        generateIdByWear(Number(index), 'st')
                                     )
                                 "
                             >
@@ -197,13 +200,15 @@
                                 class="flex w-full gap-4 p-3"
                                 :class="{
                                     'bg-black-200/30':
-                                        generateIdByWear(index, 'so') ===
-                                        selected.id
+                                        generateIdByWear(
+                                            Number(index),
+                                            'so'
+                                        ) === selected.id
                                 }"
                                 @click="
                                     $emit(
                                         'get-item-details',
-                                        generateIdByWear(index, 'so')
+                                        generateIdByWear(Number(index), 'so')
                                     )
                                 "
                             >
