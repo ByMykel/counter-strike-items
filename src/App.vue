@@ -230,30 +230,110 @@ const mobileMenuOpen = ref(false)
 const showSidebar = computed(() => route.path !== "/matrix")
 
 const routes = [
-    { name: "Latest items", shortName: "Latest", path: "/", icon: FaceSmileIcon },
-    { name: "Matrix", shortName: "Matrix", path: "/matrix", icon: TableCellsIcon },
+    {
+        name: "Latest items",
+        shortName: "Latest",
+        path: "/",
+        icon: FaceSmileIcon
+    },
+    {
+        name: "Matrix",
+        shortName: "Matrix",
+        path: "/matrix",
+        icon: TableCellsIcon
+    },
     { name: "All", shortName: "All", path: "/home", icon: HomeIcon },
     { name: "Skins", shortName: "Skins", path: "/skins", icon: BanknotesIcon },
-    { name: "Stickers", shortName: "Stickers", path: "/stickers", icon: StarIcon },
-    { name: "Sticker Slabs", shortName: "Slabs", path: "/sticker-slabs", icon: StarIcon },
-    { name: "Collections", shortName: "Collections", path: "/collections", icon: RectangleStackIcon },
-    { name: "Crates", shortName: "Crates", path: "/crates", icon: ArchiveBoxIcon },
-    { name: "Collectibles", shortName: "Collectibles", path: "/collectibles", icon: TrophyIcon },
-    { name: "Agents", shortName: "Agents", path: "/agents", icon: UserGroupIcon },
+    {
+        name: "Stickers",
+        shortName: "Stickers",
+        path: "/stickers",
+        icon: StarIcon
+    },
+    {
+        name: "Sticker Slabs",
+        shortName: "Slabs",
+        path: "/sticker-slabs",
+        icon: StarIcon
+    },
+    {
+        name: "Collections",
+        shortName: "Collections",
+        path: "/collections",
+        icon: RectangleStackIcon
+    },
+    {
+        name: "Crates",
+        shortName: "Crates",
+        path: "/crates",
+        icon: ArchiveBoxIcon
+    },
+    {
+        name: "Collectibles",
+        shortName: "Collectibles",
+        path: "/collectibles",
+        icon: TrophyIcon
+    },
+    {
+        name: "Agents",
+        shortName: "Agents",
+        path: "/agents",
+        icon: UserGroupIcon
+    },
     { name: "Keys", shortName: "Keys", path: "/keys", icon: KeyIcon },
-    { name: "Patches", shortName: "Patches", path: "/patches", icon: BugAntIcon },
-    { name: "Graffiti", shortName: "Graffiti", path: "/graffiti", icon: PaintBrushIcon },
-    { name: "Music kits", shortName: "Music", path: "/music-kits", icon: MusicalNoteIcon },
-    { name: "Keychains", shortName: "Keychains", path: "/keychains", icon: TagIcon },
-    { name: "Base weapons", shortName: "Weapons", path: "/base-weapons", icon: Square3Stack3DIcon },
-    { name: "Highlights", shortName: "Highlights", path: "/highlights", icon: VideoCameraIcon }
+    {
+        name: "Patches",
+        shortName: "Patches",
+        path: "/patches",
+        icon: BugAntIcon
+    },
+    {
+        name: "Graffiti",
+        shortName: "Graffiti",
+        path: "/graffiti",
+        icon: PaintBrushIcon
+    },
+    {
+        name: "Music kits",
+        shortName: "Music",
+        path: "/music-kits",
+        icon: MusicalNoteIcon
+    },
+    {
+        name: "Keychains",
+        shortName: "Keychains",
+        path: "/keychains",
+        icon: TagIcon
+    },
+    {
+        name: "Base weapons",
+        shortName: "Weapons",
+        path: "/base-weapons",
+        icon: Square3Stack3DIcon
+    },
+    {
+        name: "Highlights",
+        shortName: "Highlights",
+        path: "/highlights",
+        icon: VideoCameraIcon
+    }
 ]
 
 // Quick access routes for mobile bottom bar (most used categories)
 const mobileRoutes = [
     { name: "Latest", shortName: "Latest", path: "/", icon: FaceSmileIcon },
     { name: "Skins", shortName: "Skins", path: "/skins", icon: BanknotesIcon },
-    { name: "Stickers", shortName: "Stickers", path: "/stickers", icon: StarIcon },
-    { name: "Crates", shortName: "Crates", path: "/crates", icon: ArchiveBoxIcon }
+    {
+        name: "Stickers",
+        shortName: "Stickers",
+        path: "/stickers",
+        icon: StarIcon
+    },
+    {
+        name: "Crates",
+        shortName: "Crates",
+        path: "/crates",
+        icon: ArchiveBoxIcon
+    }
 ]
 </script>
