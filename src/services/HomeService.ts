@@ -79,23 +79,35 @@ export default class HomeService {
     }
 
     async getAllItems() {
-        let items = await axios
-            .get(
+        const [
+            itemsRes,
+            skinsRes,
+            collectiblesRes,
+            baseWeaponsRes,
+            highlightsRes
+        ] = await Promise.all([
+            axios.get(
                 `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
-            )
-            .then((res) => res.data)
-
-        let skins = await axios
-            .get(
+            ),
+            axios.get(
                 `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json`
-            )
-            .then((res) => res.data)
-
-        let collectibles = await axios
-            .get(
+            ),
+            axios.get(
                 `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collectibles.json`
+            ),
+            axios.get(
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/base_weapons.json`
+            ),
+            axios.get(
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/highlights.json`
             )
-            .then((res) => res.data)
+        ])
+
+        const items = itemsRes.data
+        const skins = skinsRes.data
+        const collectibles = collectiblesRes.data
+        const baseWeapons = baseWeaponsRes.data
+        const highlights = highlightsRes.data
 
         const collectibleConfigs = [
             {
@@ -135,37 +147,44 @@ export default class HomeService {
             }
         ]
 
-        const groupedCollectibles = collectibleConfigs.reduce((acc, config) => {
-            acc[config.key] = collectibles.reduce(
-                (groupAcc: any, item: any) => {
-                    if (item.type !== config.type) return groupAcc
+        const configByType = new Map(
+            collectibleConfigs.map((config) => [config.type, config])
+        )
+        const groupedCollectibles: any = {}
+        collectibleConfigs.forEach((config) => {
+            groupedCollectibles[config.key] = {}
+        })
 
-                    const key = item.original.item_name
-                        .split(config.prefix)?.[1]
-                        ?.split("_")?.[0]
+        collectibles.forEach((item: any) => {
+            const config = configByType.get(item.type)
+            if (!config) return
 
-                    if (!groupAcc[key]) {
-                        groupAcc[key] = []
-                    }
+            const key = item.original.item_name
+                .split(config.prefix)?.[1]
+                ?.split("_")?.[0]
 
-                    groupAcc[key].push(item)
-                    return groupAcc
-                },
-                {}
-            )
-            return acc
-        }, {} as any)
+            if (key) {
+                if (!groupedCollectibles[config.key][key]) {
+                    groupedCollectibles[config.key][key] = []
+                }
+                groupedCollectibles[config.key][key].push(item)
+            }
+        })
+
+        const configByTypeMap = new Map(
+            collectibleConfigs.map((c) => [c.type, c])
+        )
 
         Object.values(items).forEach((item: any) => {
             if (!item.id.startsWith("collectible-")) return
             items[item.id].related_collectibles = []
 
-            const config = collectibleConfigs.find((c) => c.type === item.type)
+            const config = configByTypeMap.get(item.type)
             if (config) {
                 const key = item.original.item_name
                     .split(config.prefix)?.[1]
                     ?.split("_")?.[0]
-                if (key) {
+                if (key && groupedCollectibles[config.key]?.[key]) {
                     items[item.id].related_collectibles =
                         groupedCollectibles[config.key][key]
                 }
@@ -173,88 +192,54 @@ export default class HomeService {
         })
 
         skins.forEach((item: any) => {
+            const skinData = {
+                crates: item.crates,
+                collections: item.collections,
+                wears: item.wears,
+                skin_souvenir: item.souvenir,
+                skin_stattrak: item.stattrak
+            }
+
             const types = ["skin"]
-
-            if (item.stattrak) {
-                types.push("skin_stattrak")
-            }
-
-            if (item.souvenir) {
-                types.push("skin_souvenir")
-            }
+            if (item.stattrak) types.push("skin_stattrak")
+            if (item.souvenir) types.push("skin_souvenir")
 
             types.forEach((type) => {
                 // Vanilla skins don't have a wear
                 if (item.id.startsWith("skin-vanilla")) {
                     items[item.id] = {
                         ...items[item.id],
-                        crates: item.crates,
-                        collections: item.collections,
-                        wears: item.wears,
-                        skin_souvenir: item.souvenir,
-                        skin_stattrak: item.stattrak
+                        ...skinData
                     }
 
                     if (type === "skin_stattrak") {
                         items[`${item.id}_st`] = {
                             ...items[`${item.id}_st`],
-                            crates: item.crates,
-                            collections: item.collections,
-                            wears: item.wears,
-                            skin_souvenir: item.souvenir,
-                            skin_stattrak: item.stattrak
+                            ...skinData
                         }
                     }
                 }
 
-                ;(item?.wears ?? []).forEach((_: any, index: number) => {
-                    if (type === "skin_stattrak") {
-                        items[`${item.id}_${index}_st`] = {
-                            ...items[`${item.id}_${index}_st`],
-                            crates: item.crates,
-                            collections: item.collections,
-                            wears: item.wears,
-                            skin_souvenir: item.souvenir,
-                            skin_stattrak: item.stattrak
-                        }
-                    } else if (type === "skin_souvenir") {
-                        items[`${item.id}_${index}_so`] = {
-                            ...items[`${item.id}_${index}_so`],
-                            crates: item.crates,
-                            collections: item.collections,
-                            wears: item.wears,
-                            skin_souvenir: item.souvenir,
-                            skin_stattrak: item.stattrak
-                        }
-                    } else {
-                        items[`${item.id}_${index}`] = {
-                            ...items[`${item.id}_${index}`],
-                            crates: item.crates,
-                            collections: item.collections,
-                            wears: item.wears,
-                            skin_souvenir: item.souvenir,
-                            skin_stattrak: item.stattrak
-                        }
+                const wears = item?.wears ?? []
+                wears.forEach((_: any, index: number) => {
+                    const itemId =
+                        type === "skin_stattrak"
+                            ? `${item.id}_${index}_st`
+                            : type === "skin_souvenir"
+                              ? `${item.id}_${index}_so`
+                              : `${item.id}_${index}`
+
+                    items[itemId] = {
+                        ...items[itemId],
+                        ...skinData
                     }
                 })
             })
         })
 
-        let baseWeapons = await axios
-            .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/base_weapons.json`
-            )
-            .then((res) => res.data)
-
         baseWeapons.forEach((item: any) => {
             items[item.id] = item
         })
-
-        const highlights = await axios
-            .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/highlights.json`
-            )
-            .then((res) => res.data)
 
         highlights.forEach((item: any) => {
             items[item.id] = item
