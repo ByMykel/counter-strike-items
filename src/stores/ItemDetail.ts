@@ -30,6 +30,8 @@ export const useItemDetailStore = defineStore("item-detail", () => {
             return
         }
 
+        selected.value = undefined
+
         if (currentSelectedId && !skipHistory && currentSelectedId !== id) {
             const lastIndex = history.value.length - 1
             const isDifferentFromLast =

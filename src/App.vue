@@ -11,42 +11,40 @@
                 >
                     <AppBranding />
                 </div>
-                <nav class="flex-1 px-1 py-5 overflow-y-auto">
-                    <ul
-                        role="list"
-                        class="flex flex-col"
+                <nav class="flex-1 px-2 py-4 overflow-y-auto">
+                    <div
+                        v-for="(group, index) of navGroups"
+                        :key="group.label"
+                        :class="{ 'mt-5': index > 0 }"
                     >
-                        <li>
-                            <ul
-                                role="list"
-                                class="flex flex-col gap-1"
+                        <h3
+                            class="px-2 mb-1.5 text-[10px] uppercase tracking-widest text-black-100/50"
+                        >
+                            {{ group.label }}
+                        </h3>
+                        <ul
+                            role="list"
+                            class="flex flex-col"
+                        >
+                            <li
+                                v-for="routeItem of group.items"
+                                :key="routeItem.name"
                             >
-                                <li
-                                    v-for="routeItem of routes"
-                                    :key="routeItem.name"
+                                <RouterLink
+                                    :to="{
+                                        path: routeItem.path,
+                                        query: route.query.itemId
+                                            ? { itemId: route.query.itemId }
+                                            : {}
+                                    }"
+                                    class="block px-2 py-1.5 rounded-lg text-black-100 hover:bg-black-300/50 hover:text-white transition-all duration-150"
+                                    active-class="text-white bg-black-300"
                                 >
-                                    <RouterLink
-                                        :to="{
-                                            path: routeItem.path,
-                                            query: route.query.itemId
-                                                ? { itemId: route.query.itemId }
-                                                : {}
-                                        }"
-                                        class="flex gap-4 p-2 rounded-md justify-start text-black-100 hover:bg-black-300 hover:text-white"
-                                        active-class="text-white bg-black-300"
-                                    >
-                                        <component
-                                            :is="routeItem.icon"
-                                            class="size-6"
-                                        />
-                                        <span>
-                                            {{ routeItem.name }}
-                                        </span>
-                                    </RouterLink>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                                    {{ routeItem.name }}
+                                </RouterLink>
+                            </li>
+                        </ul>
+                    </div>
                 </nav>
             </div>
         </div>
@@ -128,38 +126,43 @@
                 v-if="mobileMenuOpen"
                 class="fixed bottom-16 left-0 right-0 bg-black-400 border-t-2 border-black-300 z-30 lg:hidden max-h-[60vh] overflow-y-auto rounded-t-xl"
             >
-                <div class="p-2">
+                <div class="p-3">
                     <div
-                        class="flex items-center justify-center px-3 py-2 mb-2"
+                        class="flex items-center justify-center px-3 py-2 mb-3"
                     >
                         <AppBranding />
                     </div>
-                    <ul class="grid grid-cols-3 gap-1">
-                        <li
-                            v-for="routeItem of routes"
-                            :key="routeItem.name"
+                    <div
+                        v-for="(group, index) of navGroups"
+                        :key="group.label"
+                        :class="{ 'mt-4': index > 0 }"
+                    >
+                        <h3
+                            class="px-2 mb-1.5 text-[10px] uppercase tracking-widest text-black-100/50"
                         >
-                            <RouterLink
-                                :to="{
-                                    path: routeItem.path,
-                                    query: route.query.itemId
-                                        ? { itemId: route.query.itemId }
-                                        : {}
-                                }"
-                                class="flex flex-col items-center gap-1 p-3 rounded-lg text-black-100 hover:bg-black-300 hover:text-white"
-                                active-class="text-white bg-black-300"
-                                @click="mobileMenuOpen = false"
+                            {{ group.label }}
+                        </h3>
+                        <ul class="grid grid-cols-3 gap-1">
+                            <li
+                                v-for="routeItem of group.items"
+                                :key="routeItem.name"
                             >
-                                <component
-                                    :is="routeItem.icon"
-                                    class="size-6"
-                                />
-                                <span class="text-xs text-center leading-tight">
+                                <RouterLink
+                                    :to="{
+                                        path: routeItem.path,
+                                        query: route.query.itemId
+                                            ? { itemId: route.query.itemId }
+                                            : {}
+                                    }"
+                                    class="block p-2 rounded-lg text-black-100 text-xs text-center hover:bg-black-300/50 hover:text-white transition-all duration-150"
+                                    active-class="text-white bg-black-300"
+                                    @click="mobileMenuOpen = false"
+                                >
                                     {{ routeItem.shortName || routeItem.name }}
-                                </span>
-                            </RouterLink>
-                        </li>
-                    </ul>
+                                </RouterLink>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </Transition>
@@ -209,7 +212,6 @@ import {
     Square3Stack3DIcon,
     VideoCameraIcon,
     FaceSmileIcon,
-    TableCellsIcon,
     Bars3Icon
 } from "@heroicons/vue/24/outline"
 import { useItemDetailStore } from "./stores/ItemDetail"
@@ -229,93 +231,123 @@ const mobileMenuOpen = ref(false)
 // Hide sidebar on special items matrix page
 const showSidebar = computed(() => route.path !== "/matrix")
 
-const routes = [
+const navGroups = [
     {
-        name: "Latest items",
-        shortName: "Latest",
-        path: "/",
-        icon: FaceSmileIcon
+        label: "Quick Access",
+        items: [
+            {
+                name: "Latest items",
+                shortName: "Latest",
+                path: "/",
+                icon: FaceSmileIcon
+            },
+            { name: "All", shortName: "All", path: "/home", icon: HomeIcon }
+        ]
     },
     {
-        name: "Matrix",
-        shortName: "Matrix",
-        path: "/matrix",
-        icon: TableCellsIcon
-    },
-    { name: "All", shortName: "All", path: "/home", icon: HomeIcon },
-    { name: "Skins", shortName: "Skins", path: "/skins", icon: BanknotesIcon },
-    {
-        name: "Stickers",
-        shortName: "Stickers",
-        path: "/stickers",
-        icon: StarIcon
-    },
-    {
-        name: "Sticker Slabs",
-        shortName: "Slabs",
-        path: "/sticker-slabs",
-        icon: StarIcon
-    },
-    {
-        name: "Collections",
-        shortName: "Collections",
-        path: "/collections",
-        icon: RectangleStackIcon
+        label: "Weapons",
+        items: [
+            {
+                name: "Skins",
+                shortName: "Skins",
+                path: "/skins",
+                icon: BanknotesIcon
+            },
+            {
+                name: "Keychains",
+                shortName: "Keychains",
+                path: "/keychains",
+                icon: TagIcon
+            },
+            {
+                name: "Sticker Slabs",
+                shortName: "Slabs",
+                path: "/sticker-slabs",
+                icon: StarIcon
+            }
+        ]
     },
     {
-        name: "Crates",
-        shortName: "Crates",
-        path: "/crates",
-        icon: ArchiveBoxIcon
+        label: "Applied Cosmetics",
+        items: [
+            {
+                name: "Stickers",
+                shortName: "Stickers",
+                path: "/stickers",
+                icon: StarIcon
+            },
+            {
+                name: "Patches",
+                shortName: "Patches",
+                path: "/patches",
+                icon: BugAntIcon
+            },
+            {
+                name: "Graffiti",
+                shortName: "Graffiti",
+                path: "/graffiti",
+                icon: PaintBrushIcon
+            }
+        ]
     },
     {
-        name: "Collectibles",
-        shortName: "Collectibles",
-        path: "/collectibles",
-        icon: TrophyIcon
+        label: "Containers",
+        items: [
+            {
+                name: "Collections",
+                shortName: "Collections",
+                path: "/collections",
+                icon: RectangleStackIcon
+            },
+            {
+                name: "Crates",
+                shortName: "Crates",
+                path: "/crates",
+                icon: ArchiveBoxIcon
+            },
+            { name: "Keys", shortName: "Keys", path: "/keys", icon: KeyIcon }
+        ]
     },
     {
-        name: "Agents",
-        shortName: "Agents",
-        path: "/agents",
-        icon: UserGroupIcon
-    },
-    { name: "Keys", shortName: "Keys", path: "/keys", icon: KeyIcon },
-    {
-        name: "Patches",
-        shortName: "Patches",
-        path: "/patches",
-        icon: BugAntIcon
-    },
-    {
-        name: "Graffiti",
-        shortName: "Graffiti",
-        path: "/graffiti",
-        icon: PaintBrushIcon
-    },
-    {
-        name: "Music kits",
-        shortName: "Music",
-        path: "/music-kits",
-        icon: MusicalNoteIcon
-    },
-    {
-        name: "Keychains",
-        shortName: "Keychains",
-        path: "/keychains",
-        icon: TagIcon
-    },
-    {
-        name: "Base weapons",
-        shortName: "Weapons",
-        path: "/base-weapons",
-        icon: Square3Stack3DIcon
-    },
-    {
-        name: "Highlights",
-        shortName: "Highlights",
-        path: "/highlights",
-        icon: VideoCameraIcon
+        label: "Others",
+        items: [
+            {
+                name: "Collectibles",
+                shortName: "Collectibles",
+                path: "/collectibles",
+                icon: TrophyIcon
+            },
+            {
+                name: "Agents",
+                shortName: "Agents",
+                path: "/agents",
+                icon: UserGroupIcon
+            },
+            {
+                name: "Music kits",
+                shortName: "Music",
+                path: "/music-kits",
+                icon: MusicalNoteIcon
+            },
+            {
+                name: "Highlights",
+                shortName: "Highlights",
+                path: "/highlights",
+                icon: VideoCameraIcon
+            },
+            // {
+            //     name: "Matrix",
+            //     shortName: "Matrix",
+            //     path: "/matrix",
+            //     icon: TableCellsIcon
+            // },
+            {
+                name: "Base weapons",
+                shortName: "Weapons",
+                path: "/base-weapons",
+                icon: Square3Stack3DIcon
+            }
+        ]
     }
 ]
 
