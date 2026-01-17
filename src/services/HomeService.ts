@@ -250,6 +250,16 @@ export default class HomeService {
             items[item.id] = item
         })
 
+        const highlights = await axios
+            .get(
+                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/highlights.json`
+            )
+            .then((res) => res.data)
+
+        highlights.forEach((item: any) => {
+            items[item.id] = item
+        })
+
         return items
     }
 }

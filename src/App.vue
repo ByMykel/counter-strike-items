@@ -254,9 +254,15 @@ const navGroups = [
                 icon: BanknotesIcon
             },
             {
-                name: "Keychains",
-                shortName: "Keychains",
-                path: "/keychains",
+                name: "Charms",
+                shortName: "Charms",
+                path: "/charms",
+                icon: TagIcon
+            },
+            {
+                name: "Souvenir Charm",
+                shortName: "Souvenir",
+                path: "/souvenir-charm",
                 icon: TagIcon
             },
             {
@@ -264,6 +270,12 @@ const navGroups = [
                 shortName: "Slabs",
                 path: "/sticker-slabs",
                 icon: StarIcon
+            },
+            {
+                name: "Base weapons",
+                shortName: "Weapons",
+                path: "/base-weapons",
+                icon: Square3Stack3DIcon
             }
         ]
     },
@@ -334,19 +346,13 @@ const navGroups = [
                 shortName: "Highlights",
                 path: "/highlights",
                 icon: VideoCameraIcon
-            },
+            }
             // {
             //     name: "Matrix",
             //     shortName: "Matrix",
             //     path: "/matrix",
             //     icon: TableCellsIcon
             // },
-            {
-                name: "Base weapons",
-                shortName: "Weapons",
-                path: "/base-weapons",
-                icon: Square3Stack3DIcon
-            }
         ]
     }
 ]

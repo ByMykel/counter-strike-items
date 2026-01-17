@@ -1,7 +1,7 @@
 import axios from "axios"
 import { filterItems, generateOptions } from "../utils"
 
-export default class KeychainsService {
+export default class CharmsService {
     async query({
         search,
         filters

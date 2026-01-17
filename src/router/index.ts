@@ -69,9 +69,14 @@ const router = createRouter({
             component: () => import("../views/MusicKitsView.vue")
         },
         {
-            path: "/keychains",
-            name: "keychains",
-            component: () => import("../views/KeychainsView.vue")
+            path: "/charms",
+            name: "charms",
+            component: () => import("../views/CharmsView.vue")
+        },
+        {
+            path: "/souvenir-charm",
+            name: "souvenir-charm",
+            component: () => import("../views/SouvenirCharmView.vue")
         },
         {
             path: "/base-weapons",
