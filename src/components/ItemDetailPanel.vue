@@ -56,7 +56,10 @@
                 class="relative bg-black-300/80 bg-[url('../img/graph-paper.svg')] rounded-md"
             >
                 <img
-                    class="object-scale-down w-full h-[16rem] p-2"
+                    class="w-full h-[16rem] p-2"
+                    :class="{
+                        'object-scale-down': !selected.image?.endsWith('.svg')
+                    }"
                     :src="selected.image"
                     :alt="selected.name"
                 >
