@@ -64,12 +64,25 @@ const itemDetailStore = useItemDetailStore()
 const items = computed(() => {
     return [
         {
-            title: "The Year of the Bees",
-            link: "https://www.counter-strike.net/newsentry/500593045099512825",
-            date: "December 18, 2025",
+            title: "The Fourth Season",
+            link: "https://www.counter-strike.net/newsentry/511855214544814488",
+            date: "January 21, 2026",
             items: [
-                itemDetailStore.items["crate-5233"],
-
+                itemDetailStore.items["collectible-5234"],
+                itemDetailStore.items["collectible-5239"],
+                itemDetailStore.items["collectible-5244"],
+                itemDetailStore.items["collectible-5249"],
+                itemDetailStore.items["collectible-5254"],
+                itemDetailStore.items["collectible-5259"],
+                itemDetailStore.items["collectible-5264"],
+                itemDetailStore.items["collectible-5269"]
+            ]
+        },
+        {
+            title: "2026 Service Medal",
+            link: "https://www.counter-strike.net/newsentry/500593045099513267",
+            date: "December 26, 2025",
+            items: [
                 itemDetailStore.items["collectible-5270"],
                 itemDetailStore.items["collectible-5271"],
                 itemDetailStore.items["collectible-5272"],
@@ -77,6 +90,12 @@ const items = computed(() => {
                 itemDetailStore.items["collectible-5274"],
                 itemDetailStore.items["collectible-5275"]
             ]
+        },
+        {
+            title: "The Year of the Bees",
+            link: "https://www.counter-strike.net/newsentry/500593045099512825",
+            date: "December 18, 2025",
+            items: [itemDetailStore.items["crate-5233"]]
         },
         {
             title: "The Starladder Budapest Major 2025",
@@ -95,17 +114,11 @@ const items = computed(() => {
                 itemDetailStore.items["crate-5231"],
                 itemDetailStore.items["crate-5232"],
 
-                itemDetailStore.items["crate-5219_highlight"],
                 itemDetailStore.items["crate-5219"],
-                itemDetailStore.items["crate-5220_highlight"],
                 itemDetailStore.items["crate-5220"],
-                itemDetailStore.items["crate-5222_highlight"],
                 itemDetailStore.items["crate-5222"],
-                itemDetailStore.items["crate-5223_highlight"],
                 itemDetailStore.items["crate-5223"],
-                itemDetailStore.items["crate-5224_highlight"],
                 itemDetailStore.items["crate-5224"],
-                itemDetailStore.items["crate-5225_highlight"],
                 itemDetailStore.items["crate-5225"]
             ]
         },
