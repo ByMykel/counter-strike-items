@@ -68,6 +68,11 @@ const items = computed(() => {
             link: "https://www.counter-strike.net/newsentry/511855214544814488",
             date: "January 21, 2026",
             items: [
+                itemDetailStore.items["skin-9197715f9f3f_0"],
+
+                itemDetailStore.items["collection-set-timed-drops-exuberant"],
+                itemDetailStore.items["collection-set-timed-drops-achroma"],
+
                 itemDetailStore.items["collectible-5234"],
                 itemDetailStore.items["collectible-5239"],
                 itemDetailStore.items["collectible-5244"],
