@@ -16,29 +16,31 @@
                 :alt="name"
             >
 
-            <div
-                class="absolute flex gap-1 text-sm font-semibold text-white top-2 right-2"
-            >
-                <div
+            <div class="absolute flex flex-col items-end gap-1 top-2 right-2">
+                <span
                     v-if="souvenir"
-                    class="bg-[#ffd700] h-3 w-3 rounded-full"
-                    title="Souvenir"
-                />
-                <div
+                    class="px-1.5 py-0.5 text-[10px] font-semibold leading-none tracking-wide rounded bg-[#ffd700]/90 text-gray-900"
+                >
+                    Souvenir
+                </span>
+                <span
                     v-if="stattrak"
-                    class="bg-[#cf6a32] h-3 w-3 rounded-full"
-                    title="StatTrak"
-                />
-                <div
-                    v-if="rare"
-                    class="bg-[#8650ac] h-3 w-3 rounded-full"
-                    title="Rare"
-                />
-                <div
+                    class="px-1.5 py-0.5 text-[10px] font-semibold leading-none tracking-wide rounded bg-[#cf6a32]/90 text-white"
+                >
+                    StatTrak
+                </span>
+                <span
                     v-if="genuine"
-                    class="bg-[#4d7455] h-3 w-3 rounded-full"
-                    title="Rare"
-                />
+                    class="px-1.5 py-0.5 text-[10px] font-semibold leading-none tracking-wide rounded bg-[#4d7455]/90 text-white"
+                >
+                    Genuine
+                </span>
+                <span
+                    v-if="phase"
+                    class="px-1.5 py-0.5 text-[10px] font-semibold leading-none tracking-wide rounded bg-[#5b98a8]/90 text-white"
+                >
+                    {{ phase }}
+                </span>
             </div>
         </button>
         <div>
@@ -69,8 +71,8 @@ const props = defineProps<{
     image: string
     souvenir: boolean
     stattrak: boolean
-    rare: boolean
     genuine: boolean
+    phase?: string | null
     marketHashName?: string
 }>()
 

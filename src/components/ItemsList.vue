@@ -33,8 +33,8 @@
                     :image="item.image"
                     :souvenir="item?.souvenir ?? false"
                     :stattrak="item?.stattrak ?? false"
-                    :rare="item?.rare ?? false"
                     :genuine="item?.genuine ?? false"
+                    :phase="item?.phase ?? null"
                     :market-hash-name="item.market_hash_name"
                     @show="$emit('select', item.id)"
                 />
