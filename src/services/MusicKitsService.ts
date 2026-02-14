@@ -1,4 +1,4 @@
-import axios from "axios"
+import { cachedGet } from "../utils/apiCache"
 import { filterItems } from "../utils"
 
 export default class MusicKitsService {
@@ -9,11 +9,9 @@ export default class MusicKitsService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
-        let items = await axios
-            .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/music_kits.json`
-            )
-            .then((res) => res.data)
+        let items = await cachedGet<any[]>(
+            `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/music_kits.json`
+        )
 
         const filterList = [
             {

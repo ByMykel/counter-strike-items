@@ -1,4 +1,4 @@
-import axios from "axios"
+import { cachedGet } from "../utils/apiCache"
 import { filterItems, shuffleArrayWithSeed } from "../utils/index"
 
 export default class HomeService {
@@ -9,15 +9,14 @@ export default class HomeService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
+        const rawData = await cachedGet<Record<string, any>>(
+            `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
+        )
         let items: {
             name: string
             image: string
             image_domain?: string /* more properties */
-        }[] = await axios
-            .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
-            )
-            .then((res) => Object.values(res.data))
+        }[] = Object.values(rawData)
 
         items = items.map((item) => {
             let imageDomain = "unknown"
@@ -86,34 +85,28 @@ export default class HomeService {
 
     async getAllItems() {
         const [
-            itemsRes,
-            skinsRes,
-            collectiblesRes,
-            baseWeaponsRes,
-            highlightsRes
+            items,
+            skins,
+            collectibles,
+            baseWeapons,
+            highlights
         ] = await Promise.all([
-            axios.get(
+            cachedGet<Record<string, any>>(
                 `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
             ),
-            axios.get(
+            cachedGet<any[]>(
                 `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json`
             ),
-            axios.get(
+            cachedGet<any[]>(
                 `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collectibles.json`
             ),
-            axios.get(
+            cachedGet<any[]>(
                 `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/base_weapons.json`
             ),
-            axios.get(
+            cachedGet<any[]>(
                 `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/highlights.json`
             )
         ])
-
-        const items = itemsRes.data
-        const skins = skinsRes.data
-        const collectibles = collectiblesRes.data
-        const baseWeapons = baseWeaponsRes.data
-        const highlights = highlightsRes.data
 
         const collectibleConfigs = [
             {

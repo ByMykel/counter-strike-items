@@ -1,4 +1,4 @@
-import axios from "axios"
+import { cachedGet } from "../utils/apiCache"
 import { filterItems, generateOptions } from "../utils"
 
 export default class PatchesService {
@@ -9,11 +9,9 @@ export default class PatchesService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
-        let items = await axios
-            .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/patches.json`
-            )
-            .then((res) => res.data)
+        let items = await cachedGet<any[]>(
+            `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/patches.json`
+        )
 
         const filterList = [
             {

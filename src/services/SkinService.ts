@@ -1,4 +1,4 @@
-import axios from "axios"
+import { cachedGet } from "../utils/apiCache"
 import { filterItems, generateOptions } from "../utils"
 
 export default class SkinService {
@@ -9,34 +9,28 @@ export default class SkinService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
-        let skins = await axios
-            .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json`
-            )
-            .then((res: any) =>
-                res.data.reduce((acc: any, item: any) => {
-                    acc[item.id] = item
-                    return acc
-                }, {})
-            )
+        const skinsRaw = await cachedGet<any[]>(
+            `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json`
+        )
+        let skins = skinsRaw.reduce((acc: any, item: any) => {
+            acc[item.id] = item
+            return acc
+        }, {})
 
-        let items = await axios
-            .get(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins_not_grouped.json`
-            )
-            .then((res: any) =>
-                res.data.map((item: any) => {
-                    return {
-                        ...item,
-                        rare: [
-                            "sfui_invpanel_filter_melee",
-                            "sfui_invpanel_filter_gloves"
-                        ].includes(item.category.id),
-                        collections: skins[item.skin_id]?.collections ?? [],
-                        crates: skins[item.skin_id]?.crates ?? []
-                    }
-                })
-            )
+        const itemsRaw = await cachedGet<any[]>(
+            `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins_not_grouped.json`
+        )
+        let items = itemsRaw.map((item: any) => {
+            return {
+                ...item,
+                rare: [
+                    "sfui_invpanel_filter_melee",
+                    "sfui_invpanel_filter_gloves"
+                ].includes(item.category.id),
+                collections: skins[item.skin_id]?.collections ?? [],
+                crates: skins[item.skin_id]?.crates ?? []
+            }
+        })
 
         const filterList = [
             {
@@ -180,9 +174,8 @@ export default class SkinService {
     }
 
     async loadSkins(): Promise<any[]> {
-        const response = await axios.get(
+        return cachedGet<any[]>(
             `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json`
         )
-        return response.data
     }
 }

@@ -14,6 +14,7 @@
                 }"
                 :src="image"
                 :alt="name"
+                loading="lazy"
             >
 
             <div class="absolute flex flex-col items-end gap-1 top-2 right-2">

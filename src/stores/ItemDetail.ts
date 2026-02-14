@@ -14,11 +14,31 @@ export const useItemDetailStore = defineStore("item-detail", () => {
     const selected = ref<ItemDetail>()
     const history = ref<string[]>([])
 
+    let loadPromise: Promise<void> | null = null
+
+    async function ensureLoaded() {
+        if (Object.keys(items.value).length) return
+        if (loadPromise) return loadPromise
+
+        loadPromise = homeService.getAllItems().then((newItems) => {
+            items.value = newItems
+
+            const itemId = route.query.itemId
+            if (typeof itemId === "string" && itemId) {
+                getItemDetails(itemId, true, true)
+            }
+        })
+
+        return loadPromise
+    }
+
     async function getItemDetails(
         id: string,
         skipHistory = false,
         skipUrlUpdate = false
     ) {
+        await ensureLoaded()
+
         if (!Object.keys(items.value).length) return
 
         const currentSelectedId = selected.value?.id
@@ -105,14 +125,10 @@ export const useItemDetailStore = defineStore("item-detail", () => {
         router.replace({ query: restQuery })
     }
 
-    homeService.getAllItems().then((newItems) => {
-        items.value = newItems
-
-        const itemId = route.query.itemId
-        if (typeof itemId === "string" && itemId) {
-            getItemDetails(itemId, true, true)
-        }
-    })
+    // Load on-demand if URL already contains itemId
+    if (typeof route.query.itemId === "string" && route.query.itemId) {
+        ensureLoaded()
+    }
 
     watch(
         () => route.query.itemId,
@@ -132,6 +148,7 @@ export const useItemDetailStore = defineStore("item-detail", () => {
         selected,
         history,
 
+        ensureLoaded,
         getItemDetails,
         goBack,
         deleteItem

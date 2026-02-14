@@ -1,5 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router"
 
+const CHUNK_ERROR_KEY = "chunk_reload"
+
 const router = createRouter({
     history: createWebHashHistory("/counter-strike-items/"),
     routes: [
@@ -94,6 +96,25 @@ const router = createRouter({
             component: () => import("../views/MatrixView.vue")
         }
     ]
+})
+
+router.onError((error) => {
+    const isChunkError =
+        error.message.includes("Failed to fetch dynamically imported module") ||
+        error.message.includes("Importing a module script failed") ||
+        error.message.includes("error loading dynamically imported module")
+
+    if (isChunkError) {
+        const alreadyReloaded = sessionStorage.getItem(CHUNK_ERROR_KEY)
+        if (!alreadyReloaded) {
+            sessionStorage.setItem(CHUNK_ERROR_KEY, "1")
+            window.location.reload()
+        }
+    }
+})
+
+router.afterEach(() => {
+    sessionStorage.removeItem(CHUNK_ERROR_KEY)
 })
 
 export default router

@@ -1,6 +1,39 @@
 import Fuse from "fuse.js"
 import uniqBy from "lodash.uniqby"
 
+const fuseCache = new Map<string, Fuse<any>>()
+
+function getFuseIndex(items: any[], keys: string[]): Fuse<any> {
+    const first = items[0]?.id ?? ""
+    const last = items[items.length - 1]?.id ?? ""
+    const cacheKey = `${items.length}:${first}:${last}`
+
+    let fuse = fuseCache.get(cacheKey)
+    if (fuse) return fuse
+
+    fuse = new Fuse(items, {
+        keys,
+        threshold: 0.3,
+        includeScore: true,
+        shouldSort: true,
+        findAllMatches: true,
+        useExtendedSearch: false,
+        ignoreLocation: true,
+        minMatchCharLength: 2
+    })
+
+    fuseCache.set(cacheKey, fuse)
+    return fuse
+}
+
+function exactTokenMatch(item: any, tokens: string[]): boolean {
+    const name = (item.name ?? "").toLowerCase()
+    const marketName = (item.market_hash_name ?? "").toLowerCase()
+    return tokens.every(
+        (token) => name.includes(token) || marketName.includes(token)
+    )
+}
+
 function hashString(str: string) {
     let hash = 0
     if (str.length === 0) {
@@ -51,24 +84,29 @@ export function filterItems(
     search = "",
     filters: { [prop: string]: string[] } = {}
 ) {
-    // Specify which item properties the search should apply to
-    const searchProperties = ["name" /* other properties */]
+    const searchProperties = ["name", "market_hash_name"]
 
     let filteredItems = items
     if (search) {
-        const fuse = new Fuse(items, {
-            keys: searchProperties,
-            threshold: 0.4,
-            includeScore: false,
-            shouldSort: true,
-            findAllMatches: true,
-            useExtendedSearch: false,
-            ignoreLocation: true,
-            minMatchCharLength: 1
-        })
+        const query = search.toLowerCase().trim()
+        const tokens = query.split(/\s+/).filter(Boolean)
 
-        const searchResults = fuse.search(search)
-        filteredItems = searchResults.map((result) => result.item)
+        // Exact substring matches first (tokenized AND: all tokens must appear)
+        const exactMatches = items.filter((item) =>
+            exactTokenMatch(item, tokens)
+        )
+
+        // Fuzzy matches for typo tolerance
+        const fuse = getFuseIndex(items, searchProperties)
+        const fuseResults = fuse.search(search)
+
+        // Merge: exact matches first, then fuzzy (deduplicated)
+        const seen = new Set(exactMatches.map((item) => item.id))
+        const fuzzyOnly = fuseResults
+            .filter((result) => !seen.has(result.item.id))
+            .map((result) => result.item)
+
+        filteredItems = [...exactMatches, ...fuzzyOnly]
     }
 
     if (Object.keys(filters).length > 0) {
