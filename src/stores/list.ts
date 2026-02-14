@@ -2,6 +2,7 @@ import { onUnmounted, onMounted, ref } from "vue"
 import { defineStore, getActivePinia } from "pinia"
 import { useRoute, useRouter } from "vue-router"
 import { Filter } from "../types"
+import { usePriceStore } from "./prices"
 
 type QueryFunction = ({
     // eslint-disable-next-line no-unused-vars
@@ -23,14 +24,39 @@ export const createListStore =
             const route = useRoute()
             const router = useRouter()
 
+            const priceStore = usePriceStore()
+
             const loading = ref<boolean>(false)
             const search = ref<string>("")
+            const sortBy = ref<string>("")
             const page = ref<number>(1)
             const allItems = ref<any[]>([])
             const items = ref<any[]>([])
             const itemsCount = ref<number>(0)
             const filters = ref<Filter[]>([])
             const filtersValues = ref<{ [prop: string]: string[] }>({})
+
+            function sortItems() {
+                if (!sortBy.value) return
+
+                const direction = sortBy.value === "price-asc" ? 1 : -1
+
+                allItems.value.sort((a, b) => {
+                    const priceA = priceStore.prices[a.market_hash_name] ?? null
+                    const priceB = priceStore.prices[b.market_hash_name] ?? null
+
+                    if (priceA === null && priceB === null) return 0
+                    if (priceA === null) return 1
+                    if (priceB === null) return -1
+
+                    return (priceA - priceB) * direction
+                })
+            }
+
+            function reslice() {
+                page.value = 1
+                items.value = allItems.value.slice(0, 20)
+            }
 
             async function fetch() {
                 reset()
@@ -43,6 +69,7 @@ export const createListStore =
                             filters: filtersValues.value
                         })
                     allItems.value = newItems
+                    sortItems()
                     itemsCount.value = allItems.value.length
                     items.value = allItems.value.slice(
                         (page.value - 1) * 20,
@@ -97,6 +124,13 @@ export const createListStore =
                 saveSearchQueryParam()
             }
 
+            function setSortBy(value: string) {
+                sortBy.value = value
+                sortItems()
+                reslice()
+                saveSearchQueryParam()
+            }
+
             function reset() {
                 items.value = []
                 allItems.value = []
@@ -121,6 +155,9 @@ export const createListStore =
                 if (search.value.length) query.q = search.value
                 else delete query.q
 
+                if (sortBy.value) query.sort = sortBy.value
+                else delete query.sort
+
                 // Add filters to query params
                 Object.entries(filtersValues.value).forEach(([key, values]) => {
                     if (values.length) query[key] = values
@@ -133,15 +170,28 @@ export const createListStore =
             onMounted(() => {
                 filtersValues.value = {}
                 search.value = ""
+                sortBy.value = ""
 
                 // Restore search and filters from current route
                 const searchQuery =
                     typeof route.query.q === "string" ? route.query.q : ""
                 search.value = searchQuery
 
+                // Restore sort from URL
+                const sortQuery =
+                    typeof route.query.sort === "string" ? route.query.sort : ""
+                if (sortQuery === "price-asc" || sortQuery === "price-desc") {
+                    sortBy.value = sortQuery
+                }
+
                 // Restore filters from URL
                 Object.entries(route.query).forEach(([key, value]) => {
-                    if (key !== "q" && key !== "itemId" && value) {
+                    if (
+                        key !== "q" &&
+                        key !== "itemId" &&
+                        key !== "sort" &&
+                        value
+                    ) {
                         if (typeof value === "string") {
                             filtersValues.value[key] = value.includes(",")
                                 ? value.split(",")
@@ -172,6 +222,7 @@ export const createListStore =
                 items,
                 itemsCount,
                 search,
+                sortBy,
                 loading,
                 filters,
                 filtersValues,
@@ -179,6 +230,7 @@ export const createListStore =
                 fetch,
                 loadMore,
                 setSearch,
+                setSortBy,
                 setFilters,
                 removeFilters
             }

@@ -20,9 +20,45 @@
                     class="w-20 h-6 px-2 rounded-md bg-black-200 animate-pulse"
                 />
                 <div
-                    v-if="hasFilters"
                     class="w-0.5 h-[calc(100%-20px)] rounded-full bg-black-200/20"
                 />
+                <Menu
+                    as="div"
+                    class="relative"
+                >
+                    <MenuButton
+                        class="p-1 rounded-md hover:bg-black-200 relative"
+                    >
+                        <ArrowsUpDownIcon class="w-6 h-6 text-black-100" />
+                        <div
+                            v-if="sortBy"
+                            class="absolute top-1 right-1 bg-[#ff5e65] size-2 rounded-full"
+                        />
+                    </MenuButton>
+                    <MenuItems
+                        class="absolute right-0 top-full mt-2 w-44 rounded-lg border border-black-200/20 bg-black-400 shadow-xl z-20 p-1 focus:outline-none"
+                    >
+                        <MenuItem
+                            v-for="option in sortOptions"
+                            :key="option.value"
+                            v-slot="{ active }"
+                        >
+                            <button
+                                type="button"
+                                class="w-full text-left px-3 py-1.5 text-sm rounded-md"
+                                :class="[
+                                    sortBy === option.value
+                                        ? 'text-[#ff5e65] font-medium'
+                                        : 'text-gray-300',
+                                    active ? 'bg-black-300' : ''
+                                ]"
+                                @click="emit('set-sort-by', option.value)"
+                            >
+                                {{ option.label }}
+                            </button>
+                        </MenuItem>
+                    </MenuItems>
+                </Menu>
                 <button
                     v-if="hasFilters"
                     type="button"
@@ -80,12 +116,20 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue"
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue"
 import {
     MagnifyingGlassIcon,
     FunnelIcon,
-    XMarkIcon
+    XMarkIcon,
+    ArrowsUpDownIcon
 } from "@heroicons/vue/24/outline"
 import { Filter } from "../types"
+
+const sortOptions = [
+    { value: "", label: "Default" },
+    { value: "price-asc", label: "Price: Low to High" },
+    { value: "price-desc", label: "Price: High to Low" }
+]
 
 const props = defineProps<{
     query: string
@@ -93,12 +137,18 @@ const props = defineProps<{
     scrolledDown: boolean
     hasFilters: boolean
     hasSelectedFilters: boolean
+    sortBy?: string
     loading: boolean
     filters: Filter[]
     filtersValues: { [prop: string]: string[] }
 }>()
 
-defineEmits(["input", "open-filters", "remove-filter"])
+const emit = defineEmits([
+    "input",
+    "open-filters",
+    "remove-filter",
+    "set-sort-by"
+])
 
 const query = ref(props.query || "")
 

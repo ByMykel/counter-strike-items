@@ -87,6 +87,10 @@ export function useItemListView(options: UseItemListViewOptions) {
         // UI state
         showFilters,
 
+        // Sort
+        sortBy: computed(() => listStore.sortBy),
+        setSortBy: listStore.setSortBy,
+
         // Methods
         setSearch: listStore.setSearch,
         loadMore: listStore.loadMore,

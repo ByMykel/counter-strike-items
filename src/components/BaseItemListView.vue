@@ -10,6 +10,8 @@
             :filters="view.filters.value"
             :filters-values="view.filtersValues.value"
             :is-video="isVideo"
+            :sort-by="view.sortBy.value"
+            @set-sort-by="view.setSortBy($event)"
             @set-query="view.setSearch($event)"
             @select="view.selectItem"
             @load-more="view.loadMore()"

@@ -8,9 +8,11 @@
             :loading="loading"
             :has-filters="hasFilters"
             :has-selected-filters="hasSelectedFilters"
+            :sort-by="sortBy"
             :filters="filters"
             :filters-values="filtersValues"
             @input="$emit('set-query', $event)"
+            @set-sort-by="$emit('set-sort-by', $event)"
             @open-filters="$emit('open-filters')"
             @remove-filter="$emit('remove-filter', $event)"
         />
@@ -72,6 +74,7 @@ withDefaults(
         itemsCount: number
         loading: boolean
         search: string
+        sortBy?: string
         hasFilters?: boolean
         hasSelectedFilters?: boolean
         filters: Filter[]
@@ -80,6 +83,7 @@ withDefaults(
         hasSearch?: boolean
     }>(),
     {
+        sortBy: "",
         hasFilters: false,
         hasSelectedFilters: false,
         isVideo: false,
@@ -89,6 +93,7 @@ withDefaults(
 
 const emit = defineEmits([
     "set-query",
+    "set-sort-by",
     "select",
     "load-more",
     "open-filters",
