@@ -55,12 +55,14 @@
                     cursor: isDragging ? 'grabbing' : 'grab'
                 }"
             >
-                <table class="border-collapse">
+                <table class="border-separate" style="border-spacing: 0">
                     <MatrixTableHeader
                         :visible-columns="visibleColumns"
                         :visible-col-start="visibleColStart"
                         :visible-col-end="visibleColEnd"
                         :total-columns="columns.length"
+                        :translate-x="translateX"
+                        :is-desktop="isDesktop"
                     />
                     <tbody>
                         <!-- Spacer row for rows above visible range -->
@@ -86,7 +88,8 @@
                             class="hover:bg-black-300/20 border-b border-black-300/30"
                         >
                             <td
-                                class="bg-black-400 border-r-2 border-black-300 px-3 py-2 w-[250px] h-[120px] align-middle"
+                                class="bg-black-400 border-r-2 border-b border-black-300 px-3 py-2 w-[250px] h-[120px] align-middle lg:relative lg:z-[5]"
+                                :style="{ transform: isDesktop ? `translateX(${-translateX}px)` : undefined }"
                             >
                                 <span class="text-sm text-white break-words">{{
                                     getRowDisplayName(row)
@@ -152,6 +155,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from "vue"
+import { useMediaQuery } from "@vueuse/core"
 import { useRoute, useRouter } from "vue-router"
 import SpecialItemsMatrixService, {
     type CellData,
@@ -166,6 +170,7 @@ import MatrixTableHeader from "../components/MatrixTableHeader.vue"
 
 // Types are imported from SpecialItemsMatrixService
 
+const isDesktop = useMediaQuery("(min-width: 1024px)")
 const itemDetailStore = useItemDetailStore()
 const route = useRoute()
 const router = useRouter()

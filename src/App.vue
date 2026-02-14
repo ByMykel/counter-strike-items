@@ -211,8 +211,8 @@ import {
     TagIcon,
     Square3Stack3DIcon,
     VideoCameraIcon,
-    FaceSmileIcon,
-    Bars3Icon
+    Bars3Icon,
+    TableCellsIcon,
 } from "@heroicons/vue/24/outline"
 import { useItemDetailStore } from "./stores/ItemDetail"
 import ItemDetailPanel from "./components/ItemDetailPanel.vue"
@@ -235,13 +235,7 @@ const navGroups = [
     {
         label: "Quick Access",
         items: [
-            {
-                name: "Latest items",
-                shortName: "Latest",
-                path: "/",
-                icon: FaceSmileIcon
-            },
-            { name: "All", shortName: "All", path: "/home", icon: HomeIcon }
+            { name: "All", shortName: "All", path: "/", icon: HomeIcon }
         ]
     },
     {
@@ -346,20 +340,20 @@ const navGroups = [
                 shortName: "Highlights",
                 path: "/highlights",
                 icon: VideoCameraIcon
-            }
-            // {
-            //     name: "Matrix",
-            //     shortName: "Matrix",
-            //     path: "/matrix",
-            //     icon: TableCellsIcon
-            // },
+            },
+            {
+                name: "Matrix",
+                shortName: "Matrix",
+                path: "/matrix",
+                icon: TableCellsIcon
+            },
         ]
     }
 ]
 
 // Quick access routes for mobile bottom bar (most used categories)
 const mobileRoutes = [
-    { name: "Latest", shortName: "Latest", path: "/", icon: FaceSmileIcon },
+    { name: "All", shortName: "All", path: "/", icon: HomeIcon },
     { name: "Skins", shortName: "Skins", path: "/skins", icon: BanknotesIcon },
     {
         name: "Stickers",

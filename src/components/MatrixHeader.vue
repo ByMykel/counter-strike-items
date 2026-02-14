@@ -5,7 +5,7 @@
         <AppBranding />
         <div class="flex items-center gap-2">
             <RouterLink
-                to="/home"
+                to="/"
                 class="flex items-center gap-2 px-3 py-2 rounded-md text-black-100 hover:bg-black-300 hover:text-white transition-colors"
             >
                 <ArrowLeftIcon class="w-5 h-5" />

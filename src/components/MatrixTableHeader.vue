@@ -5,7 +5,8 @@
     >
         <tr>
             <th
-                class="bg-black-400 border-r-2 border-black-300 px-3 py-2 w-[250px]"
+                class="bg-black-400 border-r-2 border-black-300 px-3 py-2 w-[250px] h-[60px] lg:z-[15] lg:relative"
+                :style="{ transform: isDesktop ? `translateX(${-translateX}px)` : undefined }"
             />
             <!-- Spacer cells for columns before visible range -->
             <th
@@ -18,9 +19,9 @@
             <th
                 v-for="column in visibleColumns"
                 :key="column"
-                class="border-r border-black-300 px-3 py-2 w-[180px] text-center"
+                class="border-r border-black-300 px-3 py-2 w-[180px] h-[60px] text-center align-middle overflow-hidden"
             >
-                <span class="text-xs text-black-100 break-words">{{
+                <span class="text-xs text-black-100 line-clamp-3">{{
                     column
                 }}</span>
             </th>
@@ -41,6 +42,8 @@ defineProps<{
     visibleColStart: number
     visibleColEnd: number
     totalColumns: number
+    translateX: number
+    isDesktop: boolean
 }>()
 
 const COLUMN_WIDTH = 180
