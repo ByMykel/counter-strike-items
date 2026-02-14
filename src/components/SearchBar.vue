@@ -20,9 +20,11 @@
                     class="w-20 h-6 px-2 rounded-md bg-black-200 animate-pulse"
                 />
                 <div
+                    v-if="!loading"
                     class="w-0.5 h-[calc(100%-20px)] rounded-full bg-black-200/20"
                 />
                 <Menu
+                    v-if="!loading"
                     as="div"
                     class="relative"
                 >
@@ -60,7 +62,7 @@
                     </MenuItems>
                 </Menu>
                 <button
-                    v-if="hasFilters"
+                    v-if="hasFilters && !loading"
                     type="button"
                     class="p-1 rounded-md hover:bg-black-200 relative"
                     @click="$emit('open-filters')"
