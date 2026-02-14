@@ -33,7 +33,10 @@
                     >
                         <div>
                             {{ filter.name }}
-                            <span class="text-sm font-normal text-black-100">({{
+                            <span
+                                v-if="filter.type !== 'price-range'"
+                                class="text-sm font-normal text-black-100"
+                            >({{
                                 !filtersValues[filter.prop]?.length
                                     ? filter.options.length
                                     : `${filtersValues[filter.prop].length}/${filter.options.length}`
@@ -83,5 +86,5 @@ defineProps<{
 
 defineEmits(["close", "set-filters", "remove-filters"])
 
-const show = ref<{ [prop: string]: boolean }>({})
+const show = ref<{ [prop: string]: boolean }>({ price_range: true })
 </script>

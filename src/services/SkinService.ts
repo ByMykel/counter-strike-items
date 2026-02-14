@@ -40,6 +40,12 @@ export default class SkinService {
 
         const filterList = [
             {
+                prop: "price_range",
+                name: "Price",
+                type: "price-range",
+                options: []
+            },
+            {
                 prop: "crates",
                 name: "Crates",
                 type: "multi-select",

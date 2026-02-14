@@ -17,6 +17,12 @@ export default class KeysService {
 
         const filterList = [
             {
+                prop: "price_range",
+                name: "Price",
+                type: "price-range",
+                options: []
+            },
+            {
                 prop: "crates",
                 name: "Crate",
                 type: "multi-select",

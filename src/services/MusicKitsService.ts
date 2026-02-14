@@ -17,6 +17,12 @@ export default class MusicKitsService {
 
         const filterList = [
             {
+                prop: "price_range",
+                name: "Price",
+                type: "price-range",
+                options: []
+            },
+            {
                 prop: "exclusive",
                 name: "Exclusive",
                 type: "multi-select",

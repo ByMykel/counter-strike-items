@@ -50,6 +50,12 @@ export default class HomeService {
 
         const filterList = [
             {
+                prop: "price_range",
+                name: "Price",
+                type: "price-range",
+                options: []
+            },
+            {
                 prop: "image_domain",
                 name: "Image domain",
                 type: "multi-select",

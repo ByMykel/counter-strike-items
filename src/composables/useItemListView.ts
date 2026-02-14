@@ -54,7 +54,11 @@ export function useItemListView(options: UseItemListViewOptions) {
 
     function setFilters({ prop, value }: { prop: string; value: string[] }) {
         listStore.setFilters({ prop, value })
-        listStore.fetch()
+        if (prop === "price_range") {
+            listStore.applyPriceFilter()
+        } else {
+            listStore.fetch()
+        }
     }
 
     function removeFilters() {

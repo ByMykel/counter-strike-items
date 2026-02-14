@@ -17,6 +17,12 @@ export default class CharmsService {
 
         const filterList = [
             {
+                prop: "price_range",
+                name: "Price",
+                type: "price-range",
+                options: []
+            },
+            {
                 prop: "rarity",
                 name: "Rarity",
                 type: "multi-select",

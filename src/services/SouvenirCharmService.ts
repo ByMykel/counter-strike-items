@@ -17,6 +17,12 @@ export default class SouvenirCharmService {
 
         const filterList = [
             {
+                prop: "price_range",
+                name: "Price",
+                type: "price-range",
+                options: []
+            },
+            {
                 prop: "tournament_event",
                 name: "Tournament",
                 type: "multi-select",
