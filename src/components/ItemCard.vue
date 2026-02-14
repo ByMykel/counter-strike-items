@@ -48,14 +48,22 @@
             >
                 {{ name }}
             </p>
+            <p
+                class="text-xs px-0.5"
+                :class="formattedPrice ? 'text-green-400' : 'text-black-100'"
+            >
+                {{ priceLabel }}
+            </p>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue"
 import { useDebug } from "../composables/useDebug"
+import { usePriceStore } from "../stores/prices"
 
-defineProps<{
+const props = defineProps<{
     id: string
     name: string
     image: string
@@ -69,4 +77,13 @@ defineProps<{
 defineEmits(["show"])
 
 const { isDebugMode } = useDebug()
+const priceStore = usePriceStore()
+
+const formattedPrice = computed(() => priceStore.getPrice(props.marketHashName))
+const priceLabel = computed(() => {
+    if (formattedPrice.value) return formattedPrice.value
+    return priceStore.isMarketable(props.marketHashName)
+        ? "No price available"
+        : "Not marketable"
+})
 </script>

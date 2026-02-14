@@ -63,6 +63,14 @@
                     :src="selected.image"
                     :alt="selected.name"
                 >
+                <span
+                    class="absolute bottom-2 right-2 text-sm font-semibold px-2 py-1 rounded bg-black-400/80"
+                    :class="
+                        formattedPrice ? 'text-green-400' : 'text-black-100'
+                    "
+                >
+                    {{ priceLabel }}
+                </span>
             </div>
 
             <div class="py-3 pb-4 space-y-2">
@@ -156,6 +164,16 @@
                                             class="font-bold text-black-100"
                                         >{{ item.name }}</span>
                                     </p>
+                                    <span
+                                        class="text-xs whitespace-nowrap ml-2"
+                                        :class="
+                                            getWearPrice(Number(index))
+                                                ? 'text-green-400'
+                                                : 'text-black-100'
+                                        "
+                                    >
+                                        {{ getWearPrice(Number(index)) ?? "—" }}
+                                    </span>
                                 </div>
                             </button>
                         </div>
@@ -190,6 +208,19 @@
                                             class="font-bold text-black-100"
                                         >{{ item.name }}</span>
                                     </p>
+                                    <span
+                                        class="text-xs whitespace-nowrap ml-2"
+                                        :class="
+                                            getWearPrice(Number(index), 'st')
+                                                ? 'text-green-400'
+                                                : 'text-black-100'
+                                        "
+                                    >
+                                        {{
+                                            getWearPrice(Number(index), "st") ??
+                                                "—"
+                                        }}
+                                    </span>
                                 </div>
                             </button>
                         </div>
@@ -224,6 +255,19 @@
                                             class="font-bold text-black-100"
                                         >{{ item.name }}</span>
                                     </p>
+                                    <span
+                                        class="text-xs whitespace-nowrap ml-2"
+                                        :class="
+                                            getWearPrice(Number(index), 'so')
+                                                ? 'text-green-400'
+                                                : 'text-black-100'
+                                        "
+                                    >
+                                        {{
+                                            getWearPrice(Number(index), "so") ??
+                                                "—"
+                                        }}
+                                    </span>
                                 </div>
                             </button>
                         </div>
@@ -285,6 +329,7 @@ import ItemDetailList from "../components/ItemDetailList.vue"
 import DebugPanel from "../components/DebugPanel.vue"
 import { useInspect } from "../composables/useInspect"
 import { useItemDetailStore } from "../stores/ItemDetail"
+import { usePriceStore } from "../stores/prices"
 
 const props = defineProps({
     selected: {
@@ -300,7 +345,17 @@ const props = defineProps({
 const emit = defineEmits(["delete-item", "get-item-details", "go-back"])
 
 const itemDetailStore = useItemDetailStore()
+const priceStore = usePriceStore()
 const hasHistory = computed(() => itemDetailStore.history.length > 0)
+const formattedPrice = computed(() =>
+    priceStore.getPrice(props.selected.market_hash_name)
+)
+const priceLabel = computed(() => {
+    if (formattedPrice.value) return formattedPrice.value
+    return priceStore.isMarketable(props.selected.market_hash_name)
+        ? "No price available"
+        : "Not marketable"
+})
 
 const showItemName = ref(false)
 const scrollContainer = ref<HTMLElement | null>(null)
@@ -335,6 +390,12 @@ const { inspectLink } = useInspect(
     computed(() => props.selected),
     computed(() => props.items[props.selected.id])
 )
+
+function getWearPrice(index: number, type: string = ""): string | null {
+    const id = generateIdByWear(index, type)
+    const item = props.items[id]
+    return priceStore.getPrice(item?.market_hash_name)
+}
 
 function generateIdByWear(index: number, type: string = "") {
     const id = props.selected.id.split("_")[0]
