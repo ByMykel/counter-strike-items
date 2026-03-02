@@ -61,6 +61,10 @@
                     @delete-item="itemDetailStore.deleteItem()"
                     @go-back="itemDetailStore.goBack()"
                 />
+                <ItemDetailPanelSkeleton
+                    v-else-if="itemDetailStore.loading"
+                    @close="itemDetailStore.deleteItem()"
+                />
             </div>
         </div>
 
@@ -212,10 +216,11 @@ import {
     Square3Stack3DIcon,
     VideoCameraIcon,
     Bars3Icon,
-    TableCellsIcon,
+    TableCellsIcon
 } from "@heroicons/vue/24/outline"
 import { useItemDetailStore } from "./stores/ItemDetail"
 import ItemDetailPanel from "./components/ItemDetailPanel.vue"
+import ItemDetailPanelSkeleton from "./components/ItemDetailPanelSkeleton.vue"
 import AppBranding from "./components/AppBranding.vue"
 import { useDebug } from "./composables/useDebug"
 
@@ -234,9 +239,7 @@ const showSidebar = computed(() => route.path !== "/matrix")
 const navGroups = [
     {
         label: "Quick Access",
-        items: [
-            { name: "All", shortName: "All", path: "/", icon: HomeIcon }
-        ]
+        items: [{ name: "All", shortName: "All", path: "/", icon: HomeIcon }]
     },
     {
         label: "Weapons",
@@ -346,7 +349,7 @@ const navGroups = [
                 shortName: "Matrix",
                 path: "/matrix",
                 icon: TableCellsIcon
-            },
+            }
         ]
     }
 ]

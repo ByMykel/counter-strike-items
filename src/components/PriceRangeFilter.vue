@@ -16,7 +16,9 @@
                     :value="sliderMinVal"
                     aria-label="Minimum price"
                     class="slider-thumb"
-                    :class="{ 'z-[5]': sliderMinVal > SLIDER_MAX - SLIDER_STEP }"
+                    :class="{
+                        'z-[5]': sliderMinVal > SLIDER_MAX - SLIDER_STEP
+                    }"
                     @input="onMinSlider"
                 >
                 <input
@@ -35,7 +37,9 @@
         <!-- Dollar inputs -->
         <div class="flex items-center gap-3">
             <div class="relative flex-1">
-                <span class="absolute text-sm text-black-100 left-3 top-1/2 -translate-y-1/2 pointer-events-none select-none">$</span>
+                <span
+                    class="absolute text-sm text-black-100 left-3 top-1/2 -translate-y-1/2 pointer-events-none select-none"
+                >$</span>
                 <input
                     v-model="minDollars"
                     class="w-full py-2 pl-7 pr-3 text-white text-sm rounded-md bg-black-300 border-2 border-black-300 outline-none focus:ring-2 focus:ring-[#ff5e65] focus:border-transparent placeholder:text-black-200 no-spinner"
@@ -48,7 +52,9 @@
             </div>
             <span class="text-xs text-black-200 select-none">to</span>
             <div class="relative flex-1">
-                <span class="absolute text-sm text-black-100 left-3 top-1/2 -translate-y-1/2 pointer-events-none select-none">$</span>
+                <span
+                    class="absolute text-sm text-black-100 left-3 top-1/2 -translate-y-1/2 pointer-events-none select-none"
+                >$</span>
                 <input
                     v-model="maxDollars"
                     class="w-full py-2 pl-7 pr-3 text-white text-sm rounded-md bg-black-300 border-2 border-black-300 outline-none focus:ring-2 focus:ring-[#ff5e65] focus:border-transparent placeholder:text-black-200 no-spinner"
@@ -75,7 +81,7 @@
 import { ref, computed, onMounted } from "vue"
 
 const SLIDER_MAX = 300000 // $3,000 in cents
-const SLIDER_STEP = 100   // $1 increments
+const SLIDER_STEP = 100 // $1 increments
 
 const props = defineProps<{
     values: string[]
@@ -174,7 +180,9 @@ function emitValues() {
     cursor: pointer;
     pointer-events: all;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition:
+        transform 0.15s,
+        box-shadow 0.15s;
 }
 
 .slider-thumb::-webkit-slider-thumb:hover {
@@ -195,7 +203,9 @@ function emitValues() {
     cursor: pointer;
     pointer-events: all;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition:
+        transform 0.15s,
+        box-shadow 0.15s;
 }
 
 .slider-thumb::-moz-range-thumb:hover {

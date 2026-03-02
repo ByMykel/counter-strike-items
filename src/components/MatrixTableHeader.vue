@@ -6,7 +6,11 @@
         <tr>
             <th
                 class="bg-black-400 border-r-2 border-black-300 px-3 py-2 w-[250px] h-[60px] lg:z-[15] lg:relative"
-                :style="{ transform: isDesktop ? `translateX(${-translateX}px)` : undefined }"
+                :style="{
+                    transform: isDesktop
+                        ? `translateX(${-translateX}px)`
+                        : undefined
+                }"
             />
             <!-- Spacer cells for columns before visible range -->
             <th

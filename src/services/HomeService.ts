@@ -84,29 +84,24 @@ export default class HomeService {
     }
 
     async getAllItems() {
-        const [
-            items,
-            skins,
-            collectibles,
-            baseWeapons,
-            highlights
-        ] = await Promise.all([
-            cachedGet<Record<string, any>>(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
-            ),
-            cachedGet<any[]>(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json`
-            ),
-            cachedGet<any[]>(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collectibles.json`
-            ),
-            cachedGet<any[]>(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/base_weapons.json`
-            ),
-            cachedGet<any[]>(
-                `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/highlights.json`
-            )
-        ])
+        const [items, skins, collectibles, baseWeapons, highlights] =
+            await Promise.all([
+                cachedGet<Record<string, any>>(
+                    `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
+                ),
+                cachedGet<any[]>(
+                    `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json`
+                ),
+                cachedGet<any[]>(
+                    `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collectibles.json`
+                ),
+                cachedGet<any[]>(
+                    `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/base_weapons.json`
+                ),
+                cachedGet<any[]>(
+                    `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/highlights.json`
+                )
+            ])
 
         const collectibleConfigs = [
             {

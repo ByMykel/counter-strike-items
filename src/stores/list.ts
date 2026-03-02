@@ -64,8 +64,7 @@ export const createListStore =
                 if (priceRange?.length === 2) {
                     const [minCents, maxCents] = priceRange.map(Number)
                     allItems.value = rawItems.value.filter((item) => {
-                        const price =
-                            priceStore.prices[item.market_hash_name]
+                        const price = priceStore.prices[item.market_hash_name]
                         if (price == null) return false
                         if (minCents && price < minCents) return false
                         if (maxCents && price > maxCents) return false
@@ -80,8 +79,8 @@ export const createListStore =
             }
 
             async function fetch() {
-                reset()
                 loading.value = true
+                reset()
                 page.value = 1
                 try {
                     const { price_range, ...serviceFilters } =
@@ -135,7 +134,6 @@ export const createListStore =
             }
 
             function setSearch(newSearch: string) {
-                reset()
                 search.value = newSearch
                 fetch()
                 saveSearchQueryParam()

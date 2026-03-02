@@ -13,6 +13,7 @@ export const useItemDetailStore = defineStore("item-detail", () => {
     const items = ref<{ [key: string]: any }>({})
     const selected = ref<ItemDetail>()
     const history = ref<string[]>([])
+    const loading = ref(false)
 
     let loadPromise: Promise<void> | null = null
 
@@ -37,9 +38,14 @@ export const useItemDetailStore = defineStore("item-detail", () => {
         skipHistory = false,
         skipUrlUpdate = false
     ) {
+        loading.value = true
+
         await ensureLoaded()
 
-        if (!Object.keys(items.value).length) return
+        if (!Object.keys(items.value).length) {
+            loading.value = false
+            return
+        }
 
         const currentSelectedId = selected.value?.id
 
@@ -47,10 +53,9 @@ export const useItemDetailStore = defineStore("item-detail", () => {
 
         if (!item) {
             console.warn(`Item with id "${id}" not found`)
+            loading.value = false
             return
         }
-
-        selected.value = undefined
 
         if (currentSelectedId && !skipHistory && currentSelectedId !== id) {
             const lastIndex = history.value.length - 1
@@ -101,6 +106,8 @@ export const useItemDetailStore = defineStore("item-detail", () => {
             image_inventory: item?.original?.image_inventory ?? ""
         }
 
+        loading.value = false
+
         if (!skipUrlUpdate) {
             router.replace({
                 query: { ...route.query, itemId: id }
@@ -119,6 +126,7 @@ export const useItemDetailStore = defineStore("item-detail", () => {
 
     function deleteItem() {
         selected.value = undefined
+        loading.value = false
         history.value = []
 
         const { itemId, ...restQuery } = route.query
@@ -147,6 +155,7 @@ export const useItemDetailStore = defineStore("item-detail", () => {
         items,
         selected,
         history,
+        loading,
 
         ensureLoaded,
         getItemDetails,

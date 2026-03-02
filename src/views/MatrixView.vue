@@ -55,7 +55,10 @@
                     cursor: isDragging ? 'grabbing' : 'grab'
                 }"
             >
-                <table class="border-separate" style="border-spacing: 0">
+                <table
+                    class="border-separate"
+                    style="border-spacing: 0"
+                >
                     <MatrixTableHeader
                         :visible-columns="visibleColumns"
                         :visible-col-start="visibleColStart"
@@ -89,7 +92,11 @@
                         >
                             <td
                                 class="bg-black-400 border-r-2 border-b border-black-300 px-3 py-2 w-[250px] h-[120px] align-middle lg:relative lg:z-[5]"
-                                :style="{ transform: isDesktop ? `translateX(${-translateX}px)` : undefined }"
+                                :style="{
+                                    transform: isDesktop
+                                        ? `translateX(${-translateX}px)`
+                                        : undefined
+                                }"
                             >
                                 <span class="text-sm text-white break-words">{{
                                     getRowDisplayName(row)
