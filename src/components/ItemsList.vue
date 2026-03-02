@@ -9,6 +9,7 @@
             :has-filters="hasFilters"
             :has-selected-filters="hasSelectedFilters"
             :sort-by="sortBy"
+            :show-sort="!isVideo"
             :filters="filters"
             :filters-values="filtersValues"
             @input="$emit('set-query', $event)"

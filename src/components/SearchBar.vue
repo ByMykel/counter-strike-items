@@ -20,11 +20,11 @@
                     class="w-20 h-6 px-2 rounded-md bg-black-200 animate-pulse"
                 />
                 <div
-                    v-if="!loading"
+                    v-if="!loading && (showSort || hasFilters)"
                     class="w-0.5 h-[calc(100%-20px)] rounded-full bg-black-200/20"
                 />
                 <Menu
-                    v-if="!loading"
+                    v-if="!loading && showSort"
                     as="div"
                     class="relative"
                 >
@@ -133,17 +133,24 @@ const sortOptions = [
     { value: "price-desc", label: "Price: High to Low" }
 ]
 
-const props = defineProps<{
-    query: string
-    total: number
-    scrolledDown: boolean
-    hasFilters: boolean
-    hasSelectedFilters: boolean
-    sortBy?: string
-    loading: boolean
-    filters: Filter[]
-    filtersValues: { [prop: string]: string[] }
-}>()
+const props = withDefaults(
+    defineProps<{
+        query: string
+        total: number
+        scrolledDown: boolean
+        hasFilters: boolean
+        hasSelectedFilters: boolean
+        sortBy?: string
+        showSort?: boolean
+        loading: boolean
+        filters: Filter[]
+        filtersValues: { [prop: string]: string[] }
+    }>(),
+    {
+        sortBy: "",
+        showSort: true
+    }
+)
 
 const emit = defineEmits([
     "input",
