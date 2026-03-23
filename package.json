@@ -29,11 +29,11 @@
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.11",
     "@types/lodash.uniqby": "^4.7.9",
-    "@typescript-eslint/eslint-plugin": "^8.57.0",
+    "@typescript-eslint/eslint-plugin": "^8.57.1",
     "@typescript-eslint/parser": "^8.48.0",
     "@vitejs/plugin-vue": "^6.0.4",
     "autoprefixer": "^10.4.27",
-    "eslint": "^10.0.3",
+    "eslint": "^10.1.0",
     "eslint-plugin-vue": "^10.8.0",
     "postcss": "^8.5.8",
     "prettier": "3.8.1",
@@ -41,6 +41,6 @@
     "typescript": "^5.9.3",
     "vite": "^7.3.1",
     "vite-plugin-pwa": "^1.2.0",
-    "vue-tsc": "^3.2.5"
+    "vue-tsc": "^3.2.6"
   }
 }
