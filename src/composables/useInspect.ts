@@ -32,7 +32,8 @@ const inspectGenerators = {
             rarity: getRarityValue(rawItem.rarity.id),
             quality: rawItem.stattrak ? 9 : undefined, // 9 = StatTrak™
             stickers: [],
-            keychains: []
+            keychains: [],
+            variations: []
         }
     },
 
@@ -56,7 +57,8 @@ const inspectGenerators = {
             quality: rawItem.genuine ? 1 : 4, // 1 = Genuine, 4 = Unique
             paintindex: 0,
             stickers: [],
-            keychains: []
+            keychains: [],
+            variations: []
         }
     }
 
