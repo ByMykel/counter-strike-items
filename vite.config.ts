@@ -87,12 +87,22 @@ export default defineConfig({
         target: "es2020",
         rollupOptions: {
             output: {
-                manualChunks: {
-                    "vue-vendor": ["vue", "vue-router", "pinia"],
-                    "ui-vendor": ["@headlessui/vue", "@heroicons/vue"],
-                    "search": ["fuse.js"],
-                    "utils-vendor": ["axios", "lodash.uniqby"],
-                    "vueuse": ["@vueuse/core", "@vueuse/components"]
+                manualChunks(id) {
+                    if (id.includes("node_modules/vue/") || id.includes("node_modules/vue-router/") || id.includes("node_modules/pinia/")) {
+                        return "vue-vendor";
+                    }
+                    if (id.includes("node_modules/@headlessui/vue/") || id.includes("node_modules/@heroicons/vue/")) {
+                        return "ui-vendor";
+                    }
+                    if (id.includes("node_modules/fuse.js/")) {
+                        return "search";
+                    }
+                    if (id.includes("node_modules/axios/") || id.includes("node_modules/lodash.uniqby/")) {
+                        return "utils-vendor";
+                    }
+                    if (id.includes("node_modules/@vueuse/")) {
+                        return "vueuse";
+                    }
                 }
             }
         }

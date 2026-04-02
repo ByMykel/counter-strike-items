@@ -26,6 +26,11 @@
     "vue-eslint-parser": "^10.4.0",
     "vue-router": "^5.0.4"
   },
+  "overrides": {
+    "vite-plugin-pwa": {
+      "vite": "$vite"
+    }
+  },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.11",
     "@types/lodash.uniqby": "^4.7.9",
