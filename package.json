@@ -16,7 +16,7 @@
     "@csfloat/cs2-inspect-serializer": "^1.1.6",
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.2.0",
-    "@vueuse/components": "^14.2.1",
+    "@vueuse/components": "^14.3.0",
     "@vueuse/core": "^14.1.0",
     "axios": "^1.15.2",
     "fuse.js": "^7.3.0",
