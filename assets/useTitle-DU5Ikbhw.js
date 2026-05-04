@@ -1,1 +1,0 @@
-import{nt as e}from"./ui-vendor-CowdoQ4O.js";function t(t){e(()=>{document.title=t instanceof Object?t.value:t})}export{t};
