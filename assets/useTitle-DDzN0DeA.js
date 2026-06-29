@@ -1,1 +1,0 @@
-import{nt as e}from"./ui-vendor-CgdqPs70.js";function t(t){e(()=>{document.title=t instanceof Object?t.value:t})}export{t};

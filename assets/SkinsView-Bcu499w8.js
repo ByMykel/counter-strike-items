@@ -1,0 +1,1 @@
+import{F as e,H as t,St as n,X as r}from"./ui-vendor-Mw0pN8cZ.js";import{t as i}from"./BaseItemListView-qA2RdMuf.js";import{t as a}from"./SkinService-DpHxEOZ1.js";var o=t({__name:`SkinsView`,setup(t){let o=new a().query;return(t,a)=>(r(),e(i,{query:n(o),"store-id":`skins`,title:`Skins - Counter-Strike items`},null,8,[`query`]))}});export{o as default};
