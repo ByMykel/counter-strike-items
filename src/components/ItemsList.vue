@@ -28,8 +28,8 @@
                 v-for="item in items"
                 :key="item.id"
                 :name="item.name"
-                :video="item.video"
-                :thumbnail="item.thumbnail"
+                :video="item.video ?? ''"
+                :thumbnail="item.thumbnail ?? ''"
             />
             <ItemsSkeleton v-if="loading" />
         </div>
@@ -67,7 +67,7 @@
                         :id="item.id"
                         :key="item.id"
                         :name="item.name"
-                        :image="item.image"
+                        :image="item.image ?? ''"
                         :souvenir="item?.souvenir ?? false"
                         :stattrak="item?.stattrak ?? false"
                         :genuine="item?.genuine ?? false"
@@ -82,9 +82,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue"
+import { computed, ref, type ComponentPublicInstance } from "vue"
 import { useScroll, useElementSize, useVirtualList } from "@vueuse/core"
-import { Filter } from "../types"
+import { CSItem, Filter } from "../types"
 import SearchBar from "./SearchBar.vue"
 import ItemCard from "./ItemCard.vue"
 import ItemVideo from "./ItemVideo.vue"
@@ -96,7 +96,7 @@ const GAP = 12
 
 const props = withDefaults(
     defineProps<{
-        items: any[]
+        items: CSItem[]
         itemsCount: number
         loading: boolean
         search: string
@@ -139,10 +139,10 @@ const columns = computed(() => {
 })
 
 // Group the flat item list into rows for row-based virtualization.
-const rows = computed<any[][]>(() => {
+const rows = computed<CSItem[][]>(() => {
     const cols = columns.value
     const src = props.items
-    const out: any[][] = []
+    const out: CSItem[][] = []
     for (let i = 0; i < src.length; i += cols) {
         out.push(src.slice(i, i + cols))
     }
@@ -159,9 +159,10 @@ const {
 })
 
 // Share one element between our measurement ref and useVirtualList's ref.
-function setScrollEl(el: any) {
-    scrollEl.value = el
-    ;(containerProps.ref as unknown as { value: any }).value = el
+function setScrollEl(el: Element | ComponentPublicInstance | null) {
+    const node = (el as HTMLElement | null) ?? null
+    scrollEl.value = node
+    containerProps.ref.value = node
 }
 
 // Sticky search-bar shadow uses the active container's scroll position.

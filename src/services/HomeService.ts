@@ -1,13 +1,14 @@
 import { cachedGet } from "../utils/apiCache"
 import { filterItems, shuffleArrayWithSeed } from "../utils/index"
 import { getOrBuild, BuiltCategory } from "../utils/processedCache"
+import { CSItem } from "../types"
 
 async function build(): Promise<BuiltCategory> {
-    const rawData = await cachedGet<Record<string, any>>(
+    const rawData = await cachedGet<Record<string, CSItem>>(
         `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
     )
 
-    const items = Object.values(rawData).map((item: any) => {
+    const items = Object.values(rawData).map((item): CSItem => {
         let imageDomain = "unknown"
         if (item.image) {
             try {
@@ -91,26 +92,26 @@ export default class HomeService {
     async getAllItems() {
         const [allRaw, skins, collectibles, baseWeapons, highlights] =
             await Promise.all([
-                cachedGet<Record<string, any>>(
+                cachedGet<Record<string, CSItem>>(
                     `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
                 ),
-                cachedGet<any[]>(
+                cachedGet<CSItem[]>(
                     `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json`
                 ),
-                cachedGet<any[]>(
+                cachedGet<CSItem[]>(
                     `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collectibles.json`
                 ),
-                cachedGet<any[]>(
+                cachedGet<CSItem[]>(
                     `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/base_weapons.json`
                 ),
-                cachedGet<any[]>(
+                cachedGet<CSItem[]>(
                     `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/highlights.json`
                 )
             ])
 
         // Shallow-copy each entry so the mutations below never touch the
         // shared cached all.json object (cachedGet no longer clones).
-        const items: Record<string, any> = {}
+        const items: Record<string, CSItem> = {}
         for (const [key, value] of Object.entries(allRaw)) {
             items[key] = { ...value }
         }

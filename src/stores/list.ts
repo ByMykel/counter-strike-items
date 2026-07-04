@@ -1,7 +1,7 @@
 import { onUnmounted, onMounted, ref } from "vue"
-import { defineStore, getActivePinia } from "pinia"
+import { defineStore, getActivePinia, type Pinia } from "pinia"
 import { useRoute, useRouter } from "vue-router"
-import { Filter } from "../types"
+import { CSItem, Filter } from "../types"
 import { usePriceStore } from "./prices"
 
 type QueryFunction = ({
@@ -13,7 +13,7 @@ type QueryFunction = ({
     search: string
     filters: { [prop: string]: string[] }
 }) => Promise<{
-    items: any[]
+    items: CSItem[]
     filters?: Filter[]
 }>
 
@@ -29,10 +29,10 @@ export const createListStore =
             const loading = ref<boolean>(false)
             const search = ref<string>("")
             const sortBy = ref<string>("")
-            const rawItems = ref<any[]>([])
+            const rawItems = ref<CSItem[]>([])
             // Full filtered + sorted list. The view virtualizes it, so there
             // is no pagination — every matching item is exposed at once.
-            const items = ref<any[]>([])
+            const items = ref<CSItem[]>([])
             const itemsCount = ref<number>(0)
             const filters = ref<Filter[]>([])
             const filtersValues = ref<{ [prop: string]: string[] }>({})
@@ -43,8 +43,10 @@ export const createListStore =
                 const direction = sortBy.value === "price-asc" ? 1 : -1
 
                 items.value.sort((a, b) => {
-                    const priceA = priceStore.prices[a.market_hash_name] ?? null
-                    const priceB = priceStore.prices[b.market_hash_name] ?? null
+                    const priceA =
+                        priceStore.prices[a.market_hash_name ?? ""] ?? null
+                    const priceB =
+                        priceStore.prices[b.market_hash_name ?? ""] ?? null
 
                     if (priceA === null && priceB === null) return 0
                     if (priceA === null) return 1
@@ -59,7 +61,8 @@ export const createListStore =
                 if (priceRange?.length === 2) {
                     const [minCents, maxCents] = priceRange.map(Number)
                     items.value = rawItems.value.filter((item) => {
-                        const price = priceStore.prices[item.market_hash_name]
+                        const price =
+                            priceStore.prices[item.market_hash_name ?? ""]
                         if (price == null) return false
                         if (minCents && price < minCents) return false
                         if (maxCents && price > maxCents) return false
@@ -89,7 +92,7 @@ export const createListStore =
                         const [minCents, maxCents] = price_range.map(Number)
                         items.value = newItems.filter((item) => {
                             const price =
-                                priceStore.prices[item.market_hash_name]
+                                priceStore.prices[item.market_hash_name ?? ""]
                             if (price == null) return false
                             if (minCents && price < minCents) return false
                             if (maxCents && price > maxCents) return false
@@ -222,9 +225,14 @@ export const createListStore =
             })
 
             onUnmounted(() => {
-                // TODO: find solution to ` Property '_s' does not exist on type 'Pinia'.ts(2339) `
-                // @ts-ignore
-                getActivePinia()?._s?.forEach((store: any) => {
+                // `_s` is Pinia's internal registry of active stores; it isn't
+                // part of the public type, so narrow it explicitly.
+                const pinia = getActivePinia() as
+                    | (Pinia & {
+                          _s?: Map<string, { $id: string; $dispose: () => void }>
+                      })
+                    | undefined
+                pinia?._s?.forEach((store) => {
                     if (store.$id === `list/${id}`) {
                         store.$dispose()
                         setSearch("")

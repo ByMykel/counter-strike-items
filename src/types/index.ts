@@ -39,11 +39,40 @@ interface specialNotes {
     source: string
 }
 
+export type FilterOption = {
+    id: string | null
+    name: string
+}
+
 export type Filter = {
     prop: string
     name: string
     type: string
-    options: { id: string; name: string }[]
+    options: FilterOption[]
+}
+
+/**
+ * A CS item from the CSGO-API. The API returns many different item shapes
+ * (skins, stickers, agents, crates, …) and the app filters them generically
+ * by arbitrary property names, so only the fields consumed directly by the UI
+ * are typed; the index signature covers the rest.
+ */
+export interface CSItem {
+    id: string
+    name: string
+    description?: string
+    image?: string
+    market_hash_name?: string
+    rarity?: { id: string; name: string; color?: string } | null
+    souvenir?: boolean
+    stattrak?: boolean
+    genuine?: boolean
+    phase?: string | null
+    // Highlight / video items
+    video?: string
+    thumbnail?: string
+    // Category-specific properties read by the generic filter/option code.
+    [key: string]: any
 }
 
 interface Rarity {

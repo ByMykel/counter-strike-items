@@ -1,20 +1,21 @@
 import { cachedGet } from "../utils/apiCache"
 import { filterItems, generateOptionsBatch } from "../utils"
 import { getOrBuild, BuiltCategory } from "../utils/processedCache"
+import { CSItem } from "../types"
 
 async function build(): Promise<BuiltCategory> {
-    const skinsRaw = await cachedGet<any[]>(
+    const skinsRaw = await cachedGet<CSItem[]>(
         `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json`
     )
-    const skins = skinsRaw.reduce((acc: any, item: any) => {
+    const skins = skinsRaw.reduce<Record<string, CSItem>>((acc, item) => {
         acc[item.id] = item
         return acc
     }, {})
 
-    const itemsRaw = await cachedGet<any[]>(
+    const itemsRaw = await cachedGet<CSItem[]>(
         `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins_not_grouped.json`
     )
-    const items = itemsRaw.map((item: any) => {
+    const items = itemsRaw.map((item): CSItem => {
         return {
             ...item,
             rare: [

@@ -8,15 +8,15 @@
         >
         <label
             v-for="option in filteredOptions"
-            :key="option.id"
+            :key="String(option.id)"
             class="flex items-center gap-2 p-2 text-gray-300 rounded-md cursor-pointer hover:bg-black-300"
         >
             <input
                 type="checkbox"
                 class="w-4 h-4 text-[#ff5e65] border-gray-300 rounded focus:ring-[#ff5e65]"
-                :value="option.id"
-                :checked="isSelected(option.id)"
-                @change="toggleOption(option.id)"
+                :value="String(option.id)"
+                :checked="isSelected(String(option.id))"
+                @change="toggleOption(String(option.id))"
             >
             {{ option.name }}
         </label>
@@ -25,9 +25,10 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue"
+import { FilterOption } from "../types"
 
 const props = defineProps<{
-    options: { id: string; name: string }[]
+    options: FilterOption[]
     values: string[]
 }>()
 

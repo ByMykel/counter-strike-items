@@ -1,9 +1,10 @@
 import { cachedGet } from "../utils/apiCache"
 import { filterItems } from "../utils"
 import { getOrBuild, BuiltCategory } from "../utils/processedCache"
+import { CSItem } from "../types"
 
 async function build(): Promise<BuiltCategory> {
-    const items = await cachedGet<any[]>(
+    const items = await cachedGet<CSItem[]>(
         `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/base_weapons.json`
     )
 

@@ -77,7 +77,7 @@ export default class SpecialItemsMatrixService {
                 }
             })
             .then((response) => {
-                response.items = response.items.filter((skin: any) => {
+                const knives = response.items.filter((skin) => {
                     if (seensSkins.has(skin.skin_id)) {
                         return false
                     }
@@ -87,7 +87,7 @@ export default class SpecialItemsMatrixService {
                     return true
                 })
 
-                return response.items
+                return knives as unknown as Knife[]
             })
     }
 
@@ -96,9 +96,9 @@ export default class SpecialItemsMatrixService {
             .query({ search: "", filters: {} })
             .then((response) => {
                 return response.items.filter(
-                    (sticker: any) =>
+                    (sticker) =>
                         sticker.tournament && sticker.team && !sticker.player
-                )
+                ) as unknown as TeamSticker[]
             })
     }
 
@@ -107,8 +107,8 @@ export default class SpecialItemsMatrixService {
             .query({ search: "", filters: {} })
             .then((response) => {
                 return response.items.filter(
-                    (sticker: any) => sticker.tournament && sticker.player
-                )
+                    (sticker) => sticker.tournament && sticker.player
+                ) as unknown as PlayerSticker[]
             })
     }
 

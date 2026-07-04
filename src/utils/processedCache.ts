@@ -1,7 +1,7 @@
-import { Filter } from "../types"
+import { CSItem, Filter } from "../types"
 
 export interface BuiltCategory {
-    items: any[]
+    items: CSItem[]
     filters: Filter[]
 }
 

@@ -32,7 +32,7 @@
 import ItemsList from "./ItemsList.vue"
 import FiltersPanel from "./FiltersPanel.vue"
 import { useItemListView } from "../composables/useItemListView"
-import { Filter } from "../types"
+import { CSItem, Filter } from "../types"
 
 type QueryFunction = ({
     search,
@@ -41,7 +41,7 @@ type QueryFunction = ({
     search: string
     filters: { [prop: string]: string[] }
 }) => Promise<{
-    items: any[]
+    items: CSItem[]
     filters?: Filter[]
 }>
 
