@@ -22,7 +22,7 @@
         <div
             v-if="isVideo"
             ref="videoEl"
-            class="grid w-full gap-3 p-4 px-5 pb-32 mx-auto overflow-y-scroll h-[calc(100vh-69px)] grid-cols-1 lg:grid-cols-2 xl:grid-cols-3"
+            class="grid w-full gap-4 p-4 px-5 pb-32 mx-auto overflow-y-scroll h-[calc(100vh-69px)] grid-cols-1 md:grid-cols-2"
         >
             <ItemVideo
                 v-for="item in items"
@@ -30,6 +30,7 @@
                 :name="item.name"
                 :video="item.video ?? ''"
                 :thumbnail="item.thumbnail ?? ''"
+                @play="openVideo(item)"
             />
             <ItemsSkeleton v-if="loading" />
         </div>
@@ -78,17 +79,31 @@
                 </div>
             </div>
         </div>
+
+        <VideoModal
+            :open="!!activeVideo"
+            :video="activeVideo?.video ?? ''"
+            :name="activeVideo?.name ?? ''"
+            :steam-url="activeVideoSteamUrl"
+            :has-prev="activeIndex !== null && activeIndex > 0"
+            :has-next="activeIndex !== null && activeIndex < items.length - 1"
+            @close="closeVideo"
+            @prev="prevVideo"
+            @next="nextVideo"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, type ComponentPublicInstance } from "vue"
+import { computed, ref, watch, type ComponentPublicInstance } from "vue"
+import { useRoute, useRouter } from "vue-router"
 import { useScroll, useElementSize, useVirtualList } from "@vueuse/core"
 import { CSItem, Filter } from "../types"
 import SearchBar from "./SearchBar.vue"
 import ItemCard from "./ItemCard.vue"
 import ItemVideo from "./ItemVideo.vue"
 import ItemsSkeleton from "./ItemsSkeleton.vue"
+import VideoModal from "./VideoModal.vue"
 
 // Fixed card height (image 12rem + name + price) plus the inter-row gap.
 const ROW_HEIGHT = 246
@@ -164,6 +179,62 @@ function setScrollEl(el: Element | ComponentPublicInstance | null) {
     scrollEl.value = node
     containerProps.ref.value = node
 }
+
+// Video playback modal (highlights / souvenir charms).
+const activeIndex = ref<number | null>(null)
+const activeVideo = computed(() =>
+    activeIndex.value === null ? null : props.items[activeIndex.value] ?? null
+)
+const activeVideoSteamUrl = computed(() => {
+    const name = activeVideo.value?.market_hash_name
+    return name
+        ? `https://steamcommunity.com/market/listings/730/${encodeURIComponent(name)}?l=english`
+        : ""
+})
+function openVideo(item: CSItem) {
+    activeIndex.value = props.items.findIndex((i) => i.id === item.id)
+}
+function closeVideo() {
+    activeIndex.value = null
+}
+function prevVideo() {
+    if (activeIndex.value !== null && activeIndex.value > 0) activeIndex.value--
+}
+function nextVideo() {
+    if (
+        activeIndex.value !== null &&
+        activeIndex.value < props.items.length - 1
+    )
+        activeIndex.value++
+}
+
+// Reflect the open video in the URL (?video=<id>) so it can be shared.
+const route = useRoute()
+const router = useRouter()
+
+watch(
+    () => activeVideo.value?.id ?? null,
+    (id) => {
+        const query = { ...route.query }
+        if (id) query.video = id
+        else delete query.video
+        router.replace({ query })
+    }
+)
+
+// Open the shared video once the (video) list has loaded.
+watch(
+    () => props.items,
+    (items) => {
+        if (!props.isVideo || activeIndex.value !== null) return
+        const shared = route.query.video
+        if (typeof shared === "string" && shared) {
+            const idx = items.findIndex((item) => item.id === shared)
+            if (idx >= 0) activeIndex.value = idx
+        }
+    },
+    { immediate: true }
+)
 
 // Sticky search-bar shadow uses the active container's scroll position.
 const videoEl = ref<HTMLElement | null>(null)

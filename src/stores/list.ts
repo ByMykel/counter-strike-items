@@ -209,6 +209,7 @@ export const createListStore =
                         key !== "q" &&
                         key !== "itemId" &&
                         key !== "sort" &&
+                        key !== "video" &&
                         value
                     ) {
                         if (typeof value === "string") {
