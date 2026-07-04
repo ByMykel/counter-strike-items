@@ -14,7 +14,6 @@
             @set-sort-by="view.setSortBy($event)"
             @set-query="view.setSearch($event)"
             @select="view.selectItem"
-            @load-more="view.loadMore()"
             @open-filters="view.openFilters()"
             @remove-filter="view.removeFilter"
         />

@@ -29,9 +29,9 @@ export const createListStore =
             const loading = ref<boolean>(false)
             const search = ref<string>("")
             const sortBy = ref<string>("")
-            const page = ref<number>(1)
             const rawItems = ref<any[]>([])
-            const allItems = ref<any[]>([])
+            // Full filtered + sorted list. The view virtualizes it, so there
+            // is no pagination — every matching item is exposed at once.
             const items = ref<any[]>([])
             const itemsCount = ref<number>(0)
             const filters = ref<Filter[]>([])
@@ -42,7 +42,7 @@ export const createListStore =
 
                 const direction = sortBy.value === "price-asc" ? 1 : -1
 
-                allItems.value.sort((a, b) => {
+                items.value.sort((a, b) => {
                     const priceA = priceStore.prices[a.market_hash_name] ?? null
                     const priceB = priceStore.prices[b.market_hash_name] ?? null
 
@@ -54,16 +54,11 @@ export const createListStore =
                 })
             }
 
-            function reslice() {
-                page.value = 1
-                items.value = allItems.value.slice(0, 20)
-            }
-
             function applyPriceFilter() {
                 const priceRange = filtersValues.value.price_range
                 if (priceRange?.length === 2) {
                     const [minCents, maxCents] = priceRange.map(Number)
-                    allItems.value = rawItems.value.filter((item) => {
+                    items.value = rawItems.value.filter((item) => {
                         const price = priceStore.prices[item.market_hash_name]
                         if (price == null) return false
                         if (minCents && price < minCents) return false
@@ -71,17 +66,15 @@ export const createListStore =
                         return true
                     })
                 } else {
-                    allItems.value = [...rawItems.value]
+                    items.value = [...rawItems.value]
                 }
                 sortItems()
-                itemsCount.value = allItems.value.length
-                reslice()
+                itemsCount.value = items.value.length
             }
 
             async function fetch() {
                 loading.value = true
                 reset()
-                page.value = 1
                 try {
                     const { price_range, ...serviceFilters } =
                         filtersValues.value
@@ -91,11 +84,10 @@ export const createListStore =
                             filters: serviceFilters
                         })
                     rawItems.value = newItems
-                    allItems.value = [...newItems]
 
                     if (price_range?.length === 2) {
                         const [minCents, maxCents] = price_range.map(Number)
-                        allItems.value = allItems.value.filter((item) => {
+                        items.value = newItems.filter((item) => {
                             const price =
                                 priceStore.prices[item.market_hash_name]
                             if (price == null) return false
@@ -103,14 +95,12 @@ export const createListStore =
                             if (maxCents && price > maxCents) return false
                             return true
                         })
+                    } else {
+                        items.value = [...newItems]
                     }
 
                     sortItems()
-                    itemsCount.value = allItems.value.length
-                    items.value = allItems.value.slice(
-                        (page.value - 1) * 20,
-                        page.value * 20
-                    )
+                    itemsCount.value = items.value.length
                     filters.value = newFilters ?? []
                 } catch (error) {
                     console.error(
@@ -121,16 +111,6 @@ export const createListStore =
                 } finally {
                     loading.value = false
                 }
-            }
-
-            async function loadMore() {
-                page.value += 1
-                items.value.push(
-                    ...allItems.value.slice(
-                        (page.value - 1) * 20,
-                        page.value * 20
-                    )
-                )
             }
 
             function setSearch(newSearch: string) {
@@ -161,14 +141,14 @@ export const createListStore =
 
             function setSortBy(value: string) {
                 sortBy.value = value
+                // Re-sort in place, then reassign to trigger reactivity.
                 sortItems()
-                reslice()
+                items.value = [...items.value]
                 saveSearchQueryParam()
             }
 
             function reset() {
                 items.value = []
-                allItems.value = []
                 rawItems.value = []
                 itemsCount.value = 0
             }
@@ -265,7 +245,6 @@ export const createListStore =
 
                 fetch,
                 applyPriceFilter,
-                loadMore,
                 setSearch,
                 setSortBy,
                 setFilters,

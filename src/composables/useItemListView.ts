@@ -97,7 +97,6 @@ export function useItemListView(options: UseItemListViewOptions) {
 
         // Methods
         setSearch: listStore.setSearch,
-        loadMore: listStore.loadMore,
         openFilters,
         closeFilters,
         selectItem,
