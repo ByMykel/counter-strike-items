@@ -1,87 +1,105 @@
 <template>
-    <!-- Primitive: render inline -->
+    <!-- URL: short truncated link -->
+    <a
+        v-if="isUrl"
+        :href="stringVal"
+        target="_blank"
+        rel="noopener"
+        :title="stringVal"
+        class="inline-block max-w-[200px] truncate align-bottom text-[#ff5e65] underline"
+    >
+        {{ shortUrl }}
+    </a>
+
+    <!-- Primitive: single line -->
     <span
-        v-if="!isObject && !isArray"
-        class="break-all"
+        v-else-if="!isObject && !isArray"
+        class="whitespace-nowrap"
         :class="valueClass"
         >{{ display }}</span
     >
 
     <!-- Array of objects: columnar table (one row per element) -->
-    <table
+    <div
         v-else-if="isArray && isTableArray"
-        class="w-full text-left border-collapse"
+        class="overflow-x-auto"
     >
-        <thead>
-            <tr>
-                <th
-                    v-for="col in columns"
-                    :key="col"
-                    class="border border-black-200 px-2 py-1 font-semibold text-white bg-black-200/40 whitespace-nowrap"
+        <table class="text-left border-collapse">
+            <thead>
+                <tr>
+                    <th
+                        v-for="col in columns"
+                        :key="col"
+                        class="border border-black-200 px-2 py-1 font-semibold text-white bg-black-200/40 whitespace-nowrap"
+                    >
+                        {{ col }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    v-for="(row, index) in value"
+                    :key="index"
                 >
-                    {{ col }}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr
-                v-for="(row, index) in value"
-                :key="index"
-            >
-                <td
-                    v-for="col in columns"
-                    :key="col"
-                    class="border border-black-200 px-2 py-1 align-top"
-                >
-                    <RawDataTable :value="row[col]" />
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    <td
+                        v-for="col in columns"
+                        :key="col"
+                        class="border border-black-200 px-2 py-1 align-top"
+                    >
+                        <RawDataTable :value="row[col]" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <!-- Array of primitives / mixed: one row per entry -->
-    <table
+    <div
         v-else-if="isArray"
-        class="w-full text-left border-collapse"
+        class="overflow-x-auto"
     >
-        <tbody>
-            <tr
-                v-for="(entry, index) in value"
-                :key="index"
-            >
-                <td
-                    class="border border-black-200 px-2 py-1 font-mono text-white/60 w-8 align-top"
+        <table class="text-left border-collapse">
+            <tbody>
+                <tr
+                    v-for="(entry, index) in value"
+                    :key="index"
                 >
-                    {{ index }}
-                </td>
-                <td class="border border-black-200 px-2 py-1 align-top">
-                    <RawDataTable :value="entry" />
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    <td
+                        class="border border-black-200 px-2 py-1 font-mono text-white/60 w-8 align-top"
+                    >
+                        {{ index }}
+                    </td>
+                    <td class="border border-black-200 px-2 py-1 align-top">
+                        <RawDataTable :value="entry" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <!-- Object: key / value table -->
-    <table
+    <div
         v-else
-        class="w-full text-left border-collapse"
+        class="overflow-x-auto"
     >
-        <tbody>
-            <tr
-                v-for="(val, key) in value"
-                :key="key"
-            >
-                <td
-                    class="border border-black-200 px-2 py-1 font-semibold text-white align-top whitespace-nowrap"
+        <table class="text-left border-collapse">
+            <tbody>
+                <tr
+                    v-for="(val, key) in value"
+                    :key="key"
                 >
-                    {{ key }}
-                </td>
-                <td class="border border-black-200 px-2 py-1 align-top">
-                    <RawDataTable :value="val" />
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    <td
+                        class="border border-black-200 px-2 py-1 font-semibold text-white align-top whitespace-nowrap"
+                    >
+                        {{ key }}
+                    </td>
+                    <td class="border border-black-200 px-2 py-1 align-top">
+                        <RawDataTable :value="val" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -98,6 +116,21 @@ const isObject = computed(
         typeof props.value === "object" &&
         !Array.isArray(props.value)
 )
+
+const stringVal = computed(() =>
+    typeof props.value === "string" ? props.value : ""
+)
+const isUrl = computed(() => /^https?:\/\//i.test(stringVal.value))
+// Compact label for links: host + last path segment.
+const shortUrl = computed(() => {
+    try {
+        const u = new URL(stringVal.value)
+        const last = u.pathname.split("/").filter(Boolean).pop() ?? ""
+        return last ? `${u.hostname}/…/${last}` : u.hostname
+    } catch {
+        return stringVal.value
+    }
+})
 
 // An array is "table-shaped" when every element is a plain object.
 const isTableArray = computed(() => {
