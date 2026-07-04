@@ -167,6 +167,9 @@ export default class SpecialItemsMatrixService {
             getRowItem: (item: T) => T
             includeCrates?: (item: T) => Crate[] | undefined
             showCountInDisplay?: boolean
+            // Numeric sort key per column; higher values sort to the left.
+            // When omitted, columns fall back to alphabetical order.
+            getColumnSortKey?: (item: T) => number
             customSort?: (
                 a: { key: string; display: string; count: number },
                 b: { key: string; display: string; count: number }
@@ -174,19 +177,31 @@ export default class SpecialItemsMatrixService {
         }
     ): ProcessedMatrixData {
         const columnsSet = new Set<string>()
+        const columnSortKeys = new Map<string, number>()
         const rowMap = new Map<string, T>()
 
         // Collect columns and rows
         for (const item of items) {
             const columnValue = config.getColumnValue(item)
             columnsSet.add(columnValue)
+            if (config.getColumnSortKey && !columnSortKeys.has(columnValue)) {
+                columnSortKeys.set(columnValue, config.getColumnSortKey(item))
+            }
             const rowKey = config.getRowKey(item)
             if (!rowMap.has(rowKey)) {
                 rowMap.set(rowKey, config.getRowItem(item))
             }
         }
 
-        const columns = Array.from(columnsSet).sort()
+        const columns = Array.from(columnsSet).sort((a, b) => {
+            if (config.getColumnSortKey) {
+                const keyA = columnSortKeys.get(a) ?? 0
+                const keyB = columnSortKeys.get(b) ?? 0
+                // Descending: latest (highest key) on the left.
+                if (keyA !== keyB) return keyB - keyA
+            }
+            return String(a).localeCompare(String(b))
+        })
 
         // Pre-compute matrix map
         const map = new Map<string, CellData>()
@@ -267,6 +282,7 @@ export default class SpecialItemsMatrixService {
     ): ProcessedMatrixData {
         return this.processMatrix(filteredItems, {
             getColumnValue: (item) => item.tournament.name,
+            getColumnSortKey: (item) => Number(item.tournament.id),
             getRowKey: (item) => item.team.name,
             getRowDisplay: (item) => item.team.name,
             getRowItem: (item) => item,
@@ -279,6 +295,7 @@ export default class SpecialItemsMatrixService {
     ): ProcessedMatrixData {
         return this.processMatrix(filteredItems, {
             getColumnValue: (item) => item.tournament.name,
+            getColumnSortKey: (item) => Number(item.tournament.id),
             getRowKey: (item) => item.player.name,
             getRowDisplay: (item) => item.player.name,
             getRowItem: (item) => item,
