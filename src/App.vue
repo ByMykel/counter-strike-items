@@ -11,14 +11,18 @@
                 >
                     <AppBranding />
                 </div>
-                <nav class="flex-1 px-2 py-4 overflow-y-auto">
+                <nav class="flex-1 px-2 py-4 overflow-y-auto sidebar-scroll">
                     <div
                         v-for="(group, index) of navGroups"
                         :key="group.label"
-                        :class="{ 'mt-5': index > 0 }"
+                        :class="
+                            index > 0
+                                ? 'mt-4 pt-4 border-t border-black-300/40'
+                                : ''
+                        "
                     >
                         <h3
-                            class="px-2 mb-1.5 text-[10px] uppercase tracking-widest text-black-100/50"
+                            class="px-3 mb-2 text-[10px] font-medium uppercase tracking-widest text-black-100/70"
                         >
                             {{ group.label }}
                         </h3>

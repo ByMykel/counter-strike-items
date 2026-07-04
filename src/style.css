@@ -9,6 +9,29 @@
 }
 
 @layer utilities {
+    /* Thin, subtle scrollbar for the sidebar nav */
+    .sidebar-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: #2c2c2c transparent;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+        background: #2c2c2c;
+        border-radius: 9999px;
+    }
+
+    .sidebar-scroll:hover::-webkit-scrollbar-thumb {
+        background: #3a3a3a;
+    }
+
     .no-scrollbar::-webkit-scrollbar {
         display: none;
     }
