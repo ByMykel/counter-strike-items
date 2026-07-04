@@ -11,7 +11,12 @@ async function build(): Promise<BuiltCategory> {
     return {
         items,
         filters: [
-            { prop: "price_range", name: "Price", type: "price-range", options: [] },
+            {
+                prop: "price_range",
+                name: "Price",
+                type: "price-range",
+                options: []
+            },
             {
                 prop: "exclusive",
                 name: "Exclusive",

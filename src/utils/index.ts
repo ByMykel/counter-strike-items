@@ -140,10 +140,7 @@ export function filterItems(
 }
 
 type OptionConfig = {
-    type:
-        | "fromProperty"
-        | "fromNestedProperty"
-        | "fromNestedSingleProperty"
+    type: "fromProperty" | "fromNestedProperty" | "fromNestedSingleProperty"
     property: string
 }
 

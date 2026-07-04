@@ -183,7 +183,7 @@ function setScrollEl(el: Element | ComponentPublicInstance | null) {
 // Video playback modal (highlights / souvenir charms).
 const activeIndex = ref<number | null>(null)
 const activeVideo = computed(() =>
-    activeIndex.value === null ? null : props.items[activeIndex.value] ?? null
+    activeIndex.value === null ? null : (props.items[activeIndex.value] ?? null)
 )
 const activeVideoSteamUrl = computed(() => {
     const name = activeVideo.value?.market_hash_name

@@ -230,7 +230,10 @@ export const createListStore =
                 // part of the public type, so narrow it explicitly.
                 const pinia = getActivePinia() as
                     | (Pinia & {
-                          _s?: Map<string, { $id: string; $dispose: () => void }>
+                          _s?: Map<
+                              string,
+                              { $id: string; $dispose: () => void }
+                          >
                       })
                     | undefined
                 pinia?._s?.forEach((store) => {

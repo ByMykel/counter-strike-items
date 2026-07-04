@@ -104,7 +104,9 @@
                             >
                                 {{ row.label }}
                             </td>
-                            <td class="py-1.5 text-right align-top break-all text-white">
+                            <td
+                                class="py-1.5 text-right align-top break-all text-white"
+                            >
                                 <a
                                     v-if="row.link"
                                     :href="row.link"

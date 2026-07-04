@@ -8,30 +8,73 @@ async function build(): Promise<BuiltCategory> {
         `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/sticker_slabs.json`
     )
 
-    const [rarity, crates, collections, type, effect, tournament, team, player] =
-        generateOptionsBatch(items, [
-            { type: "fromNestedSingleProperty", property: "rarity" },
-            { type: "fromNestedProperty", property: "crates" },
-            { type: "fromNestedProperty", property: "collections" },
-            { type: "fromProperty", property: "type" },
-            { type: "fromProperty", property: "effect" },
-            { type: "fromNestedSingleProperty", property: "tournament" },
-            { type: "fromNestedSingleProperty", property: "team" },
-            { type: "fromNestedSingleProperty", property: "player" }
-        ])
+    const [
+        rarity,
+        crates,
+        collections,
+        type,
+        effect,
+        tournament,
+        team,
+        player
+    ] = generateOptionsBatch(items, [
+        { type: "fromNestedSingleProperty", property: "rarity" },
+        { type: "fromNestedProperty", property: "crates" },
+        { type: "fromNestedProperty", property: "collections" },
+        { type: "fromProperty", property: "type" },
+        { type: "fromProperty", property: "effect" },
+        { type: "fromNestedSingleProperty", property: "tournament" },
+        { type: "fromNestedSingleProperty", property: "team" },
+        { type: "fromNestedSingleProperty", property: "player" }
+    ])
 
     return {
         items,
         filters: [
-            { prop: "price_range", name: "Price", type: "price-range", options: [] },
-            { prop: "rarity", name: "Rarity", type: "multi-select", options: rarity },
-            { prop: "crates", name: "Crate", type: "multi-select", options: crates },
-            { prop: "collections", name: "Collections", type: "multi-select", options: collections },
+            {
+                prop: "price_range",
+                name: "Price",
+                type: "price-range",
+                options: []
+            },
+            {
+                prop: "rarity",
+                name: "Rarity",
+                type: "multi-select",
+                options: rarity
+            },
+            {
+                prop: "crates",
+                name: "Crate",
+                type: "multi-select",
+                options: crates
+            },
+            {
+                prop: "collections",
+                name: "Collections",
+                type: "multi-select",
+                options: collections
+            },
             { prop: "type", name: "Type", type: "multi-select", options: type },
-            { prop: "effect", name: "Effect", type: "multi-select", options: effect },
-            { prop: "tournament", name: "Tournament", type: "multi-select", options: tournament },
+            {
+                prop: "effect",
+                name: "Effect",
+                type: "multi-select",
+                options: effect
+            },
+            {
+                prop: "tournament",
+                name: "Tournament",
+                type: "multi-select",
+                options: tournament
+            },
             { prop: "team", name: "Team", type: "multi-select", options: team },
-            { prop: "player", name: "Player", type: "multi-select", options: player }
+            {
+                prop: "player",
+                name: "Player",
+                type: "multi-select",
+                options: player
+            }
         ]
     }
 }

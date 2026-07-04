@@ -16,8 +16,18 @@ async function build(): Promise<BuiltCategory> {
     return {
         items,
         filters: [
-            { prop: "crates", name: "Crate", type: "multi-select", options: crates },
-            { prop: "contains", name: "Contains", type: "multi-select", options: contains }
+            {
+                prop: "crates",
+                name: "Crate",
+                type: "multi-select",
+                options: crates
+            },
+            {
+                prop: "contains",
+                name: "Contains",
+                type: "multi-select",
+                options: contains
+            }
         ]
     }
 }

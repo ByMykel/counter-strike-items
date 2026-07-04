@@ -21,12 +21,37 @@ async function build(): Promise<BuiltCategory> {
     return {
         items,
         filters: [
-            { prop: "tournament_event", name: "Tournament", type: "multi-select", options: tournamentEvent },
-            { prop: "tournament_player", name: "Player", type: "multi-select", options: tournamentPlayer },
+            {
+                prop: "tournament_event",
+                name: "Tournament",
+                type: "multi-select",
+                options: tournamentEvent
+            },
+            {
+                prop: "tournament_player",
+                name: "Player",
+                type: "multi-select",
+                options: tournamentPlayer
+            },
             { prop: "map", name: "Map", type: "multi-select", options: map },
-            { prop: "stage", name: "Stage", type: "multi-select", options: stage },
-            { prop: "team0", name: "Team 0", type: "multi-select", options: team0 },
-            { prop: "team1", name: "Team 1", type: "multi-select", options: team1 }
+            {
+                prop: "stage",
+                name: "Stage",
+                type: "multi-select",
+                options: stage
+            },
+            {
+                prop: "team0",
+                name: "Team 0",
+                type: "multi-select",
+                options: team0
+            },
+            {
+                prop: "team1",
+                name: "Team 1",
+                type: "multi-select",
+                options: team1
+            }
         ]
     }
 }

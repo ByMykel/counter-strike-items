@@ -16,8 +16,7 @@
         v-else-if="!isObject && !isArray"
         class="whitespace-nowrap"
         :class="valueClass"
-        >{{ display }}</span
-    >
+    >{{ display }}</span>
 
     <!-- Array of objects: columnar table (one row per element) -->
     <div
@@ -139,10 +138,7 @@ const isTableArray = computed(() => {
     return (
         arr.length > 0 &&
         arr.every(
-            (el) =>
-                el !== null &&
-                typeof el === "object" &&
-                !Array.isArray(el)
+            (el) => el !== null && typeof el === "object" && !Array.isArray(el)
         )
     )
 })

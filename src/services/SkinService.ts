@@ -56,16 +56,61 @@ async function build(): Promise<BuiltCategory> {
     return {
         items,
         filters: [
-            { prop: "price_range", name: "Price", type: "price-range", options: [] },
-            { prop: "crates", name: "Crates", type: "multi-select", options: crates },
-            { prop: "collections", name: "Collections", type: "multi-select", options: collections },
-            { prop: "rarity", name: "Rarity", type: "multi-select", options: rarity },
-            { prop: "pattern", name: "Pattern", type: "multi-select", options: pattern },
-            { prop: "style", name: "Finish Style", type: "multi-select", options: style },
-            { prop: "weapon", name: "Weapon", type: "multi-select", options: weapon },
+            {
+                prop: "price_range",
+                name: "Price",
+                type: "price-range",
+                options: []
+            },
+            {
+                prop: "crates",
+                name: "Crates",
+                type: "multi-select",
+                options: crates
+            },
+            {
+                prop: "collections",
+                name: "Collections",
+                type: "multi-select",
+                options: collections
+            },
+            {
+                prop: "rarity",
+                name: "Rarity",
+                type: "multi-select",
+                options: rarity
+            },
+            {
+                prop: "pattern",
+                name: "Pattern",
+                type: "multi-select",
+                options: pattern
+            },
+            {
+                prop: "style",
+                name: "Finish Style",
+                type: "multi-select",
+                options: style
+            },
+            {
+                prop: "weapon",
+                name: "Weapon",
+                type: "multi-select",
+                options: weapon
+            },
             { prop: "wear", name: "Wear", type: "multi-select", options: wear },
-            { prop: "category", name: "Category", type: "multi-select", options: category },
-            { prop: "paint_index", name: "Paint index", type: "multi-select", options: paintIndex },
+            {
+                prop: "category",
+                name: "Category",
+                type: "multi-select",
+                options: category
+            },
+            {
+                prop: "paint_index",
+                name: "Paint index",
+                type: "multi-select",
+                options: paintIndex
+            },
             {
                 prop: "souvenir",
                 name: "Souvenir",
@@ -75,7 +120,12 @@ async function build(): Promise<BuiltCategory> {
                     { id: "false", name: "No" }
                 ]
             },
-            { prop: "phase", name: "Phase", type: "multi-select", options: phase },
+            {
+                prop: "phase",
+                name: "Phase",
+                type: "multi-select",
+                options: phase
+            },
             {
                 prop: "stattrak",
                 name: "StatTrak™",

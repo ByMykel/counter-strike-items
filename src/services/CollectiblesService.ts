@@ -16,7 +16,12 @@ async function build(): Promise<BuiltCategory> {
     return {
         items,
         filters: [
-            { prop: "rarity", name: "Rarity", type: "multi-select", options: rarity },
+            {
+                prop: "rarity",
+                name: "Rarity",
+                type: "multi-select",
+                options: rarity
+            },
             {
                 prop: "type",
                 name: "Type",
