@@ -243,7 +243,6 @@ import {
     TrophyIcon,
     UserGroupIcon,
     TagIcon,
-    Square3Stack3DIcon,
     VideoCameraIcon,
     Bars3Icon,
     TableCellsIcon
@@ -297,13 +296,14 @@ const navGroups = [
                 shortName: "Slabs",
                 path: "/sticker-slabs",
                 icon: StarIcon
-            },
-            {
-                name: "Base weapons",
-                shortName: "Weapons",
-                path: "/base-weapons",
-                icon: Square3Stack3DIcon
             }
+            // Hidden from nav (route still exists at /base-weapons)
+            // {
+            //     name: "Base weapons",
+            //     shortName: "Weapons",
+            //     path: "/base-weapons",
+            //     icon: Square3Stack3DIcon
+            // }
         ]
     },
     {
