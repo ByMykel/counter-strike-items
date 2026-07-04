@@ -89,14 +89,35 @@
                 />
                 <!--eslint-enable-->
 
-                <a
-                    v-if="selected.style"
-                    :href="selected.style.url"
-                    class="flex ites-center text-black-100 w-full underline"
-                    target="_blank"
+                <table
+                    v-if="specs.length"
+                    class="w-full mt-1 text-sm"
                 >
-                    Finish Style: {{ selected.style.name }}
-                </a>
+                    <tbody>
+                        <tr
+                            v-for="row of specs"
+                            :key="row.label"
+                            class="border-b border-black-300/60 last:border-0"
+                        >
+                            <td
+                                class="py-1.5 pr-3 align-top whitespace-nowrap text-black-100"
+                            >
+                                {{ row.label }}
+                            </td>
+                            <td
+                                class="py-1.5 text-right align-top break-all text-white"
+                            >
+                                <a
+                                    v-if="row.link"
+                                    :href="row.link"
+                                    target="_blank"
+                                    class="underline hover:text-[#ff5e65] transition-colors"
+                                >{{ row.value }}</a>
+                                <span v-else>{{ row.value }}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div class="flex flex-col gap-5">
@@ -355,6 +376,34 @@ const priceLabel = computed(() => {
     return priceStore.isMarketable(props.selected.market_hash_name)
         ? "No price available"
         : "Not marketable"
+})
+
+// Specifications table built from the raw item data.
+const specs = computed(() => {
+    const raw = props.items[props.selected.id] ?? {}
+    const rows: { label: string; value: string; link?: string | null }[] = []
+
+    if (raw.style?.name) {
+        rows.push({
+            label: "Finish Style",
+            value: raw.style.name,
+            link: raw.style.url || null
+        })
+    }
+    if (raw.paint_index != null)
+        rows.push({ label: "Paint index", value: String(raw.paint_index) })
+    if (raw.pattern?.id)
+        rows.push({ label: "Pattern ID", value: String(raw.pattern.id) })
+    if (raw.phase) rows.push({ label: "Phase", value: String(raw.phase) })
+    if (typeof raw.legacy_model === "boolean")
+        rows.push({
+            label: "Legacy model",
+            value: raw.legacy_model ? "Yes" : "No"
+        })
+    if (raw.def_index != null)
+        rows.push({ label: "Def index", value: String(raw.def_index) })
+
+    return rows
 })
 
 const showItemName = ref(false)

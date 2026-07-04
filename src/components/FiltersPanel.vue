@@ -73,14 +73,10 @@
 import { ref } from "vue"
 import { XMarkIcon, ChevronDownIcon } from "@heroicons/vue/24/outline"
 import FiltersPanelControl from "../components/FiltersPanelControl.vue"
+import { Filter } from "../types"
 
 defineProps<{
-    filters: {
-        prop: string
-        name: string
-        type: string
-        options: { id: string; name: string }[]
-    }[]
+    filters: Filter[]
     filtersValues: { [prop: string]: string[] }
 }>()
 

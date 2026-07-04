@@ -1,19 +1,21 @@
 import { cachedGet } from "../utils/apiCache"
-import { filterItems, generateOptions } from "../utils"
+import { filterItems, generateOptionsBatch } from "../utils"
+import { getOrBuild, BuiltCategory } from "../utils/processedCache"
+import { CSItem } from "../types"
 
-export default class CharmsService {
-    async query({
-        search,
-        filters
-    }: {
-        search: string
-        filters: { [prop: string]: string[] }
-    }) {
-        let items = await cachedGet<any[]>(
-            `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/keychains.json`
-        )
+async function build(): Promise<BuiltCategory> {
+    const items = await cachedGet<CSItem[]>(
+        `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/keychains.json`
+    )
 
-        const filterList = [
+    const [rarity, collections] = generateOptionsBatch(items, [
+        { type: "fromNestedSingleProperty", property: "rarity" },
+        { type: "fromNestedProperty", property: "collections" }
+    ])
+
+    return {
+        items,
+        filters: [
             {
                 prop: "price_range",
                 name: "Price",
@@ -24,25 +26,30 @@ export default class CharmsService {
                 prop: "rarity",
                 name: "Rarity",
                 type: "multi-select",
-                options: generateOptions(items, {
-                    type: "fromNestedSingleProperty",
-                    property: "rarity"
-                })
+                options: rarity
             },
             {
                 prop: "collections",
                 name: "Collections",
                 type: "multi-select",
-                options: generateOptions(items, {
-                    type: "fromNestedProperty",
-                    property: "collections"
-                })
+                options: collections
             }
         ]
+    }
+}
 
+export default class CharmsService {
+    async query({
+        search,
+        filters
+    }: {
+        search: string
+        filters: { [prop: string]: string[] }
+    }) {
+        const built = await getOrBuild("charms", build)
         return {
-            items: filterItems(items, search, filters),
-            filters: filterList
+            items: filterItems(built.items, search, filters),
+            filters: built.filters
         }
     }
 }

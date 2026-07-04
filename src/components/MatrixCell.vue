@@ -11,13 +11,12 @@
                     class="group relative flex flex-col items-center"
                     @click="$emit('select-item', cellData.items[0].id)"
                 >
-                    <img
+                    <SpinnerImage
                         :src="formatImageUrl(cellData.items[0].image)"
                         :alt="cellData.items[0].name"
-                        draggable="false"
-                        class="w-24 h-24 object-contain rounded hover:opacity-80 transition-opacity select-none"
-                        @dragstart.prevent
-                    >
+                        img-class="w-24 h-24 object-contain rounded hover:opacity-80 transition-opacity select-none"
+                        spinner-class="size-6"
+                    />
                     <div
                         class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black-500 text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-30 max-w-[200px] text-center"
                     >
@@ -32,13 +31,11 @@
                     class="group relative flex flex-col items-center"
                     @click="$emit('select-item', item.id)"
                 >
-                    <img
+                    <SpinnerImage
                         :src="formatImageUrl(item.image)"
                         :alt="item.name"
-                        draggable="false"
-                        class="w-16 h-16 object-contain rounded hover:opacity-80 transition-opacity select-none"
-                        @dragstart.prevent
-                    >
+                        img-class="w-16 h-16 object-contain rounded hover:opacity-80 transition-opacity select-none"
+                    />
                     <div
                         class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black-500 text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-30 max-w-[200px] text-center"
                     >
@@ -80,6 +77,7 @@
 
 <script setup lang="ts">
 import type { CellData } from "../services/SpecialItemsMatrixService"
+import SpinnerImage from "./SpinnerImage.vue"
 
 defineProps<{
     cellData: CellData | null

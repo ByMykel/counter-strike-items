@@ -1,5 +1,36 @@
 import { cachedGet } from "../utils/apiCache"
-import { filterItems, generateOptions } from "../utils"
+import { filterItems, generateOptionsBatch } from "../utils"
+import { getOrBuild, BuiltCategory } from "../utils/processedCache"
+import { CSItem } from "../types"
+
+async function build(): Promise<BuiltCategory> {
+    const items = await cachedGet<CSItem[]>(
+        `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collections.json`
+    )
+
+    const [crates, contains] = generateOptionsBatch(items, [
+        { type: "fromNestedProperty", property: "crates" },
+        { type: "fromNestedProperty", property: "contains" }
+    ])
+
+    return {
+        items,
+        filters: [
+            {
+                prop: "crates",
+                name: "Crate",
+                type: "multi-select",
+                options: crates
+            },
+            {
+                prop: "contains",
+                name: "Contains",
+                type: "multi-select",
+                options: contains
+            }
+        ]
+    }
+}
 
 export default class CollectionsService {
     async query({
@@ -9,34 +40,10 @@ export default class CollectionsService {
         search: string
         filters: { [prop: string]: string[] }
     }) {
-        let items = await cachedGet<any[]>(
-            `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collections.json`
-        )
-
-        const filterList = [
-            {
-                prop: "crates",
-                name: "Crate",
-                type: "multi-select",
-                options: generateOptions(items, {
-                    type: "fromNestedProperty",
-                    property: "crates"
-                })
-            },
-            {
-                prop: "contains",
-                name: "Contains",
-                type: "multi-select",
-                options: generateOptions(items, {
-                    type: "fromNestedProperty",
-                    property: "contains"
-                })
-            }
-        ]
-
+        const built = await getOrBuild("collections", build)
         return {
-            items: filterItems(items, search, filters),
-            filters: filterList
+            items: filterItems(built.items, search, filters),
+            filters: built.filters
         }
     }
 }

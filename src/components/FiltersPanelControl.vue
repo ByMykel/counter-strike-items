@@ -27,12 +27,13 @@
 <script setup lang="ts">
 import MultiSelectFilter from "../components/MultiSelectFilter.vue"
 import PriceRangeFilter from "../components/PriceRangeFilter.vue"
+import { FilterOption } from "../types"
 
 defineProps<{
     prop: string
     name: string
     type: string
-    options: { id: string; name: string }[]
+    options: FilterOption[]
     values: string[]
 }>()
 

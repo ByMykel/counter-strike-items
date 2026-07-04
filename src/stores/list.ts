@@ -1,7 +1,7 @@
 import { onUnmounted, onMounted, ref } from "vue"
-import { defineStore, getActivePinia } from "pinia"
+import { defineStore, getActivePinia, type Pinia } from "pinia"
 import { useRoute, useRouter } from "vue-router"
-import { Filter } from "../types"
+import { CSItem, Filter } from "../types"
 import { usePriceStore } from "./prices"
 
 type QueryFunction = ({
@@ -13,7 +13,7 @@ type QueryFunction = ({
     search: string
     filters: { [prop: string]: string[] }
 }) => Promise<{
-    items: any[]
+    items: CSItem[]
     filters?: Filter[]
 }>
 
@@ -29,10 +29,10 @@ export const createListStore =
             const loading = ref<boolean>(false)
             const search = ref<string>("")
             const sortBy = ref<string>("")
-            const page = ref<number>(1)
-            const rawItems = ref<any[]>([])
-            const allItems = ref<any[]>([])
-            const items = ref<any[]>([])
+            const rawItems = ref<CSItem[]>([])
+            // Full filtered + sorted list. The view virtualizes it, so there
+            // is no pagination — every matching item is exposed at once.
+            const items = ref<CSItem[]>([])
             const itemsCount = ref<number>(0)
             const filters = ref<Filter[]>([])
             const filtersValues = ref<{ [prop: string]: string[] }>({})
@@ -42,9 +42,11 @@ export const createListStore =
 
                 const direction = sortBy.value === "price-asc" ? 1 : -1
 
-                allItems.value.sort((a, b) => {
-                    const priceA = priceStore.prices[a.market_hash_name] ?? null
-                    const priceB = priceStore.prices[b.market_hash_name] ?? null
+                items.value.sort((a, b) => {
+                    const priceA =
+                        priceStore.prices[a.market_hash_name ?? ""] ?? null
+                    const priceB =
+                        priceStore.prices[b.market_hash_name ?? ""] ?? null
 
                     if (priceA === null && priceB === null) return 0
                     if (priceA === null) return 1
@@ -54,34 +56,28 @@ export const createListStore =
                 })
             }
 
-            function reslice() {
-                page.value = 1
-                items.value = allItems.value.slice(0, 20)
-            }
-
             function applyPriceFilter() {
                 const priceRange = filtersValues.value.price_range
                 if (priceRange?.length === 2) {
                     const [minCents, maxCents] = priceRange.map(Number)
-                    allItems.value = rawItems.value.filter((item) => {
-                        const price = priceStore.prices[item.market_hash_name]
+                    items.value = rawItems.value.filter((item) => {
+                        const price =
+                            priceStore.prices[item.market_hash_name ?? ""]
                         if (price == null) return false
                         if (minCents && price < minCents) return false
                         if (maxCents && price > maxCents) return false
                         return true
                     })
                 } else {
-                    allItems.value = [...rawItems.value]
+                    items.value = [...rawItems.value]
                 }
                 sortItems()
-                itemsCount.value = allItems.value.length
-                reslice()
+                itemsCount.value = items.value.length
             }
 
             async function fetch() {
                 loading.value = true
                 reset()
-                page.value = 1
                 try {
                     const { price_range, ...serviceFilters } =
                         filtersValues.value
@@ -91,26 +87,23 @@ export const createListStore =
                             filters: serviceFilters
                         })
                     rawItems.value = newItems
-                    allItems.value = [...newItems]
 
                     if (price_range?.length === 2) {
                         const [minCents, maxCents] = price_range.map(Number)
-                        allItems.value = allItems.value.filter((item) => {
+                        items.value = newItems.filter((item) => {
                             const price =
-                                priceStore.prices[item.market_hash_name]
+                                priceStore.prices[item.market_hash_name ?? ""]
                             if (price == null) return false
                             if (minCents && price < minCents) return false
                             if (maxCents && price > maxCents) return false
                             return true
                         })
+                    } else {
+                        items.value = [...newItems]
                     }
 
                     sortItems()
-                    itemsCount.value = allItems.value.length
-                    items.value = allItems.value.slice(
-                        (page.value - 1) * 20,
-                        page.value * 20
-                    )
+                    itemsCount.value = items.value.length
                     filters.value = newFilters ?? []
                 } catch (error) {
                     console.error(
@@ -121,16 +114,6 @@ export const createListStore =
                 } finally {
                     loading.value = false
                 }
-            }
-
-            async function loadMore() {
-                page.value += 1
-                items.value.push(
-                    ...allItems.value.slice(
-                        (page.value - 1) * 20,
-                        page.value * 20
-                    )
-                )
             }
 
             function setSearch(newSearch: string) {
@@ -161,14 +144,14 @@ export const createListStore =
 
             function setSortBy(value: string) {
                 sortBy.value = value
+                // Re-sort in place, then reassign to trigger reactivity.
                 sortItems()
-                reslice()
+                items.value = [...items.value]
                 saveSearchQueryParam()
             }
 
             function reset() {
                 items.value = []
-                allItems.value = []
                 rawItems.value = []
                 itemsCount.value = 0
             }
@@ -226,6 +209,7 @@ export const createListStore =
                         key !== "q" &&
                         key !== "itemId" &&
                         key !== "sort" &&
+                        key !== "video" &&
                         value
                     ) {
                         if (typeof value === "string") {
@@ -242,9 +226,17 @@ export const createListStore =
             })
 
             onUnmounted(() => {
-                // TODO: find solution to ` Property '_s' does not exist on type 'Pinia'.ts(2339) `
-                // @ts-ignore
-                getActivePinia()?._s?.forEach((store: any) => {
+                // `_s` is Pinia's internal registry of active stores; it isn't
+                // part of the public type, so narrow it explicitly.
+                const pinia = getActivePinia() as
+                    | (Pinia & {
+                          _s?: Map<
+                              string,
+                              { $id: string; $dispose: () => void }
+                          >
+                      })
+                    | undefined
+                pinia?._s?.forEach((store) => {
                     if (store.$id === `list/${id}`) {
                         store.$dispose()
                         setSearch("")
@@ -265,7 +257,6 @@ export const createListStore =
 
                 fetch,
                 applyPriceFilter,
-                loadMore,
                 setSearch,
                 setSortBy,
                 setFilters,

@@ -1,19 +1,20 @@
 import { cachedGet } from "../utils/apiCache"
-import { filterItems, generateOptions } from "../utils"
+import { filterItems, generateOptionsBatch } from "../utils"
+import { getOrBuild, BuiltCategory } from "../utils/processedCache"
+import { CSItem } from "../types"
 
-export default class KeysService {
-    async query({
-        search,
-        filters
-    }: {
-        search: string
-        filters: { [prop: string]: string[] }
-    }) {
-        let items = await cachedGet<any[]>(
-            `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/keys.json`
-        )
+async function build(): Promise<BuiltCategory> {
+    const items = await cachedGet<CSItem[]>(
+        `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/keys.json`
+    )
 
-        const filterList = [
+    const [crates] = generateOptionsBatch(items, [
+        { type: "fromNestedProperty", property: "crates" }
+    ])
+
+    return {
+        items,
+        filters: [
             {
                 prop: "price_range",
                 name: "Price",
@@ -24,10 +25,7 @@ export default class KeysService {
                 prop: "crates",
                 name: "Crate",
                 type: "multi-select",
-                options: generateOptions(items, {
-                    type: "fromNestedProperty",
-                    property: "crates"
-                })
+                options: crates
             },
             {
                 prop: "marketable",
@@ -39,10 +37,21 @@ export default class KeysService {
                 ]
             }
         ]
+    }
+}
 
+export default class KeysService {
+    async query({
+        search,
+        filters
+    }: {
+        search: string
+        filters: { [prop: string]: string[] }
+    }) {
+        const built = await getOrBuild("keys", build)
         return {
-            items: filterItems(items, search, filters),
-            filters: filterList
+            items: filterItems(built.items, search, filters),
+            filters: built.filters
         }
     }
 }

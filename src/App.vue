@@ -11,36 +11,66 @@
                 >
                     <AppBranding />
                 </div>
-                <nav class="flex-1 px-2 py-4 overflow-y-auto">
+                <nav class="flex-1 px-2 py-4 overflow-y-auto sidebar-scroll">
                     <div
                         v-for="(group, index) of navGroups"
                         :key="group.label"
-                        :class="{ 'mt-5': index > 0 }"
+                        :class="
+                            index > 0
+                                ? 'mt-4 pt-4 border-t border-black-300/40'
+                                : ''
+                        "
                     >
                         <h3
-                            class="px-2 mb-1.5 text-[10px] uppercase tracking-widest text-black-100/50"
+                            class="px-3 mb-2 text-[10px] font-medium uppercase tracking-widest text-black-100/70"
                         >
                             {{ group.label }}
                         </h3>
                         <ul
                             role="list"
-                            class="flex flex-col"
+                            class="flex flex-col gap-0.5"
                         >
                             <li
                                 v-for="routeItem of group.items"
                                 :key="routeItem.name"
                             >
                                 <RouterLink
+                                    v-slot="{ isExactActive, href, navigate }"
                                     :to="{
                                         path: routeItem.path,
                                         query: route.query.itemId
                                             ? { itemId: route.query.itemId }
                                             : {}
                                     }"
-                                    class="block px-2 py-1.5 rounded-lg text-black-100 hover:bg-black-300/50 hover:text-white transition-all duration-150"
-                                    active-class="text-white bg-black-300"
+                                    custom
                                 >
-                                    {{ routeItem.name }}
+                                    <a
+                                        :href="href"
+                                        class="group relative flex items-center gap-3 px-3 py-2 rounded-lg text-sm cursor-pointer transition-colors duration-150"
+                                        :class="
+                                            isExactActive
+                                                ? 'bg-black-300 text-white'
+                                                : 'text-black-100 hover:bg-black-300/50 hover:text-white'
+                                        "
+                                        @click="navigate"
+                                    >
+                                        <span
+                                            v-if="isExactActive"
+                                            class="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-[#ff5e65]"
+                                        />
+                                        <component
+                                            :is="routeItem.icon"
+                                            class="size-5 shrink-0 transition-colors"
+                                            :class="
+                                                isExactActive
+                                                    ? 'text-[#ff5e65]'
+                                                    : 'text-black-100 group-hover:text-white'
+                                            "
+                                        />
+                                        <span class="truncate">{{
+                                            routeItem.name
+                                        }}</span>
+                                    </a>
                                 </RouterLink>
                             </li>
                         </ul>

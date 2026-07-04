@@ -9,6 +9,29 @@
 }
 
 @layer utilities {
+    /* Thin, subtle scrollbar for the sidebar nav */
+    .sidebar-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: #2c2c2c transparent;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+        background: #2c2c2c;
+        border-radius: 9999px;
+    }
+
+    .sidebar-scroll:hover::-webkit-scrollbar-thumb {
+        background: #3a3a3a;
+    }
+
     .no-scrollbar::-webkit-scrollbar {
         display: none;
     }
@@ -40,12 +63,12 @@
     }
 
     .items-grid {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        grid-template-rows: repeat(auto-fill, minmax(216px, 1fr));
     }
 
     .items-grid-small {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        grid-template-rows: repeat(auto-fill, minmax(170px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+        grid-template-rows: repeat(auto-fill, minmax(190px, 1fr));
     }
 }

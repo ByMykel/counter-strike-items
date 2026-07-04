@@ -1,9 +1,9 @@
 <template>
     <div class="flex flex-col">
-        <div
-            v-if="!shouldLoadVideo"
-            class="relative w-full aspect-video rounded-md cursor-pointer bg-gray-800"
-            @click="loadVideo"
+        <button
+            type="button"
+            class="relative w-full aspect-video rounded-md cursor-pointer bg-gray-800 group"
+            @click="$emit('play')"
         >
             <img
                 :src="thumbnail"
@@ -23,13 +23,13 @@
             <!-- Play button overlay -->
             <div
                 v-if="imageLoaded"
-                class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 rounded-md"
+                class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 group-hover:bg-opacity-30 rounded-md transition-all"
             >
                 <div
-                    class="w-16 h-16 bg-white bg-opacity-90 rounded-full flex items-center justify-center hover:bg-opacity-100 transition-all"
+                    class="w-20 h-20 bg-white bg-opacity-90 rounded-full flex items-center justify-center group-hover:bg-opacity-100 group-hover:scale-105 transition-all"
                 >
                     <svg
-                        class="w-8 h-8 text-black ml-1"
+                        class="w-10 h-10 text-black ml-1"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                     >
@@ -37,17 +37,7 @@
                     </svg>
                 </div>
             </div>
-        </div>
-
-        <video
-            v-if="shouldLoadVideo"
-            class="object-cover w-full h-full rounded-md"
-            :src="video"
-            autoplay
-            muted
-            playsinline
-            controls
-        />
+        </button>
 
         <div>
             <p
@@ -69,12 +59,7 @@ defineProps<{
     thumbnail: string
 }>()
 
-defineEmits(["show"])
+defineEmits(["play"])
 
-const shouldLoadVideo = ref(false)
 const imageLoaded = ref(false)
-
-function loadVideo() {
-    shouldLoadVideo.value = true
-}
 </script>

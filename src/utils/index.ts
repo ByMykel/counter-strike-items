@@ -1,9 +1,9 @@
 import Fuse from "fuse.js"
-import uniqBy from "lodash.uniqby"
+import { CSItem, FilterOption } from "../types"
 
-const fuseCache = new Map<string, Fuse<any>>()
+const fuseCache = new Map<string, Fuse<CSItem>>()
 
-function getFuseIndex(items: any[], keys: string[]): Fuse<any> {
+function getFuseIndex(items: CSItem[], keys: string[]): Fuse<CSItem> {
     const first = items[0]?.id ?? ""
     const last = items[items.length - 1]?.id ?? ""
     const cacheKey = `${items.length}:${first}:${last}`
@@ -26,7 +26,7 @@ function getFuseIndex(items: any[], keys: string[]): Fuse<any> {
     return fuse
 }
 
-function exactTokenMatch(item: any, tokens: string[]): boolean {
+function exactTokenMatch(item: CSItem, tokens: string[]): boolean {
     const name = (item.name ?? "").toLowerCase()
     const marketName = (item.market_hash_name ?? "").toLowerCase()
     return tokens.every(
@@ -47,7 +47,7 @@ function hashString(str: string) {
     return hash
 }
 
-export function shuffleArrayWithSeed(array: any[], str = "") {
+export function shuffleArrayWithSeed<T>(array: T[], str = ""): T[] {
     let seed = hashString(str)
     const seededRandom = (max: number) => {
         const x = Math.sin(seed++) * 10000
@@ -80,10 +80,10 @@ export function shuffleArrayWithSeed(array: any[], str = "") {
  * @returns {Array} The filtered array of items.
  */
 export function filterItems(
-    items: any[],
+    items: CSItem[],
     search = "",
     filters: { [prop: string]: string[] } = {}
-) {
+): CSItem[] {
     const searchProperties = ["name", "market_hash_name"]
 
     let filteredItems = items
@@ -139,74 +139,69 @@ export function filterItems(
     return filteredItems
 }
 
-/**
- * Generates unique options for filtering from an array of items based on a configuration.
- *
- * @param {Array} items - The array of items from which to generate filter options.
- * @param {Object} config - Configuration object specifying how to extract and process options.
- *    - type: Specifies the method of extraction. Can be one of "fromProperty", "fromNestedProperty", or "fromNestedSingleProperty".
- *    - property: The name of the property from items to base the options on.
- *
- * Examples of config:
- *
- * - For a simple property on each item (e.g., "type" where each item has a type property that's a string):
- *   { type: "fromProperty", property: "type" }
- *
- * - For a nested property array on each item (e.g., "crates" where each item may have an array of crate objects, each with its own id and name):
- *   { type: "fromNestedProperty", property: "crates" }
- *
- * - For a nested single property on each item (e.g., "rarity" where each item has a rarity object with its own id and name):
- *   { type: "fromNestedSingleProperty", property: "rarity" }
- *
- * @returns {Array} A unique array of options based on the provided configuration.
- */
-export function generateOptions(
-    items: any,
-    config: any
-): { id: string; name: string }[] {
-    let options = []
+type OptionConfig = {
+    type: "fromProperty" | "fromNestedProperty" | "fromNestedSingleProperty"
+    property: string
+}
 
-    switch (config.type) {
-        case "fromProperty":
-            // Directly maps each item's specified property to an option, assuming the property is a simple value.
-            options = items
-                .filter((item: any) => item[config.property])
-                .map((item: any) => {
-                    const value = item[config.property]
-                    return { id: String(value), name: String(value) }
-                })
-            break
-        case "fromNestedProperty":
-            // Maps and flattens items' specified nested array property to options, assuming each object in the array has id and name.
-            options = items.flatMap((item: any) => {
-                const value = item[config.property]
-                return value
-                    ? value.map((v: any) => ({
-                          id: String(v.id),
-                          name: String(v.name)
-                      }))
-                    : []
-            })
-            break
-        case "fromNestedSingleProperty":
-            // Maps each item's specified nested property to an option, assuming the nested object has id and name.
-            options = items
-                .filter((item: any) => item[config.property])
-                .map((item: any) => {
-                    const value = item[config.property]
-                    if (String(value.id) === "null") {
-                        return { id: null, name: "None" }
+/**
+ * Like `generateOptions`, but computes several filter option-sets in a single
+ * pass over `items` (instead of one full pass per filter). Returns the option
+ * arrays in the same order as `configs`.
+ */
+export function generateOptionsBatch(
+    items: CSItem[],
+    configs: OptionConfig[]
+): FilterOption[][] {
+    const seen = configs.map(() => new Set<string>())
+    const out: FilterOption[][] = configs.map(() => [])
+
+    for (const item of items) {
+        for (let i = 0; i < configs.length; i++) {
+            const { type, property } = configs[i]
+            const value = item[property]
+
+            switch (type) {
+                case "fromProperty": {
+                    if (!value) break
+                    const id = String(value)
+                    if (!seen[i].has(id)) {
+                        seen[i].add(id)
+                        out[i].push({ id, name: id })
                     }
-                    return { id: String(value.id), name: String(value.name) }
-                })
-            break
-        default:
-            console.error("Invalid config type")
-            return []
+                    break
+                }
+                case "fromNestedSingleProperty": {
+                    if (!value) break
+                    if (String(value.id) === "null") {
+                        if (!seen[i].has("null")) {
+                            seen[i].add("null")
+                            // Nested prop explicitly "null" → a "None" option.
+                            out[i].push({ id: null, name: "None" })
+                        }
+                        break
+                    }
+                    const id = String(value.id)
+                    if (!seen[i].has(id)) {
+                        seen[i].add(id)
+                        out[i].push({ id, name: String(value.name) })
+                    }
+                    break
+                }
+                case "fromNestedProperty": {
+                    if (!value) break
+                    for (const v of value) {
+                        const id = String(v.id)
+                        if (!seen[i].has(id)) {
+                            seen[i].add(id)
+                            out[i].push({ id, name: String(v.name) })
+                        }
+                    }
+                    break
+                }
+            }
+        }
     }
 
-    // Removing duplicates for all cases based on the id to ensure uniqueness
-    // TODO: avoid using ts-ignore
-    // @ts-ignore
-    return uniqBy(options.filter(Boolean), "id")
+    return out
 }

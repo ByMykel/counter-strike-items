@@ -47,7 +47,7 @@ export default defineConfig({
                     {
                         urlPattern:
                             /^https:\/\/raw\.githubusercontent\.com\/ByMykel\/CSGO-API\/.*/i,
-                        handler: "NetworkFirst",
+                        handler: "StaleWhileRevalidate",
                         options: {
                             cacheName: "csgo-api-data",
                             expiration: {

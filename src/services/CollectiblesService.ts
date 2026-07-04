@@ -1,42 +1,32 @@
 import { cachedGet } from "../utils/apiCache"
-import { filterItems, generateOptions } from "../utils"
+import { filterItems, generateOptionsBatch } from "../utils"
+import { getOrBuild, BuiltCategory } from "../utils/processedCache"
+import { CSItem } from "../types"
 
-export default class CollectiblesService {
-    async query({
-        search,
-        filters
-    }: {
-        search: string
-        filters: { [prop: string]: string[] }
-    }) {
-        let items = await cachedGet<any[]>(
-            `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collectibles.json`
-        )
+async function build(): Promise<BuiltCategory> {
+    const items = await cachedGet<CSItem[]>(
+        `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/collectibles.json`
+    )
 
-        const filterList = [
+    const [rarity, type] = generateOptionsBatch(items, [
+        { type: "fromNestedSingleProperty", property: "rarity" },
+        { type: "fromProperty", property: "type" }
+    ])
+
+    return {
+        items,
+        filters: [
             {
                 prop: "rarity",
                 name: "Rarity",
                 type: "multi-select",
-                options: generateOptions(items, {
-                    type: "fromNestedSingleProperty",
-                    property: "rarity"
-                })
+                options: rarity
             },
             {
                 prop: "type",
                 name: "Type",
                 type: "multi-select",
-                options: [
-                    ...generateOptions(items, {
-                        type: "fromProperty",
-                        property: "type"
-                    }),
-                    {
-                        id: "null",
-                        name: "Other"
-                    }
-                ]
+                options: [...type, { id: "null", name: "Other" }]
             },
             {
                 prop: "genuine",
@@ -48,10 +38,21 @@ export default class CollectiblesService {
                 ]
             }
         ]
+    }
+}
 
+export default class CollectiblesService {
+    async query({
+        search,
+        filters
+    }: {
+        search: string
+        filters: { [prop: string]: string[] }
+    }) {
+        const built = await getOrBuild("collectibles", build)
         return {
-            items: filterItems(items, search, filters),
-            filters: filterList
+            items: filterItems(built.items, search, filters),
+            filters: built.filters
         }
     }
 }

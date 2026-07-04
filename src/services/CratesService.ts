@@ -1,19 +1,22 @@
 import { cachedGet } from "../utils/apiCache"
-import { filterItems, generateOptions } from "../utils"
+import { filterItems, generateOptionsBatch } from "../utils"
+import { getOrBuild, BuiltCategory } from "../utils/processedCache"
+import { CSItem } from "../types"
 
-export default class CratesService {
-    async query({
-        search,
-        filters
-    }: {
-        search: string
-        filters: { [prop: string]: string[] }
-    }) {
-        let items = await cachedGet<any[]>(
-            `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/crates.json`
-        )
+async function build(): Promise<BuiltCategory> {
+    const items = await cachedGet<CSItem[]>(
+        `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/crates.json`
+    )
 
-        const filterList = [
+    const [contains, containsRare, type] = generateOptionsBatch(items, [
+        { type: "fromNestedProperty", property: "contains" },
+        { type: "fromNestedProperty", property: "contains_rare" },
+        { type: "fromProperty", property: "type" }
+    ])
+
+    return {
+        items,
+        filters: [
             {
                 prop: "price_range",
                 name: "Price",
@@ -24,34 +27,31 @@ export default class CratesService {
                 prop: "contains",
                 name: "Contains",
                 type: "multi-select",
-                options: generateOptions(items, {
-                    type: "fromNestedProperty",
-                    property: "contains"
-                })
+                options: contains
             },
             {
                 prop: "contains_rare",
                 name: "Contains special",
                 type: "multi-select",
-                options: generateOptions(items, {
-                    type: "fromNestedProperty",
-                    property: "contains_rare"
-                })
+                options: containsRare
             },
-            {
-                prop: "type",
-                name: "Type",
-                type: "multi-select",
-                options: generateOptions(items, {
-                    type: "fromProperty",
-                    property: "type"
-                })
-            }
+            { prop: "type", name: "Type", type: "multi-select", options: type }
         ]
+    }
+}
 
+export default class CratesService {
+    async query({
+        search,
+        filters
+    }: {
+        search: string
+        filters: { [prop: string]: string[] }
+    }) {
+        const built = await getOrBuild("crates", build)
         return {
-            items: filterItems(items, search, filters),
-            filters: filterList
+            items: filterItems(built.items, search, filters),
+            filters: built.filters
         }
     }
 }

@@ -29,7 +29,9 @@
                 title="Raw item data"
                 has-toggle
             >
-                <pre>{{ JSON.stringify(rawItemData, null, 2) }}</pre>
+                <div class="overflow-x-auto text-xs mt-1">
+                    <RawDataTable :value="rawItemData" />
+                </div>
             </DebugItem>
         </dl>
     </div>
@@ -38,6 +40,7 @@
 <script setup lang="ts">
 import { useDebug } from "../composables/useDebug"
 import DebugItem from "./DebugItem.vue"
+import RawDataTable from "./RawDataTable.vue"
 
 const props = defineProps({
     selected: {
