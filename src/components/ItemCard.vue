@@ -2,7 +2,7 @@
     <div class="flex flex-col">
         <button
             type="button"
-            class="relative block h-[12rem] p-1 overflow-hidden border-2 border-transparent rounded-md outline-none cursor-pointer focus:border-[#ff5e65] hover:border-[#ff5e65]"
+            class="relative block h-[13.5rem] p-1 overflow-hidden border-2 border-transparent rounded-md outline-none cursor-pointer focus:border-[#ff5e65] hover:border-[#ff5e65]"
             @click="$emit('show')"
         >
             <svg

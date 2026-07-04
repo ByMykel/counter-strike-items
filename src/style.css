@@ -63,12 +63,12 @@
     }
 
     .items-grid {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        grid-template-rows: repeat(auto-fill, minmax(216px, 1fr));
     }
 
     .items-grid-small {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        grid-template-rows: repeat(auto-fill, minmax(170px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+        grid-template-rows: repeat(auto-fill, minmax(190px, 1fr));
     }
 }

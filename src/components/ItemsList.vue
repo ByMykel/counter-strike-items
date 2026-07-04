@@ -105,8 +105,8 @@ import ItemVideo from "./ItemVideo.vue"
 import ItemsSkeleton from "./ItemsSkeleton.vue"
 import VideoModal from "./VideoModal.vue"
 
-// Fixed card height (image 12rem + name + price) plus the inter-row gap.
-const ROW_HEIGHT = 246
+// Fixed card height (image 13.5rem + name + price) plus the inter-row gap.
+const ROW_HEIGHT = 270
 const GAP = 12
 
 const props = withDefaults(
@@ -149,7 +149,7 @@ const { width } = useElementSize(scrollEl)
 const columns = computed(() => {
     const w = width.value
     if (!w) return 1
-    const cardMin = w >= 768 ? 240 : 140
+    const cardMin = w >= 768 ? 270 : 155
     return Math.max(1, Math.floor((w + GAP) / (cardMin + GAP)))
 })
 
