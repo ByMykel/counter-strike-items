@@ -210,3 +210,73 @@ export function generateOptions(
     // @ts-ignore
     return uniqBy(options.filter(Boolean), "id")
 }
+
+type OptionConfig = {
+    type:
+        | "fromProperty"
+        | "fromNestedProperty"
+        | "fromNestedSingleProperty"
+    property: string
+}
+
+/**
+ * Like `generateOptions`, but computes several filter option-sets in a single
+ * pass over `items` (instead of one full pass per filter). Returns the option
+ * arrays in the same order as `configs`.
+ */
+export function generateOptionsBatch(
+    items: any[],
+    configs: OptionConfig[]
+): { id: string; name: string }[][] {
+    const seen = configs.map(() => new Set<string>())
+    const out: { id: string; name: string }[][] = configs.map(() => [])
+
+    for (const item of items) {
+        for (let i = 0; i < configs.length; i++) {
+            const { type, property } = configs[i]
+            const value = item[property]
+
+            switch (type) {
+                case "fromProperty": {
+                    if (!value) break
+                    const id = String(value)
+                    if (!seen[i].has(id)) {
+                        seen[i].add(id)
+                        out[i].push({ id, name: id })
+                    }
+                    break
+                }
+                case "fromNestedSingleProperty": {
+                    if (!value) break
+                    if (String(value.id) === "null") {
+                        if (!seen[i].has("null")) {
+                            seen[i].add("null")
+                            // Matches generateOptions: id null, name "None"
+                            out[i].push({ id: null as any, name: "None" })
+                        }
+                        break
+                    }
+                    const id = String(value.id)
+                    if (!seen[i].has(id)) {
+                        seen[i].add(id)
+                        out[i].push({ id, name: String(value.name) })
+                    }
+                    break
+                }
+                case "fromNestedProperty": {
+                    if (!value) break
+                    for (const v of value) {
+                        const id = String(v.id)
+                        if (!seen[i].has(id)) {
+                            seen[i].add(id)
+                            out[i].push({ id, name: String(v.name) })
+                        }
+                    }
+                    break
+                }
+            }
+        }
+    }
+
+    return out
+}

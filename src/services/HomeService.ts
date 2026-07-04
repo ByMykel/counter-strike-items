@@ -1,53 +1,44 @@
 import { cachedGet } from "../utils/apiCache"
 import { filterItems, shuffleArrayWithSeed } from "../utils/index"
+import { getOrBuild, BuiltCategory } from "../utils/processedCache"
 
-export default class HomeService {
-    async query({
-        search,
-        filters
-    }: {
-        search: string
-        filters: { [prop: string]: string[] }
-    }) {
-        const rawData = await cachedGet<Record<string, any>>(
-            `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
-        )
-        let items: {
-            name: string
-            image: string
-            image_domain?: string /* more properties */
-        }[] = Object.values(rawData)
+async function build(): Promise<BuiltCategory> {
+    const rawData = await cachedGet<Record<string, any>>(
+        `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
+    )
 
-        items = items.map((item) => {
-            let imageDomain = "unknown"
-            if (item.image) {
-                try {
-                    const url = new URL(item.image)
-                    imageDomain = url.hostname
-                } catch {
-                    // If URL parsing fails, try to extract domain from string
-                    const match = item.image.match(/https?:\/\/([^\/]+)/)
-                    if (match) {
-                        imageDomain = match[1]
-                    }
+    const items = Object.values(rawData).map((item: any) => {
+        let imageDomain = "unknown"
+        if (item.image) {
+            try {
+                const url = new URL(item.image)
+                imageDomain = url.hostname
+            } catch {
+                // If URL parsing fails, try to extract domain from string
+                const match = item.image.match(/https?:\/\/([^\/]+)/)
+                if (match) {
+                    imageDomain = match[1]
                 }
             }
-            return {
-                ...item,
-                image_domain: imageDomain
-            }
-        })
+        }
+        return {
+            ...item,
+            image_domain: imageDomain
+        }
+    })
 
-        // Get unique domains from all items
-        const uniqueDomains = Array.from(
-            new Set(
-                items
-                    .map((item) => item.image_domain)
-                    .filter((domain): domain is string => Boolean(domain))
-            )
-        ).sort()
+    // Get unique domains from all items
+    const uniqueDomains = Array.from(
+        new Set(
+            items
+                .map((item) => item.image_domain)
+                .filter((domain): domain is string => Boolean(domain))
+        )
+    ).sort()
 
-        const filterList = [
+    return {
+        items,
+        filters: [
             {
                 prop: "price_range",
                 name: "Price",
@@ -64,27 +55,41 @@ export default class HomeService {
                 }))
             }
         ]
+    }
+}
 
-        let filteredItems = items
+export default class HomeService {
+    async query({
+        search,
+        filters
+    }: {
+        search: string
+        filters: { [prop: string]: string[] }
+    }) {
+        const built = await getOrBuild("home", build)
+
+        let filteredItems
         if (Object.keys(filters).length > 0) {
-            filteredItems = filterItems(items, search, filters)
+            filteredItems = filterItems(built.items, search, filters)
         } else if (search) {
-            filteredItems = filterItems(items, search)
+            filteredItems = filterItems(built.items, search)
         } else {
+            // Copy before shuffling — shuffleArrayWithSeed mutates in place and
+            // built.items is the shared cached array.
             filteredItems = shuffleArrayWithSeed(
-                items,
+                [...built.items],
                 new Date().toISOString().slice(0, 10)
             )
         }
 
         return {
             items: filteredItems,
-            filters: filterList
+            filters: built.filters
         }
     }
 
     async getAllItems() {
-        const [items, skins, collectibles, baseWeapons, highlights] =
+        const [allRaw, skins, collectibles, baseWeapons, highlights] =
             await Promise.all([
                 cachedGet<Record<string, any>>(
                     `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json`
@@ -102,6 +107,13 @@ export default class HomeService {
                     `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/highlights.json`
                 )
             ])
+
+        // Shallow-copy each entry so the mutations below never touch the
+        // shared cached all.json object (cachedGet no longer clones).
+        const items: Record<string, any> = {}
+        for (const [key, value] of Object.entries(allRaw)) {
+            items[key] = { ...value }
+        }
 
         const collectibleConfigs = [
             {

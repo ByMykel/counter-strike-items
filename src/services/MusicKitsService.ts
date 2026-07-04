@@ -1,25 +1,16 @@
 import { cachedGet } from "../utils/apiCache"
 import { filterItems } from "../utils"
+import { getOrBuild, BuiltCategory } from "../utils/processedCache"
 
-export default class MusicKitsService {
-    async query({
-        search,
-        filters
-    }: {
-        search: string
-        filters: { [prop: string]: string[] }
-    }) {
-        let items = await cachedGet<any[]>(
-            `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/music_kits.json`
-        )
+async function build(): Promise<BuiltCategory> {
+    const items = await cachedGet<any[]>(
+        `https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/music_kits.json`
+    )
 
-        const filterList = [
-            {
-                prop: "price_range",
-                name: "Price",
-                type: "price-range",
-                options: []
-            },
+    return {
+        items,
+        filters: [
+            { prop: "price_range", name: "Price", type: "price-range", options: [] },
             {
                 prop: "exclusive",
                 name: "Exclusive",
@@ -30,10 +21,21 @@ export default class MusicKitsService {
                 ]
             }
         ]
+    }
+}
 
+export default class MusicKitsService {
+    async query({
+        search,
+        filters
+    }: {
+        search: string
+        filters: { [prop: string]: string[] }
+    }) {
+        const built = await getOrBuild("music-kits", build)
         return {
-            items: filterItems(items, search, filters),
-            filters: filterList
+            items: filterItems(built.items, search, filters),
+            filters: built.filters
         }
     }
 }
