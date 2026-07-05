@@ -1,4 +1,5 @@
 import axios from "axios"
+import { getManifestId } from "./manifestId"
 
 interface CacheEntry {
     data: unknown
@@ -19,9 +20,16 @@ export async function cachedGet<T = unknown>(url: string): Promise<T> {
         return entry.data as T
     }
 
-    const data = await axios.get(url).then((res) => res.data)
+    // version param busts the service-worker cache when data/images change
+    const version = getManifestId()
+    const fetchUrl = version ? `${url}?v=${version}` : url
+    const data = await axios.get(fetchUrl).then((res) => res.data)
 
     cache.set(url, { data, timestamp: Date.now() })
 
     return data as T
+}
+
+export function clearApiCache() {
+    cache.clear()
 }

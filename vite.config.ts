@@ -45,6 +45,12 @@ export default defineConfig({
             workbox: {
                 runtimeCaching: [
                     {
+                        // never cache the freshness markers; must match before the broad CSGO-API rule
+                        urlPattern:
+                            /^https:\/\/raw\.githubusercontent\.com\/ByMykel\/CSGO-API\/.*\/(manifestIdUpdate|imagesShaUpdate)\.txt/i,
+                        handler: "NetworkOnly",
+                    },
+                    {
                         urlPattern:
                             /^https:\/\/raw\.githubusercontent\.com\/ByMykel\/CSGO-API\/.*/i,
                         handler: "StaleWhileRevalidate",
