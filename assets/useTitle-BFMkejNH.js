@@ -1,0 +1,1 @@
+import{ot as e}from"./ui-vendor-DOVAKs0d.js";function t(t){e(()=>{document.title=t instanceof Object?t.value:t})}export{t};
