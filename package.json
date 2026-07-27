@@ -42,7 +42,7 @@
     "autoprefixer": "^10.5.4",
     "eslint": "^10.6.0",
     "eslint-plugin-vue": "^10.9.2",
-    "globals": "^17.7.0",
+    "globals": "^17.8.0",
     "postcss": "^8.5.23",
     "prettier": "3.9.6",
     "tailwindcss": "^3.4.17",
