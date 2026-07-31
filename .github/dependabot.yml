@@ -11,14 +11,19 @@ updates:
           - "vue-router"
           - "pinia"
           - "@vueuse/*"
-          - "vue-eslint-parser"
-      typescript-eslint:
+      typescript:
         patterns:
           - "typescript"
-          - "@typescript-eslint/*"
-          - "eslint"
-          - "eslint-plugin-vue"
           - "vue-tsc"
+      linting:
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+          - "@typescript-eslint/*"
+          - "eslint-plugin-vue"
+          - "vue-eslint-parser"
+          - "globals"
+          - "prettier"
       tailwind:
         patterns:
           - "tailwindcss"
