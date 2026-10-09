@@ -83,6 +83,19 @@ export const useItemDetailStore = defineStore("item-detail", () => {
                 }))
         }
 
+        if (id.startsWith("pet-") && item.breed) {
+            variants = Object.entries(items.value)
+                .filter(
+                    ([key, value]) =>
+                        key.startsWith("pet-") && value.breed === item.breed
+                )
+                .map(([, value]) => ({
+                    id: value.id,
+                    name: value.name,
+                    image: value.image
+                }))
+        }
+
         selected.value = {
             id: item.id,
             name: item.name,

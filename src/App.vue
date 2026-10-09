@@ -234,6 +234,7 @@ import {
     ArchiveBoxIcon,
     BanknotesIcon,
     BugAntIcon,
+    HeartIcon,
     HomeIcon,
     KeyIcon,
     MusicalNoteIcon,
@@ -367,6 +368,12 @@ const navGroups = [
                 shortName: "Music",
                 path: "/music-kits",
                 icon: MusicalNoteIcon
+            },
+            {
+                name: "Pets",
+                shortName: "Pets",
+                path: "/pets",
+                icon: HeartIcon
             },
             {
                 name: "Highlights",

@@ -15,7 +15,12 @@ interface RawItemData {
     stattrak?: boolean
     def_index?: string
     genuine?: boolean
+    pet_id?: string
+    style?: number | null
 }
+
+// Every pet shares the "pet" item definition; the pet type is the pet index.
+const PET_DEFINDEX = 4681
 
 // Inspect link generators for different item types
 const inspectGenerators = {
@@ -55,6 +60,24 @@ const inspectGenerators = {
                 ? getRarityValue(rawItem.rarity.id)
                 : undefined,
             quality: rawItem.genuine ? 1 : 4, // 1 = Genuine, 4 = Unique
+            paintindex: 0,
+            stickers: [],
+            keychains: [],
+            variations: []
+        }
+    },
+
+    pet: (_item: InspectableItem, rawItem: RawItemData) => {
+        if (!rawItem.pet_id) return null
+
+        return {
+            defindex: PET_DEFINDEX,
+            petindex: parseInt(rawItem.pet_id),
+            style: rawItem.style ?? undefined,
+            rarity: rawItem.rarity?.id
+                ? getRarityValue(rawItem.rarity.id)
+                : undefined,
+            quality: 4, // 4 = Unique
             paintindex: 0,
             stickers: [],
             keychains: [],
@@ -110,6 +133,7 @@ export function useInspect(item: any, rawItem: any) {
 function getItemType(item: InspectableItem): keyof typeof inspectGenerators {
     if (item.id.includes("skin")) return "skin"
     if (item.id.includes("collectible")) return "collectible"
+    if (item.id.startsWith("pet-")) return "pet"
     // Add more type detection logic here
     // if (item.id.includes('sticker')) return 'sticker'
     // if (item.id.includes('agent')) return 'agent'
@@ -140,6 +164,7 @@ function getRarityValue(rarityId: string): number {
         case "rarity_mythical_weapon":
             return 4
         case "rarity_rare_weapon":
+        case "rarity_rare":
             return 3
         case "rarity_uncommon_weapon":
             return 2
