@@ -1,0 +1,1 @@
+import{st as e}from"./ui-vendor-8X3afG0U.js";function t(t){e(()=>{document.title=t instanceof Object?t.value:t})}export{t};
