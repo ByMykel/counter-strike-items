@@ -1,0 +1,1 @@
+import{Dt as e,L as t,W as n,et as r}from"./ui-vendor-8X3afG0U.js";import{t as i}from"./BaseItemListView-BFDNs-jJ.js";import{t as a}from"./StickersService-DPgaQev7.js";var o=n({__name:`StickersView`,setup(n){let o=new a().query;return(n,a)=>(r(),t(i,{query:e(o),"store-id":`stickers`,title:`Stickers - Counter-Strike items`},null,8,[`query`]))}});export{o as default};
