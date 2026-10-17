@@ -11,10 +11,6 @@ updates:
           - "vue-router"
           - "pinia"
           - "@vueuse/*"
-      typescript:
-        patterns:
-          - "typescript"
-          - "vue-tsc"
       linting:
         patterns:
           - "eslint"
