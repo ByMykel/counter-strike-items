@@ -49,6 +49,6 @@
     "typescript": "^6.0.3",
     "vite": "^8.3.4",
     "vite-plugin-pwa": "^2.0.0",
-    "vue-tsc": "^3.3.6"
+    "vue-tsc": "^3.3.13"
   }
 }
