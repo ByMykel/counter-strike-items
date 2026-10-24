@@ -1,0 +1,1 @@
+import{st as e}from"./ui-vendor-CfToO3ar.js";function t(t){e(()=>{document.title=t instanceof Object?t.value:t})}export{t};
