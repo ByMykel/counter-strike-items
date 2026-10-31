@@ -18,7 +18,7 @@
     "@heroicons/vue": "^2.2.0",
     "@vueuse/components": "^15.0.0",
     "@vueuse/core": "^15.0.0",
-    "axios": "^1.20.0",
+    "axios": "^1.21.0",
     "fuse.js": "^7.5.0",
     "lodash.uniqby": "^4.7.0",
     "pinia": "^4.1.0",
